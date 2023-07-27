@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-confio-dev-203031-authRole",
+      "UnauthRoleArn": "arn:aws:iam::143145471237:role/amplify-confio-dev-203031-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::143145471237:role/amplify-confio-dev-203031-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-confio-dev-203031-deployment",
+      "UnauthRoleName": "amplify-confio-dev-203031-unauthRole",
+      "StackName": "amplify-confio-dev-203031",
+      "StackId": "arn:aws:cloudformation:us-east-1:143145471237:stack/amplify-confio-dev-203031/58cd93f0-2c8e-11ee-8aab-0a995e6d9acf",
+      "AmplifyAppId": "d2ggnq271qutwf"
+    },
+    "categories": {
+      "auth": {
+        "confio6d540012": {}
+      }
+    }
+  }
+}
