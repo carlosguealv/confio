@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_authenticator/amplify_authenticator.dart';
 import 'package:confio/amplifyconfiguration.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 
@@ -59,7 +58,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final int _counter = 0;
 
   @override
   void initState() {
@@ -86,17 +85,6 @@ class _MyHomePageState extends State<MyHomePage> {
     } on AuthException catch (e) {
       safePrint('Error signing in: ${e.message}');
     }
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
   }
 
   @override

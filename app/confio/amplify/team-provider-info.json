@@ -13,7 +13,14 @@
     },
     "categories": {
       "auth": {
-        "confio6d540012": {}
+        "confio6d540012": {
+          "googleClientId": "     1002393617077-l7k5bb67bojf76s32d2t1grkd4nrp4un.apps.googleusercontent.com "
+        }
+      },
+      "function": {
+        "confio6d540012PostConfirmation": {
+          "GROUP": "users"
+        }
       }
     }
   }
