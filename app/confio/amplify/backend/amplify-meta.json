@@ -1,0 +1,58 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-confio-dev-115308-authRole",
+      "UnauthRoleArn": "arn:aws:iam::143145471237:role/amplify-confio-dev-115308-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::143145471237:role/amplify-confio-dev-115308-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-confio-dev-115308-deployment",
+      "UnauthRoleName": "amplify-confio-dev-115308-unauthRole",
+      "StackName": "amplify-confio-dev-115308",
+      "StackId": "arn:aws:cloudformation:us-east-1:143145471237:stack/amplify-confio-dev-115308/65385300-2dd8-11ee-93b4-0ecb3204ae2f",
+      "AmplifyAppId": "dh73cdlhjsfb6"
+    }
+  },
+  "auth": {
+    "confio626527e3": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-confio-dev-115308-deployment/amplify-cfn-templates/auth/confio626527e3-cloudformation-template.json",
+        "logicalId": "authconfio626527e3"
+      },
+      "lastPushTimeStamp": "2023-07-29T06:41:42.350Z",
+      "output": {
+        "UserPoolId": "us-east-1_RSo1jAHWm",
+        "AppClientIDWeb": "2thea8hqu84gqhgbpe8inmlmqb",
+        "AppClientID": "5n1b5rmu5tkdlkurmkipvnn6dc",
+        "IdentityPoolId": "us-east-1:12c73de6-1f16-4e18-a690-661229b208b8",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:143145471237:userpool/us-east-1_RSo1jAHWm",
+        "IdentityPoolName": "confio626527e3_identitypool_626527e3__dev",
+        "UserPoolName": "confio626527e3_userpool_626527e3"
+      },
+      "lastPushDirHash": "Oq0pdI1EIzBWDQEoWbJMjG0tvkc="
+    }
+  }
+}
