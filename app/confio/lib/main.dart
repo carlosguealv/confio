@@ -1,10 +1,12 @@
 import 'package:confio/screens/auth_screens/loginscreen.dart';
 import 'package:flutter/material.dart';
-import 'package:confio/amplifyconfiguration.dart';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -68,29 +70,26 @@ class _MyHomePageState extends State<MyHomePage> {
     _configureAmplify();
   }
 
-
-
   void _configureAmplify() async {
-      try {
-        await Amplify.addPlugin(AmplifyAuthCognito());
-        await Amplify.configure(amplifyconfig);
-        setState(() => _isAmplifyConfigured = true);
-        print('Successfully configured');
-      } on Exception catch (e) {
-        print('Error configuring Amplify: $e');
-      }
+    try {
+      // await Amplify.addPlugin(AmplifyAuthCognito());
+      // await Amplify.configure(amplifyconfig);
+      setState(() => _isAmplifyConfigured = true);
+      print('Successfully configured');
+    } on Exception catch (e) {
+      print('Error configuring Amplify: $e');
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
-    return
-      MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData.light(),
-        home: _isAmplifyConfigured ? const LoginScreen() :
-        const Center(child: CircularProgressIndicator()),
-      );
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData.light(),
+      home: _isAmplifyConfigured
+          ? const LoginScreen()
+          : const Center(child: CircularProgressIndicator()),
+    );
   }
 }
