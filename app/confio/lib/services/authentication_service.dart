@@ -9,27 +9,34 @@ class AuthenticationService {
 
   User? get currentUser => _firebaseAuth.currentUser;
 
-  Future<bool> loginWithEmailAndPassword(String email, String password) async {
+  Future<String?> loginWithEmailAndPassword(
+      String email, String password) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
+      final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return true;
-    } on Exception catch (_) {
-      return false;
+      return userCredential.user != null
+          ? null
+          : "Login failed. Please try again";
+      ;
+    } on FirebaseAuthException catch (e) {
+      return e.message;
     }
   }
 
-  Future<bool> signUpWithEmailAndPassword(String email, String password) async {
+  Future<String?> signUpWithEmailAndPassword(
+      String email, String password) async {
     try {
       final authResult = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return authResult.user != null;
-    } on Exception catch (_) {
-      return false;
+      return authResult.user != null
+          ? null
+          : "Sign up failed. Please try again";
+    } on FirebaseAuthException catch (e) {
+      return e.message;
     }
   }
 
@@ -57,10 +64,10 @@ class AuthenticationService {
   }
 
   Future<void> sendEmailForVerificationToCurrentUser() async {
-    await _firebaseAuth.currentUser.sendEmailVerification();
+    await _firebaseAuth.currentUser?.sendEmailVerification();
   }
 
-  Future deleteCurrentUserAccount(bool hasImage) async {
+  Future<void> deleteCurrentUserAccount(bool hasImage) async {
     await _firebaseAuth.currentUser?.delete();
   }
 }
