@@ -5,6 +5,7 @@ import 'package:get/route_manager.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -62,24 +63,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool _isAmplifyConfigured = false;
-  int _counter = 0;
-
   @override
   void initState() {
     super.initState();
-    _configureAmplify();
-  }
-
-  void _configureAmplify() async {
-    try {
-      // await Amplify.addPlugin(AmplifyAuthCognito());
-      // await Amplify.configure(amplifyconfig);
-      setState(() => _isAmplifyConfigured = true);
-      print('Successfully configured');
-    } on Exception catch (e) {
-      print('Error configuring Amplify: $e');
-    }
   }
 
   @override
@@ -88,9 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData.light(),
-      home: _isAmplifyConfigured
-          ? const LoginScreen()
-          : const Center(child: CircularProgressIndicator()),
+      home: const LoginScreen()
     );
   }
 }
