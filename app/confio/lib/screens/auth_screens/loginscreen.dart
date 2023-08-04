@@ -1,4 +1,6 @@
+import 'package:beamer/beamer.dart';
 import 'package:confio/logic/blocs/login_bloc/login_bloc.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,11 +32,10 @@ class LoginLayout extends StatelessWidget {
           if (state is LoginFailure) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Login Failed"),
+              backgroundColor: Colors.red,
             ));
           } else if (state is LoginSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("Login Succeeded"),
-            ));
+            Beamer.of(context).beamToNamed('/home');
           } else if (state is LoginLoading) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Login Loading"),
@@ -44,7 +45,7 @@ class LoginLayout extends StatelessWidget {
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             body: Center(
-              child: Container(
+                child: Container(
               height: double.infinity,
               width: double.infinity,
               decoration: const BoxDecoration(
@@ -58,16 +59,19 @@ class LoginLayout extends StatelessWidget {
               child: Stack(children: [
                 Align(
                     alignment: const Alignment(0, -0.8),
-                    child: Text("Confio", style: GoogleFonts.delaGothicOne(textStyle: const TextStyle(fontSize: 30, color: Colors.white)),) 
-                ),
+                    child: Text(
+                      "Confio",
+                      style: GoogleFonts.delaGothicOne(
+                          textStyle: const TextStyle(
+                              fontSize: 30, color: Colors.white)),
+                    )),
                 Align(
                     alignment: const Alignment(0, -0.5),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(30.0),
                       child:
                           Image.asset('lib/assets/images/shorthairwoman.png'),
-                    )
-                ),
+                    )),
                 Align(
                   alignment: const Alignment(0, 0.2),
                   child: TextField(
@@ -99,6 +103,28 @@ class LoginLayout extends StatelessWidget {
                     child: ContinueButton(),
                   ),
                 ),
+                Align(
+                  alignment: const Alignment(0, 0.8),
+                  child: RichText(
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        const TextSpan(
+                            text: '¿Eres nuevo en Confio?',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 131, 109, 168))),
+                        TextSpan(
+                            text: ' Crea una cuenta nueva',
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 131, 109, 168),
+                                fontWeight: FontWeight.bold),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Beamer.of(context).beamToNamed('signup');
+                              }),
+                      ],
+                    ),
+                  ),
+                )
               ]),
             ))));
   }
@@ -116,9 +142,9 @@ class ContinueButton extends StatelessWidget {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
       ),
       onPressed: () {
-        BlocProvider.of<LoginBloc>(context)
-                    .add(Login(email: LoginLayout.emailController.text,
-                              password: LoginLayout.passwordController.text));
+        BlocProvider.of<LoginBloc>(context).add(Login(
+            email: LoginLayout.emailController.text,
+            password: LoginLayout.passwordController.text));
       },
       child: const Text("Continuar"),
     );
