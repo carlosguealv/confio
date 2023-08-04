@@ -1,7 +1,7 @@
-import 'package:confio/services/authentication_service.dart';
 import 'package:confio/logic/blocs/login_bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -44,7 +44,7 @@ class LoginLayout extends StatelessWidget {
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             body: Center(
-                child: Container(
+              child: Container(
               height: double.infinity,
               width: double.infinity,
               decoration: const BoxDecoration(
@@ -57,12 +57,17 @@ class LoginLayout extends StatelessWidget {
               padding: const EdgeInsets.all(35),
               child: Stack(children: [
                 Align(
+                    alignment: const Alignment(0, -0.8),
+                    child: Text("Confio", style: GoogleFonts.delaGothicOne(textStyle: const TextStyle(fontSize: 30, color: Colors.white)),) 
+                ),
+                Align(
                     alignment: const Alignment(0, -0.5),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(30.0),
                       child:
                           Image.asset('lib/assets/images/shorthairwoman.png'),
-                    )),
+                    )
+                ),
                 Align(
                   alignment: const Alignment(0, 0.2),
                   child: TextField(
