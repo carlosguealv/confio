@@ -70,7 +70,7 @@ class LoginLayout extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(30.0),
                       child:
-                          Image.asset('lib/assets/images/shorthairwoman.png'),
+                          Image.asset('lib/assets/images/blankuser.png'),
                     )),
                 Align(
                   alignment: const Alignment(0, 0.2),
