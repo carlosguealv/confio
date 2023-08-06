@@ -12,7 +12,7 @@ class GreetingScreen extends StatelessWidget {
         child: Container(
           decoration: const BoxDecoration(
             gradient: RadialGradient(
-              radius: 1.5,
+              radius: 0.75,
               colors: [Colors.white, Color(0xFF3550DA)],
               center: Alignment(0, 1),
             ),

@@ -19,7 +19,6 @@ class AuthenticationService {
       return userCredential.user != null
           ? null
           : "Login failed. Please try again";
-      ;
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
