@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:beamer/beamer.dart';
 import 'package:confio/screens/auth_screens/loginscreen.dart';
 import 'package:confio/screens/auth_screens/phonenumberscreen.dart';
