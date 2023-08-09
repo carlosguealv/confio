@@ -1,5 +1,8 @@
+import 'dart:js';
+
 import 'package:beamer/beamer.dart';
 import 'package:confio/screens/auth_screens/loginscreen.dart';
+import 'package:confio/screens/auth_screens/phonenumberscreen.dart';
 import 'package:confio/screens/auth_screens/signupscreen.dart';
 import 'package:confio/screens/greeting_screens/authoptionscreen.dart';
 import 'package:confio/screens/greeting_screens/greetingscreen.dart';
@@ -27,7 +30,8 @@ class MyApp extends StatelessWidget {
         '/auth-options': (context, state, data) => const AuthOptionScreen(),
         '/login': (context, state, data) => const LoginScreen(),
         '/home': (context, state, data) => const HomeScreen(),
-        '/signup': (context, state, data) => const SignUpScreen(),
+        '/signup': (context, state, data) => const SignupScreen(),
+        'phone-number': (context, state, data) => const PhoneNumberScreen(),
       }
     ),
   );
