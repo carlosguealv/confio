@@ -23,6 +23,7 @@ class SignupLayout extends StatelessWidget {
   const SignupLayout({super.key});
   static TextEditingController emailController = TextEditingController();
   static TextEditingController passwordController = TextEditingController();
+  static TextEditingController confirmController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class SignupLayout extends StatelessWidget {
             backgroundColor: Colors.red,
           ));
         } else if (state is SignupSuccess) {
-          Beamer.of(context).beamToNamed('/phone-number');
+          Beamer.of(context).beamToNamed('/home');
         } else if (state is SignupLoading) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Creando cuenta..."),
@@ -99,8 +100,20 @@ class SignupLayout extends StatelessWidget {
                     ),
                   ),
                 ),
+                Align(
+                  alignment: const Alignment(0, 0.62),
+                  child: TextField(
+                    controller: confirmController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(40.0)),
+                      labelText: 'Confirmar Contraseña',
+                    ),
+                  ),
+                ),
                 const Align(
-                  alignment: Alignment(0, 0.62),
+                  alignment: Alignment(0, 0.83),
                   child: SizedBox(
                     width: double.infinity,
                     child: ContinueButton(),
@@ -126,9 +139,16 @@ class ContinueButton extends StatelessWidget {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
       ),
       onPressed: () {
-        BlocProvider.of<SignupBloc>(context).add(Signup(
+        if (SignupLayout.passwordController.text == SignupLayout.confirmController.text) {
+          BlocProvider.of<SignupBloc>(context).add(Signup(
             email: SignupLayout.emailController.text,
             password: SignupLayout.passwordController.text));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Error: Las contraseñas no coinciden"),
+              backgroundColor: Colors.red,
+            ));
+          }
       },
       child: const Text("Continuar"),
     );
