@@ -123,7 +123,29 @@ class LoginLayout extends StatelessWidget {
                                 fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Beamer.of(context).beamToNamed('signup');
+                                Beamer.of(context).beamToNamed('/signup');
+                              }),
+                      ],
+                    ),
+                  ),
+                ),
+								Align(
+                  alignment: const Alignment(0, 0.9),
+                  child: RichText(
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        const TextSpan(
+                            text: '¿Olvidaste tu contraseña?',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 131, 109, 168))),
+                        TextSpan(
+                            text: ' Haz click aquí',
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 131, 109, 168),
+                                fontWeight: FontWeight.bold),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Beamer.of(context).beamToNamed('/forgot');
                               }),
                       ],
                     ),

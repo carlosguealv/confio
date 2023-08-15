@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:confio/screens/auth_screens/forgotpassword.dart';
 import 'package:confio/screens/auth_screens/loginscreen.dart';
 import 'package:confio/screens/auth_screens/signupscreen.dart';
 import 'package:confio/screens/greeting_screens/authoptionscreen.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/login': (context, state, data) => const LoginScreen(),
         '/home': (context, state, data) => const HomeScreen(),
         '/signup': (context, state, data) => const SignupScreen(),
+				'/forgot': (context, state, data) => const ForgotPasswordScreen(),
       }
     ),
   );
