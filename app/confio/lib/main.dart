@@ -8,6 +8,7 @@ import 'package:confio/screens/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -22,16 +23,14 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final routerDelegate = BeamerDelegate(
-    locationBuilder: RoutesLocationBuilder(
-      routes: {
-        '/': (context, state, data) => const GreetingScreen(),
-        '/auth-options': (context, state, data) => const AuthOptionScreen(),
-        '/login': (context, state, data) => const LoginScreen(),
-        '/home': (context, state, data) => const HomeScreen(),
-        '/signup': (context, state, data) => const SignupScreen(),
-				'/forgot': (context, state, data) => const ForgotPasswordScreen(),
-      }
-    ),
+    locationBuilder: RoutesLocationBuilder(routes: {
+      '/': (context, state, data) => const GreetingScreen(),
+      '/auth-options': (context, state, data) => const AuthOptionScreen(),
+      '/login': (context, state, data) => const LoginScreen(),
+      '/home': (context, state, data) => const HomeScreen(),
+      '/signup': (context, state, data) => const SignupScreen(),
+      '/forgot': (context, state, data) => const ForgotPasswordScreen(),
+    }),
   );
 
   @override
@@ -40,9 +39,13 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return MaterialApp.router(
-      routeInformationParser: BeamerParser(),
-      routerDelegate: routerDelegate,
-    );
+    return ScreenUtilInit(
+        designSize: const Size(430, 932),
+        builder: (context, child) {
+          return MaterialApp.router(
+            routeInformationParser: BeamerParser(),
+            routerDelegate: routerDelegate,
+          );
+        });
   }
 }
