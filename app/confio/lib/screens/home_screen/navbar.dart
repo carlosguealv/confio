@@ -1,4 +1,4 @@
-import 'package:confio/screens/collect/collect.dart';
+import 'package:confio/screens/home_screen/collect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 class NavBar extends StatefulWidget {
