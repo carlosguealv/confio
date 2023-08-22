@@ -1,5 +1,6 @@
 import 'package:confio/screens/home_screen/collect.dart';
 import 'package:flutter/material.dart';
+import 'package:confio/screens/profile/profilescreen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -33,7 +34,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
   List<Widget> screens = [
     const CollectScreen(),
     const Text("Anadir"),
-    const Text("PERFIL"),
+    const ProfileScreen(),
   ];
   @override
   Widget build(BuildContext context) {
