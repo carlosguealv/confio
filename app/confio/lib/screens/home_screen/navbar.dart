@@ -1,6 +1,6 @@
 import 'package:confio/screens/home_screen/collect.dart';
 import 'package:flutter/material.dart';
-import 'package:confio/screens/profile/profilescreen.dart';
+import 'package:confio/screens/home_screen/profilescreen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
