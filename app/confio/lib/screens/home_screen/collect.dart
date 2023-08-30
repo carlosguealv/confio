@@ -1,4 +1,5 @@
-import 'package:confio/screens/home_screen/widgets/collectTextField.dart';
+
+import 'package:confio/screens/home_screen/widget/collectTextField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:table_calendar/table_calendar.dart';
