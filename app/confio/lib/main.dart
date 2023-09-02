@@ -5,7 +5,7 @@ import 'package:confio/screens/auth_screens/signupscreen.dart';
 import 'package:confio/screens/greeting_screens/authoptionscreen.dart';
 import 'package:confio/screens/greeting_screens/greetingscreen.dart';
 import 'package:confio/screens/home_screen/home_screen.dart';
-import 'package:confio/screens/payment_screens/paymentscreen.dart';
+import 'package:confio/screens/home_screen/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
 
   final routerDelegate = BeamerDelegate(
     locationBuilder: RoutesLocationBuilder(routes: {
-      '/': (context, state, data) => const GreetingScreen(),
+      '/': (context, state, data) => const NavBar(),
       '/auth-options': (context, state, data) => const AuthOptionScreen(),
       '/login': (context, state, data) => const LoginScreen(),
       '/home': (context, state, data) => const HomeScreen(),
