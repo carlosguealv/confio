@@ -42,8 +42,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     decoration: BoxDecoration(
                         color: Colors.amber,
                         borderRadius: BorderRadius.circular(30.r),
-                        image: DecorationImage(
-                            image: AssetImage("assets/images/profile.png"),
+                        image: const DecorationImage(
+                            image: AssetImage("lib/assets/images/blankuser.png"),
                             fit: BoxFit.cover)),
                   ),
                   SizedBox(

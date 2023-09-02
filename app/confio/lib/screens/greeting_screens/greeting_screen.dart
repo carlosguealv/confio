@@ -1,5 +1,5 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class GreetingScreen extends StatelessWidget {
@@ -68,7 +68,7 @@ class GreetingScreen extends StatelessWidget {
                     ),
                     child: const Text("Comenzar"),
                     onPressed: () {
-                      Beamer.of(context).beamToNamed('/auth-options');
+                      Get.toNamed('/auth-options');
                     },
                   ),
                 )

@@ -44,9 +44,3 @@ class _CollectScreenState extends State<CollectScreen>
     );
   }
 }
-
-
-
-
-
-

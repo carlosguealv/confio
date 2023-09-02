@@ -1,38 +1,22 @@
-import 'package:beamer/beamer.dart';
-import 'package:confio/screens/auth_screens/forgotpassword.dart';
-import 'package:confio/screens/auth_screens/loginscreen.dart';
-import 'package:confio/screens/auth_screens/signupscreen.dart';
-import 'package:confio/screens/greeting_screens/authoptionscreen.dart';
-import 'package:confio/screens/greeting_screens/greetingscreen.dart';
-import 'package:confio/screens/home_screen/home_screen.dart';
-import 'package:confio/screens/home_screen/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'firebase_options.dart';
+import 'package:get/get.dart';
+import 'package:confio/utils/size_config.dart';
+import 'package:confio/utils/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(const ConfioApp());
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
-
-  final routerDelegate = BeamerDelegate(
-    locationBuilder: RoutesLocationBuilder(routes: {
-      '/': (context, state, data) => const NavBar(),
-      '/auth-options': (context, state, data) => const AuthOptionScreen(),
-      '/login': (context, state, data) => const LoginScreen(),
-      '/home': (context, state, data) => const HomeScreen(),
-      '/signup': (context, state, data) => const SignupScreen(),
-      '/forgot': (context, state, data) => const ForgotPasswordScreen(),
-    }),
-  );
+class ConfioApp extends StatelessWidget {
+  const ConfioApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +27,22 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
         designSize: const Size(428, 1050),
         builder: (context, child) {
-          return MaterialApp.router(
-            routeInformationParser: BeamerParser(),
-            routerDelegate: routerDelegate,
-          );
-        });
+          return LayoutBuilder(
+						builder: (context, constraints) {
+							SizeConfig.init(constraints, Orientation.portrait);
+							return FutureBuilder<String>(
+								future: Routes.getInitialRoute(),
+								builder: (context, initRouteSnapshot) {
+									return GetMaterialApp(
+										title: 'Confio',
+										initialRoute: initRouteSnapshot.data,
+										getPages: Routes.getPages(),
+									);
+								}
+							);
+						}
+					);
+        }
+		);
   }
 }
