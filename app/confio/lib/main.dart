@@ -6,6 +6,7 @@ import 'package:confio/screens/greeting_screens/authoptionscreen.dart';
 import 'package:confio/screens/greeting_screens/greetingscreen.dart';
 import 'package:confio/screens/home_screen/home_screen.dart';
 import 'package:confio/screens/home_screen/navbar.dart';
+import 'package:confio/screens/payment_screens/payee_view_depth2.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
 
   final routerDelegate = BeamerDelegate(
     locationBuilder: RoutesLocationBuilder(routes: {
-      '/': (context, state, data) => const NavBar(),
+      '/': (context, state, data) => const GreetingScreen(),
       '/auth-options': (context, state, data) => const AuthOptionScreen(),
       '/login': (context, state, data) => const LoginScreen(),
       '/home': (context, state, data) => const HomeScreen(),
@@ -41,9 +42,10 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     return ScreenUtilInit(
-        designSize: const Size(428, 1050),
+        designSize: const Size(428, 1081),
         builder: (context, child) {
           return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
             routeInformationParser: BeamerParser(),
             routerDelegate: routerDelegate,
           );
