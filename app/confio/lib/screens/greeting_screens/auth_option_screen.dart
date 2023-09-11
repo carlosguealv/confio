@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AuthOptionScreen extends StatelessWidget {
@@ -53,7 +54,7 @@ class AuthOptionScreen extends StatelessWidget {
                       ),
                       child: const Text("Crear una cuenta"),
                       onPressed: () {
-                        Beamer.of(context).beamToNamed('/signup');
+                      	Get.toNamed('/signup');
                       },
                   ),
                 )
@@ -70,7 +71,7 @@ class AuthOptionScreen extends StatelessWidget {
                       ),
                       child: const Text("Ya tengo una cuenta"),
                       onPressed: () {
-                        Beamer.of(context).beamToNamed('/login');
+                        Get.toNamed('/login');
                       },
                   ),
                 )
