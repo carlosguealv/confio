@@ -3,8 +3,8 @@ import 'package:confio/screens/auth/login_screen.dart';
 import 'package:confio/screens/auth/signup_screen.dart';
 import 'package:confio/screens/greeting_screens/auth_option_screen.dart';
 import 'package:confio/screens/greeting_screens/greeting_screen.dart';
-import 'package:confio/screens/home_screen/home_screen.dart';
 import 'package:confio/screens/home_screen/navbar.dart';
+import 'package:confio/screens/payment_screens/paymentscreen.dart';
 import 'package:confio/services/authentication_service.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +13,7 @@ class Routes {
     return [
       GetPage(
         name: '/',
-        page: () => const GreetingScreen(),
+        page: () => const PaymentScreen(),
       ),
       GetPage(
         name: '/auth-options',
@@ -35,6 +35,10 @@ class Routes {
         name: '/forgot',
         page: () => const ForgotPasswordScreen(),
       ),
+			GetPage(
+				name: '/payment',
+				page: () => const PaymentScreen(),
+			),
     ];
   }
 

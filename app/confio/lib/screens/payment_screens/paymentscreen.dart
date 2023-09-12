@@ -1,6 +1,9 @@
+import 'package:confio/screens/components/gap.dart';
+import 'package:confio/utils/size_config.dart';
 import 'package:confio/widgets/divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -116,17 +119,46 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               borderRadius: BorderRadius.circular(18.50),
                             ),
                           ),
-                          child: Text(
-                            'Confirmar Pago',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.sp,
-                              fontFamily: 'PoppinsRegular',
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
+													child: GestureDetector(
+														onTap: () => {
+															showModalBottomSheet(
+																showDragHandle: true,
+																constraints: BoxConstraints(
+																	maxHeight: sx! * 0.4,
+																	maxWidth: sy! * 0.9,
+																),
+																shape: RoundedRectangleBorder(
+																	borderRadius: BorderRadius.circular(20),
+																),
+																backgroundColor: const Color(0xff0F1012),
+																context: context, 
+																builder: (builder) {
+																	return Container(
+																		width: sy! * 100,
+																		child: Column(
+																			children: [
+																				Text(
+																					"Confirma el pago recibido",
+																					style: GoogleFonts.roboto(color: Colors.white, fontSize: 14)
+																				)
+																			],
+																		)
+																	);	
+																}
+															)
+														},
+														child: Text(
+															'Confirmar Pago',
+															textAlign: TextAlign.center,
+															style: TextStyle(
+																color: Colors.white,
+																fontSize: 12.sp,
+																fontFamily: 'PoppinsRegular',
+																fontWeight: FontWeight.w500,
+															),
+														),
+													),
+												),
                       )
                     ],
                   ),
