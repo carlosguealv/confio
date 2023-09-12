@@ -34,7 +34,8 @@ class ConfioApp extends StatelessWidget {
 								future: Routes.getInitialRoute(),
 								builder: (context, initRouteSnapshot) {
 									return GetMaterialApp(
-										title: 'Confio',
+                    debugShowCheckedModeBanner: false,
+                    title: 'Confio',
 										initialRoute: initRouteSnapshot.data,
 										getPages: Routes.getPages(),
 									);
