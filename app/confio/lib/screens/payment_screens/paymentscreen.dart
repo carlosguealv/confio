@@ -119,46 +119,57 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               borderRadius: BorderRadius.circular(18.50),
                             ),
                           ),
-													child: GestureDetector(
-														onTap: () => {
-															showModalBottomSheet(
-																showDragHandle: true,
-																constraints: BoxConstraints(
-																	maxHeight: sx! * 0.4,
-																	maxWidth: sy! * 0.9,
-																),
-																shape: RoundedRectangleBorder(
-																	borderRadius: BorderRadius.circular(20),
-																),
-																backgroundColor: const Color(0xff0F1012),
-																context: context, 
-																builder: (builder) {
-																	return Container(
-																		width: sy! * 100,
-																		child: Column(
-																			children: [
-																				Text(
-																					"Confirma el pago recibido",
-																					style: GoogleFonts.roboto(color: Colors.white, fontSize: 14)
-																				)
-																			],
-																		)
-																	);	
-																}
-															)
-														},
-														child: Text(
-															'Confirmar Pago',
-															textAlign: TextAlign.center,
-															style: TextStyle(
-																color: Colors.white,
-																fontSize: 12.sp,
-																fontFamily: 'PoppinsRegular',
-																fontWeight: FontWeight.w500,
-															),
-														),
-													),
-												),
+                          child: GestureDetector(
+                            onTap: () => {
+                              showModalBottomSheet(
+                                  showDragHandle: true,
+                                  constraints: BoxConstraints(
+                                    maxHeight: sx! * 0.4,
+                                    maxWidth: sy! * 0.9,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  backgroundColor: const Color(0xff0F1012),
+                                  context: context,
+                                  builder: (builder) {
+                                    return Container(
+                                        child: Column(
+                                      children: [
+                                        Text("Confirma el pago recibido",
+                                            style: GoogleFonts.roboto(
+                                                color: Colors.white,
+                                                fontSize: 14)),
+                                        const Gap(
+                                          height: 0.025,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Gap(width: 0.05),
+                                            _userTile("Payer 1"),
+                                            const Gap(width: 0.1),
+                                            Image.asset(
+                                                "lib/assets/images/Arrow---Right.png"),
+                                            const Gap(width: 0.075),
+                                            _userTile("Raj Singh"),
+                                          ],
+                                        ),
+                                      ],
+                                    ));
+                                  })
+                            },
+                            child: Text(
+                              'Confirmar Pago',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12.sp,
+                                fontFamily: 'PoppinsRegular',
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
                       )
                     ],
                   ),
@@ -233,7 +244,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         SizedBox(
                           height: 100.h,
                         ),
-                        CustomDivider(),
+                        const CustomDivider(),
                         SizedBox(
                           height: 21.h,
                         ),
@@ -244,7 +255,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             width: double.infinity.w,
                             height: 50,
                             decoration: BoxDecoration(
-                                color: Color(0xff0d0e10),
+                                color: const Color(0xff0d0e10),
                                 borderRadius: BorderRadius.circular(12.r)),
                             child: Row(
                               children: [
@@ -255,8 +266,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     width: 30.w,
                                     height: 30.h,
                                     decoration: BoxDecoration(
-                                        color: Color(0xff2A2A2A),
-                                        image: DecorationImage(
+                                        color: const Color(0xff2A2A2A),
+                                        image: const DecorationImage(
                                             image: AssetImage(
                                                 "lib/assets/images/dollar.png")),
                                         borderRadius:
@@ -332,6 +343,36 @@ class _PaymentScreenState extends State<PaymentScreen> {
       ),
     );
   }
+
+  Widget _userTile(String userName) {
+    return Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(17)),
+          color: Colors.white10,
+        ),
+        width: sy! * 0.3,
+        height: sy! * 0.3,
+        child: Column(
+          children: [
+            const Gap(
+              height: 0.03,
+            ),
+            const CircleAvatar(
+              backgroundColor: Colors.white24,
+            ),
+            const Gap(
+              height: 0.02,
+            ),
+            Text(
+              userName,
+              style: GoogleFonts.inter(
+                color: Colors.white,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ));
+  }
 }
 
 class circularoptions extends StatelessWidget {
@@ -351,7 +392,7 @@ class circularoptions extends StatelessWidget {
           width: 68.17.w,
           height: 68.17.h,
           decoration: BoxDecoration(
-              color: Color(0xFF202227),
+              color: const Color(0xFF202227),
               image: DecorationImage(
                   image: AssetImage("lib/assets/images/$iconName.png")),
               shape: BoxShape.circle),
