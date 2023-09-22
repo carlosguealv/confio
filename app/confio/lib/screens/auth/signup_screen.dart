@@ -30,12 +30,7 @@ class SignupLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<SignupBloc, SignupState>(
         listener: (context, state) {
-          if (state is SignupFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("No se pudo crear tu cuenta"),
-              backgroundColor: Colors.red,
-            ));
-          } else if (state is SignupSuccess) {
+          if (state is SignupSuccess) {
             Get.toNamed('/home');
           }
         },

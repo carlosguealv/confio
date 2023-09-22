@@ -29,12 +29,7 @@ class LoginLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
-          if (state is LoginFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("No se pudo iniciar sesión"),
-              backgroundColor: Colors.red,
-            ));
-          } else if (state is LoginSuccess) {
+          if (state is LoginSuccess) {
             Get.toNamed('/home');
           }
         },
@@ -46,7 +41,7 @@ class LoginLayout extends StatelessWidget {
                   return const Center(child: CircularProgressIndicator());
                 } else {
                   return Center(
-                    child: SingleChildScrollView(
+                      child: SingleChildScrollView(
                     child: Container(
                       height: sx! * 1.1,
                       width: sy! * 100,
@@ -151,8 +146,7 @@ class LoginLayout extends StatelessWidget {
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       Get.toNamed('/forgot');
-                                    }
-															),
+                                    }),
                             ],
                           ),
                         )
