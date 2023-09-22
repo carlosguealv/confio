@@ -13,6 +13,7 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
+  String? method;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,8 +134,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   backgroundColor: const Color(0xff0F1012),
                                   context: context,
                                   builder: (builder) {
-                                    return Container(
-                                        child: Column(
+                                    return Column(
                                       children: [
                                         Text("Confirma el pago recibido",
                                             style: GoogleFonts.roboto(
@@ -154,8 +154,88 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             _userTile("Raj Singh"),
                                           ],
                                         ),
+                                        const Gap(
+                                          height: 0.015,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Gap(width: 0.05),
+                                            Container(
+                                              width: sy! * 0.8,
+                                              height: sx! * 0.05,
+                                              decoration: const BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(7.5)),
+                                                color: Colors.white10,
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  const Gap(
+                                                    width: 0.03,
+                                                  ),
+                                                  Text(
+                                                    "Selecciona método de pago",
+                                                    style: GoogleFonts.inter(
+                                                        color: Colors.white,
+                                                        fontSize: 11),
+                                                  ),
+                                                  const Gap(
+                                                    width: 0.05,
+                                                  ),
+                                                  PaymentMethods(
+                                                    changeMethodCallback:
+                                                        (String? newMethod) {
+                                                      method = newMethod;
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const Gap(
+                                          height: 0.015,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Gap(
+                                              width: 0.25,
+                                            ),
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "Cancelar",
+                                                  style: GoogleFonts.inter(
+                                                      fontSize: 13,
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              120,
+                                                              147,
+                                                              255)),
+                                                )),
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        const Color.fromARGB(
+                                                            255, 120, 147, 255),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        60))),
+                                                onPressed: () {
+                                                  print(method);
+                                                },
+                                                child: const Text(
+                                                    "Marcar como Pagado"))
+                                          ],
+                                        )
                                       ],
-                                    ));
+                                    );
                                   })
                             },
                             child: Text(
@@ -229,13 +309,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              circularoptions(
+                              CircularOptions(
                                   iconName: 'anadir', labelText: 'Añadir Nota'),
-                              circularoptions(
+                              CircularOptions(
                                 iconName: 'gestionar',
                                 labelText: 'Gestionar pago',
                               ),
-                              circularoptions(
+                              CircularOptions(
                                   iconName: 'ignorar',
                                   labelText: 'Ignorar Pago'),
                             ],
@@ -375,10 +455,52 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 }
 
-class circularoptions extends StatelessWidget {
+class PaymentMethods extends StatefulWidget {
+  const PaymentMethods({super.key, required this.changeMethodCallback});
+  final Function(String?) changeMethodCallback;
+  @override
+  State<PaymentMethods> createState() => PaymentMethodsState();
+}
+
+class PaymentMethodsState extends State<PaymentMethods> {
+  static List<String> methods = [
+    'Seleccionar...',
+    'Tarjeta de crédito/débito',
+    'Transferencia bancaria',
+    'Plataforma de pagos online',
+    'Efectivo',
+  ];
+  String? selectedMethod = methods[0];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: sy! * 0.3,
+      child: DropdownButton(
+          isExpanded: true,
+          elevation: 0,
+          dropdownColor: const Color(0xff2A2A2A),
+          value: selectedMethod,
+          items: methods
+              .map((method) => DropdownMenuItem(
+                  value: method,
+                  child: Text(
+                    method,
+                    style: GoogleFonts.inter(fontSize: 12, color: Colors.white),
+                  )))
+              .toList(),
+          onChanged: (method) => setState(() {
+                selectedMethod = method;
+                widget.changeMethodCallback(method);
+              })),
+    );
+  }
+}
+
+class CircularOptions extends StatelessWidget {
   final String iconName;
   final String labelText;
-  const circularoptions({
+  const CircularOptions({
     super.key,
     required this.iconName,
     required this.labelText,
