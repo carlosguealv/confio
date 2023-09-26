@@ -314,12 +314,12 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      const SizedBox(
+                                      SizedBox(
                                           height: 3,
                                           width: 34,
                                           child: LinearProgressIndicator(
-                                            // TODO: Fix this
-                                            // borderRadius: BorderRadius.circular(10),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                             value: 0.35,
                                           )),
                                       const SizedBox(
