@@ -11,8 +11,17 @@ List<Color> cardColors = [
   const Color(0xffFFFBA1)
 ];
 
-class HomeScreen extends StatelessWidget {
+enum Modes { cobrar, pagar }
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Modes mode = Modes.cobrar;
 
   @override
   Widget build(BuildContext context) {
@@ -91,33 +100,53 @@ class HomeScreen extends StatelessWidget {
                       child: Row(
                         children: [
                           Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: themeColor,
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              alignment: Alignment.center,
-                              child: Text(
-                                "Cobrar",
-                                style: GoogleFonts.inter(
-                                    fontSize: 12, fontWeight: FontWeight.w600),
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  mode = Modes.cobrar;
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: mode == Modes.cobrar
+                                      ? themeColor
+                                      : Colors.transparent,
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 14),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Cobrar",
+                                  style: GoogleFonts.inter(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
                             ),
                           ),
                           Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              alignment: Alignment.center,
-                              child: Text(
-                                "Pagar",
-                                style: GoogleFonts.inter(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white.withOpacity(0.44)),
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  mode = Modes.pagar;
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: mode == Modes.pagar
+                                      ? themeColor
+                                      : Colors.transparent,
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 14),
+                                alignment: Alignment.center,
+                                child: Text("Pagar",
+                                    style: GoogleFonts.inter(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                    )),
                               ),
                             ),
                           )
@@ -140,7 +169,9 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(
                       height: 18,
                     ),
-                    const CalendarWidget(),
+                    CalendarWidget(
+                      mode: mode,
+                    ),
                     const SizedBox(
                       height: 30,
                     ),
@@ -378,7 +409,8 @@ class HomeScreen extends StatelessWidget {
 }
 
 class CalendarWidget extends StatelessWidget {
-  const CalendarWidget({Key? key}) : super(key: key);
+  const CalendarWidget({Key? key, required this.mode}) : super(key: key);
+  final Modes? mode;
 
   @override
   Widget build(BuildContext context) {
@@ -414,7 +446,7 @@ class CalendarWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              "Tienes # pagos por cobrar en los próximos 7 días por S/ 64,000.00",
+              "Tienes # pagos por ${mode == Modes.cobrar ? "cobrar" : "pagar"} en los próximos 7 días por S/ 64,000.00",
               style: GoogleFonts.inter(color: Colors.white.withOpacity(0.4)),
             ),
           ),
