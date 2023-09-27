@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:confio/screens/home_screen/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -405,6 +407,26 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+}
+
+class MasAdelantePayment extends StatelessWidget {
+  const MasAdelantePayment({super.key, required this.amount});
+  final Float amount;
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+class VenceProntoPayment extends StatelessWidget {
+  const VenceProntoPayment({super.key, required this.amount});
+  final Float amount;
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
 
