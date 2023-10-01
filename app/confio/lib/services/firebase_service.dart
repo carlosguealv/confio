@@ -2,6 +2,8 @@ import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+enum Recurrences { weekly, monthly, yearly }
+
 class FirebaseService {
   // singleton instance
   FirebaseService._();
@@ -9,18 +11,68 @@ class FirebaseService {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  List<Timestamp> generateTimestampList(
+      Recurrences recurrence, Timestamp endDate, List<int> inputs) {
+    List<Timestamp> timestampList = [];
+
+    switch (recurrence) {
+      case Recurrences.weekly:
+        DateTime now = DateTime.now();
+
+        while (now.isBefore(endDate.toDate())) {
+          if (inputs.contains(now.weekday)) {
+            // weekday is 1 through 7
+            timestampList.add(Timestamp.fromDate(now));
+          }
+
+          now.add(const Duration(days: 1));
+        }
+
+        break;
+      case Recurrences.monthly:
+        DateTime now = DateTime.now();
+
+        while (now.isBefore(endDate.toDate())) {
+          if (inputs.contains(now.day)) {
+            timestampList.add(Timestamp.fromDate(now));
+          }
+
+          now.add(const Duration(days: 1));
+        }
+        break;
+      case Recurrences.yearly:
+        // same as weekly and monthly but now we do one payment at the start
+        // of each month in inputs until the endDate
+        DateTime now = DateTime.now();
+
+        while (now.isBefore(endDate.toDate())) {
+          if (inputs.contains(now.month)) {
+            timestampList.add(Timestamp.fromDate(now));
+          }
+
+          now = DateTime(now.year, now.month + 1, 1);
+        }
+        break;
+      default:
+        timestampList.add(endDate);
+        break;
+    }
+
+    return timestampList;
+  }
+
   /*
   *
   * CRUD Payments
   *
   */
-  Future<String?> addPayment(Float amount, String currency, DateTime due,
+  Future<String?> addPayment(Float amount, String currency, List<Timestamp> due,
       String uidFrom, String uidTo) async {
     try {
       final data = {
         "amount": amount,
         "currency": currency,
-        "due": Timestamp.fromDate(due),
+        "due": due,
         "from": uidFrom,
         "to": uidTo,
       };
@@ -73,7 +125,7 @@ class FirebaseService {
       {required String paymentID,
       Float? amount,
       String? currency,
-      DateTime? due,
+      List<Timestamp>? due,
       String? uidFrom,
       String? uidTo}) async {
     try {
