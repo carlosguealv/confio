@@ -1,3 +1,4 @@
+import 'package:confio/screens/home_screen/navbar.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -5,8 +6,18 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(child: Text('Profile Screen')),
+    return Scaffold(
+      body: SafeArea(
+          child: Stack(
+        children: [
+          Positioned.fill(
+              child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: NavBar(
+                    currentIndex: 2,
+                  ))),
+        ],
+      )),
     );
   }
 }
