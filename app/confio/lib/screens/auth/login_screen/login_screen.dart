@@ -66,23 +66,28 @@ class _LoginLayoutState extends State<LoginLayout> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 60.h),
-                          Row(
-                            children: [
-                              SvgPicture.asset("lib/assets/images/back.svg"),
-                              SizedBox(
-                                width: 9.w,
-                              ),
-                              Text(
-                                "Back",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15.47.sp,
-                                  fontFamily: 'PoppinsSemiBold',
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.56,
+                          GestureDetector(
+														onTap: () {
+															Get.back();
+														},
+                            child: Row(
+                              children: [
+                                SvgPicture.asset("lib/assets/images/back.svg"),
+                                SizedBox(
+                                  width: 9.w,
                                 ),
-                              )
-                            ],
+                                Text(
+                                  "Back",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15.47.sp,
+                                    fontFamily: 'PoppinsSemiBold',
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 0.56,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                           SizedBox(
                             height: 40.h,
@@ -201,14 +206,21 @@ class _LoginLayoutState extends State<LoginLayout> {
                                 borderRadius: BorderRadius.circular(15),
                               ),
                             ),
-                            child: Text(
-                              'Continue',
-                              style: TextStyle(
-                                color: Color(0xFF040406),
-                                fontSize: 14.63.sp,
-                                fontFamily: 'PoppinsSemiBold',
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.37,
+                            child: TextButton(
+															onPressed: () {
+																BlocProvider.of<LoginBloc>(context).add(Login(
+																		email: emailController.text,
+																		password: passwordController.text));
+															},
+                              child: Text(
+                                'Continue',
+                                style: TextStyle(
+                                  color: Color(0xFF040406),
+                                  fontSize: 14.63.sp,
+                                  fontFamily: 'PoppinsSemiBold',
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.37,
+                                ),
                               ),
                             ),
                           ),

@@ -47,7 +47,7 @@ class _AuthTextFieldContainerState extends State<AuthTextFieldContainer> {
         child: TextField(
           obscureText: widget.isPassword ? !isShown : false,
           controller: widget.controller,
-          cursorColor: Color(0xff7893FF),
+          cursorColor: const Color(0xff7893FF),
           style: TextStyle(
             color: Colors.white,
             fontSize: 14.sp,
@@ -63,11 +63,11 @@ class _AuthTextFieldContainerState extends State<AuthTextFieldContainer> {
                         });
                       },
                       icon: isShown == true
-                          ? Icon(
+                          ? const Icon(
                               Icons.visibility_off,
                               color: Colors.white,
                             )
-                          : Icon(
+                          : const Icon(
                               Icons.visibility_outlined,
                               color: Colors.white,
                             ))

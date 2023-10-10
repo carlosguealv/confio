@@ -1,6 +1,8 @@
 import 'dart:ffi';
 
 import 'package:confio/screens/home_screen/navbar.dart';
+import 'package:confio/services/authentication_service.dart';
+import 'package:confio/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -84,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 6,
                     ),
                     Text(
-                      "¡Hola, [Name]! ¿Qué quieres hacer hoy?",
+                      "¡Hola, ${authenticationService.currentUser!.email!}! ¿Qué quieres hacer hoy?",
                       style: GoogleFonts.inter(
                           color: Colors.white.withOpacity(0.4)),
                     ),
