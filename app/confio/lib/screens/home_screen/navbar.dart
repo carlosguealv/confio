@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/route_manager.dart';
 
 class NavBar extends StatefulWidget {
-  const NavBar({super.key});
+  NavBar({super.key, required this.currentIndex});
+
+  int currentIndex;
 
   @override
   State<NavBar> createState() => _NavBarState();
@@ -12,19 +15,24 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
   Color primaryColor = Color(0xff948DFF);
 
+  List<String> screens = const [
+    '/home',
+    '/add',
+    '/profile',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 108,
       width: double.infinity.w,
       decoration: const BoxDecoration(
-        color: Colors.transparent,
+          color: Colors.transparent,
           image: DecorationImage(
               image: AssetImage(
                 "lib/assets/images/navbarheader.png",
               ),
-              fit: BoxFit.fitWidth)
-      ),
+              fit: BoxFit.fitWidth)),
       child: Stack(
         children: [
           Positioned(
@@ -38,29 +46,28 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
                           "lib/assets/images/navbarcurve.png",
                         ),
                         fit: BoxFit.fill)),
-              )
-          ),
+              )),
           Positioned(
               top: 50,
               left: 50,
               child: navbarItem(
-                  assetname: "inicio",
-                  labelText: "Inicio",
-                  index: 0
-              )
-          ),
+                assetname: "inicio",
+                labelText: "Inicio",
+                index: 0,
+              )),
           Positioned(
             top: 20,
-            left: MediaQuery.sizeOf(context).width/2 - 50/2,
+            left: MediaQuery.sizeOf(context).width / 2 - 50 / 2,
             child: navbarItemCircle(index: 1),
           ),
           Positioned(
               top: 50,
               right: 50,
               child: navbarItem(
-                  assetname: "perfil",
-                  labelText: "Perfil",
-                  index: 2)),
+                assetname: "perfil",
+                labelText: "Perfil",
+                index: 2,
+              )),
         ],
       ),
     );
@@ -69,8 +76,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
   Widget navbarItemCircle({required int index}) {
     return InkWell(
       onTap: () {
-        setState(() {
-        });
+        setState(() {});
       },
       child: Container(
         width: 59.w,
@@ -79,22 +85,33 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
         decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(width: 2.43.w, color: Color(0xff575757))),
-        child: Icon(Icons.add, color: (0 == index) ? Color(0xff7893FF) : Colors.white,),
+        child: Icon(
+          Icons.add,
+          color: (0 == index) ? Color(0xff7893FF) : Colors.white,
+        ),
       ),
     );
   }
 
-  Widget navbarItem({required String assetname, required String labelText, required int index}) {
+  Widget navbarItem({
+    required String assetname,
+    required String labelText,
+    required int index,
+  }) {
     return InkWell(
       onTap: () {
         setState(() {
+          widget.currentIndex = index;
+          Get.toNamed(screens[index]);
         });
       },
       child: Column(
         children: [
           SvgPicture.asset(
             "lib/assets/images/$assetname.svg",
-            color: (0 == index) ? const Color(0xff7893FF) : const Color(0xff575757),
+            color: (widget.currentIndex == index)
+                ? const Color(0xff7893FF)
+                : const Color(0xff575757),
           ),
           SizedBox(
             height: 11.h,
@@ -102,7 +119,9 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
           Text(
             labelText,
             style: TextStyle(
-              color: (0 == index) ? Color(0xff7893FF) : Color(0xff575757),
+              color: (widget.currentIndex == index)
+                  ? Color(0xff7893FF)
+                  : Color(0xff575757),
               fontSize: 12,
               fontFamily: 'InterMedium',
               fontWeight: FontWeight.w500,

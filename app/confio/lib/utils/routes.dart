@@ -1,8 +1,9 @@
 import 'package:confio/screens/auth/forgot_password_screen.dart';
-import 'package:confio/screens/auth/login_screen.dart';
+import 'package:confio/screens/auth/login_screen/login_screen.dart';
 import 'package:confio/screens/auth/signup_screen.dart';
 import 'package:confio/screens/greeting_screens/auth_option_screen.dart';
 import 'package:confio/screens/payment_screens/paymentscreen.dart';
+import 'package:confio/screens/profile_screen/profile_screen.dart';
 import 'package:confio/services/authentication_service.dart';
 import 'package:get/get.dart';
 import 'package:confio/screens/home_screen/home_screen.dart';
@@ -12,7 +13,12 @@ class Routes {
     return [
       GetPage(
         name: '/',
-        page: () => const HomeScreen(),
+        page: () => const AuthOptionScreen(),
+      ),
+      // profile screen
+      GetPage(
+        name: '/profile',
+        page: () => const ProfileScreen(),
       ),
       GetPage(
         name: '/auth-options',
