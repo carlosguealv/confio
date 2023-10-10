@@ -399,9 +399,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              const Positioned.fill(
-                  child:
-                      Align(alignment: Alignment.bottomCenter, child: NavBar()))
+              Positioned.fill(
+                  child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: NavBar(
+                        currentIndex: 0,
+                      )))
             ],
           ),
         ),
