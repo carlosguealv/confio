@@ -1,8 +1,8 @@
-import 'package:confio/screens/auth_screens/loginscreenUI.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 
 class SignUpScreenUI extends StatefulWidget {
   const SignUpScreenUI({super.key});
@@ -14,8 +14,8 @@ class SignUpScreenUI extends StatefulWidget {
 class _SignUpScreenUIState extends State<SignUpScreenUI> {
   bool isChecked = false;
   TextEditingController emailController = new TextEditingController();
-   TextEditingController passwordController = new TextEditingController();
-    TextEditingController confirmpasswordController = new TextEditingController();
+  TextEditingController passwordController = new TextEditingController();
+  TextEditingController confirmpasswordController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,9 +103,21 @@ class _SignUpScreenUIState extends State<SignUpScreenUI> {
                 SizedBox(
                   height: 30.h,
                 ),
-                textfieldContainer(isPassword: false, label: 'Email Address', context: context, controller: emailController),
-                textfieldContainer(isPassword: true, label: 'Password',  context: context, controller: passwordController),
-                textfieldContainer(isPassword: true, label: 'Confirm Password', context: context, controller: confirmpasswordController),
+                textfieldContainer(
+                    isPassword: false,
+                    label: 'Email Address',
+                    context: context,
+                    controller: emailController),
+                textfieldContainer(
+                    isPassword: true,
+                    label: 'Password',
+                    context: context,
+                    controller: passwordController),
+                textfieldContainer(
+                    isPassword: true,
+                    label: 'Confirm Password',
+                    context: context,
+                    controller: confirmpasswordController),
                 SizedBox(
                   height: 125.h,
                 ),
@@ -242,11 +254,10 @@ class _SignUpScreenUIState extends State<SignUpScreenUI> {
                           ),
                         ),
                         TextSpan(
-                          recognizer: TapGestureRecognizer()..onTap= (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context){
-                              return LoginScreenUI();
-                            }));
-                          },
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Get.toNamed('/login');
+                            },
                           text: ' Sign In',
                           style: TextStyle(
                             color: Color(0xFF6D75D7),
@@ -272,7 +283,11 @@ class _SignUpScreenUIState extends State<SignUpScreenUI> {
     );
   }
 
-  Widget textfieldContainer({required bool isPassword, required String label, required TextEditingController controller, required BuildContext context}) {
+  Widget textfieldContainer(
+      {required bool isPassword,
+      required String label,
+      required TextEditingController controller,
+      required BuildContext context}) {
     bool isShown = false;
     return Padding(
       padding: EdgeInsets.only(bottom: 20.h),
