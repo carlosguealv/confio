@@ -67,9 +67,9 @@ class _LoginLayoutState extends State<LoginLayout> {
                         children: [
                           SizedBox(height: 60.h),
                           GestureDetector(
-														onTap: () {
-															Get.back();
-														},
+                            onTap: () {
+                              Get.back();
+                            },
                             child: Row(
                               children: [
                                 SvgPicture.asset("lib/assets/images/back.svg"),
@@ -207,11 +207,11 @@ class _LoginLayoutState extends State<LoginLayout> {
                               ),
                             ),
                             child: TextButton(
-															onPressed: () {
-																BlocProvider.of<LoginBloc>(context).add(Login(
-																		email: emailController.text,
-																		password: passwordController.text));
-															},
+                              onPressed: () {
+                                BlocProvider.of<LoginBloc>(context).add(Login(
+                                    email: emailController.text,
+                                    password: passwordController.text));
+                              },
                               child: Text(
                                 'Continue',
                                 style: TextStyle(
