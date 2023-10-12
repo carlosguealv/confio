@@ -493,29 +493,16 @@ class CalendarWidget extends StatelessWidget {
               formatButtonVisible: false,
               titleTextStyle:
                   GoogleFonts.inter(fontWeight: FontWeight.w500, fontSize: 16),
-              leftChevronVisible: false,
               headerMargin: const EdgeInsets.only(left: 14),
-              rightChevronIcon: const Row(
-                children: [
-                  Icon(
-                    Icons.chevron_right,
-                    color: themeColor,
-                    size: 28,
-                  ),
-                  SizedBox(
-                    width: 110,
-                  ),
-                  Icon(
-                    Icons.chevron_left,
-                    color: themeColor,
-                    size: 28,
-                  ),
-                  Icon(
-                    Icons.chevron_right,
-                    color: themeColor,
-                    size: 28,
-                  ),
-                ],
+              leftChevronIcon: const Icon(
+                Icons.chevron_left,
+                color: themeColor,
+                size: 28,
+              ),
+              rightChevronIcon: const Icon(
+                Icons.chevron_right,
+                color: themeColor,
+                size: 28,
               ),
             ),
             calendarStyle: const CalendarStyle(
