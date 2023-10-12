@@ -1,5 +1,7 @@
 import 'package:confio/logic/blocs/signup_bloc/signup_bloc.dart';
 import 'package:confio/screens/auth/widgets/auth_text_field.dart';
+import 'package:confio/services/authentication_service.dart';
+import 'package:confio/services/firebase_service.dart';
 import 'package:confio/utils/size_config.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +31,9 @@ class SignupLayout extends StatefulWidget {
 
 class _SignupLayoutState extends State<SignupLayout> {
   bool isChecked = true;
-  TextEditingController emailController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
-  TextEditingController confirmpasswordController = new TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmpasswordController = TextEditingController();
 
   @override
   void initState() {
@@ -46,6 +48,9 @@ class _SignupLayoutState extends State<SignupLayout> {
       listener: (context, state) {
         if (state is SignupSuccess) {
           Get.toNamed('/home');
+          Get.snackbar("Tu cuenta fue creada con éxito",
+              "Te hemos enviado un correo de confirmación");
+          authenticationService.sendEmailForVerificationToCurrentUser();
         }
       },
       child: Scaffold(
@@ -118,7 +123,7 @@ class _SignupLayoutState extends State<SignupLayout> {
                               TextSpan(
                                 text: 'Register',
                                 style: TextStyle(
-                                  color: Color(0xFF7892FF),
+                                  color: const Color(0xFF7892FF),
                                   fontSize: 23.77.sp,
                                   fontFamily: 'PoppinsSemiBold',
                                   fontWeight: FontWeight.w600,
@@ -168,7 +173,7 @@ class _SignupLayoutState extends State<SignupLayout> {
                         ),
                         Divider(
                           thickness: 1.w,
-                          color: Color(0xff4f4f51),
+                          color: const Color(0xff4f4f51),
                         ),
                         SizedBox(
                           height: 44.h,
@@ -187,13 +192,13 @@ class _SignupLayoutState extends State<SignupLayout> {
                               color:
                                   Colors.white.withOpacity(0.05999999865889549),
                               shape: RoundedRectangleBorder(
-                                side: BorderSide(
+                                side: const BorderSide(
                                     width: 1, color: Color(0xFFCFD0D0)),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
                             child: isChecked
-                                ? Icon(
+                                ? const Icon(
                                     Icons.check,
                                     color: Colors.white,
                                   )
@@ -262,21 +267,26 @@ class _SignupLayoutState extends State<SignupLayout> {
                           height: 44.h,
                         ),
                         GestureDetector(
-													onTap: () {
-														if (passwordController.text != confirmpasswordController.text) {
-															Get.snackbar('Error', 'Passwords do not match');
-															return;
-														}
-														BlocProvider.of<SignupBloc>(context).add(Signup(
-															email: emailController.text,
-															password: passwordController.text,
-														));
-													},
+                          onTap: () {
+                            if (passwordController.text !=
+                                confirmpasswordController.text) {
+                              Get.snackbar('Error', 'Passwords do not match');
+                              return;
+                            } else if (!isChecked) {
+                              Get.snackbar('Error',
+                                  'Por favor, acepta nuestras pólizas');
+                              return;
+                            }
+                            BlocProvider.of<SignupBloc>(context).add(Signup(
+                              email: emailController.text,
+                              password: passwordController.text,
+                            ));
+                          },
                           child: Container(
                             width: double.infinity,
                             height: 58.h,
                             decoration: ShapeDecoration(
-                              color: Color(0xFF7892FF),
+                              color: const Color(0xFF7892FF),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
@@ -285,7 +295,7 @@ class _SignupLayoutState extends State<SignupLayout> {
                             child: Text(
                               'Continue',
                               style: TextStyle(
-                                color: Color(0xFF040406),
+                                color: const Color(0xFF040406),
                                 fontSize: 14.63.sp,
                                 fontFamily: 'PoppinsSemiBold',
                                 fontWeight: FontWeight.w600,
@@ -319,7 +329,7 @@ class _SignupLayoutState extends State<SignupLayout> {
                                     },
                                   text: ' Sign In',
                                   style: TextStyle(
-                                    color: Color(0xFF6D75D7),
+                                    color: const Color(0xFF6D75D7),
                                     fontSize: 14.sp,
                                     fontFamily: 'PoppinsMedium',
                                     fontWeight: FontWeight.w500,
