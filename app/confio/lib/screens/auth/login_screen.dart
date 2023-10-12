@@ -1,5 +1,5 @@
 import 'package:confio/logic/blocs/login_bloc/login_bloc.dart';
-import 'package:confio/screens/auth/login_screen/auth_text_field.dart';
+import 'package:confio/screens/auth/widgets/auth_text_field.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
