@@ -11,6 +11,18 @@ class FirebaseService {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  // get next week in timestamps
+  List<Timestamp> _getNextThirtyDays() {
+    List<Timestamp> nextThirtyDays = [];
+    for (int i = 0; i < 30; i++) {
+      nextThirtyDays
+          .add(Timestamp.fromDate(DateTime.now().add(Duration(days: i))));
+    }
+
+    return nextThirtyDays;
+  }
+
+  // generate timestamps for a payment to be created
   List<Timestamp> generateTimestampList(
       Recurrences recurrence, Timestamp endDate, List<int> inputs) {
     List<Timestamp> timestampList = [];
@@ -99,6 +111,7 @@ class FirebaseService {
     } on FirebaseException {
       return null;
     }
+    return null;
   }
 
   Future<List<Map<String, dynamic>>?> getPaymentsByUid(String uid) async {
@@ -119,6 +132,30 @@ class FirebaseService {
     } on FirebaseException {
       return null;
     }
+    return null;
+  }
+
+  Future<List<Map<String, dynamic>>?> getPaymentsNextThirtyDays() async {
+    List<Timestamp> days = _getNextThirtyDays();
+
+    try {
+      List<Map<String, dynamic>> listOfMaps = [];
+
+      await _firestore
+          .collection("payments")
+          .where('due', arrayContainsAny: days)
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          listOfMaps.add(docSnapshot.data() as Map<String, dynamic>);
+        }
+
+        return listOfMaps;
+      });
+    } on FirebaseException {
+      return null;
+    }
+    return null;
   }
 
   Future<String?> updatePayment(
