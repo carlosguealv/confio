@@ -1,5 +1,5 @@
 import 'package:confio/logic/blocs/login_bloc/login_bloc.dart';
-import 'package:confio/screens/auth/login_screen/auth_text_field.dart';
+import 'package:confio/screens/auth/widgets/auth_text_field.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,9 +67,9 @@ class _LoginLayoutState extends State<LoginLayout> {
                         children: [
                           SizedBox(height: 60.h),
                           GestureDetector(
-														onTap: () {
-															Get.back();
-														},
+                            onTap: () {
+                              Get.back();
+                            },
                             child: Row(
                               children: [
                                 SvgPicture.asset("lib/assets/images/back.svg"),
@@ -207,11 +207,11 @@ class _LoginLayoutState extends State<LoginLayout> {
                               ),
                             ),
                             child: TextButton(
-															onPressed: () {
-																BlocProvider.of<LoginBloc>(context).add(Login(
-																		email: emailController.text,
-																		password: passwordController.text));
-															},
+                              onPressed: () {
+                                BlocProvider.of<LoginBloc>(context).add(Login(
+                                    email: emailController.text,
+                                    password: passwordController.text));
+                              },
                               child: Text(
                                 'Continue',
                                 style: TextStyle(

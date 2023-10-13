@@ -1,128 +1,179 @@
+import 'package:confio/logic/blocs/forgot_password_bloc/forgot_password_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:confio/logic/blocs/forgot_password_bloc/forgot_password_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});
 
-	static final _provider = BlocProvider(
-    create: (BuildContext context) => ForgotPasswordBloc(),
-    child: const ForgotPasswordLayout(),
-  );
-
   @override
   Widget build(BuildContext context) {
-		return MaterialApp(
-			home: _provider,
-		);
+    return BlocProvider(
+      create: (context) => ForgotPasswordBloc(),
+      child: const ForgotLayout(),
+    );
   }
 }
 
-class ForgotPasswordLayout extends StatelessWidget {
-	const ForgotPasswordLayout({super.key});
+class ForgotLayout extends StatefulWidget {
+  const ForgotLayout({super.key});
 
-	static TextEditingController emailController = TextEditingController();
+  @override
+  State<ForgotLayout> createState() => _ForgotLayoutState();
+}
 
-	@override
-	Widget build(BuildContext context) {
-		return BlocBuilder<ForgotPasswordBloc, ForgotPasswordState>(
-			builder: (context, state) {
-				if (state is ForgotPasswordLoading) {
-					return const Center(
-						child: CircularProgressIndicator()
-					);
-				}	
-				return Scaffold(
-					body: Center(
-						child: Container(
-							width: double.infinity,
-							height: double.infinity,
-							decoration: const BoxDecoration(
-								gradient: LinearGradient(
-									begin: Alignment.topCenter,
-									end: Alignment.bottomCenter,
-									colors: [Color(0xFF3550DA), Colors.white],
-									stops: [0.3, 0.5]
-									
-								),
-							),
-							padding: const EdgeInsets.all(35),
-							child: Stack(
-								children: [
-									Align(
-										alignment: const Alignment(0, -0.9),
-										child: Text(
-                      "Confio",
-                      style: GoogleFonts.delaGothicOne(
-                        textStyle: const TextStyle(
-                          fontSize: 30, color: Colors.white
-                        )
+class _ForgotLayoutState extends State<ForgotLayout> {
+  TextEditingController emailController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ForgotPasswordBloc, ForgotPasswordState>(
+        bloc: BlocProvider.of<ForgotPasswordBloc>(context),
+        builder: (context, state) {
+          if (state is ForgotPasswordLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return Scaffold(
+            body: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(
+                        "lib/assets/images/Dark.png",
                       ),
-                    )
-									),
-									Align(
-										alignment: const Alignment(0, -0.7),
-										child: Text(
-                      "Resetear contraseña",
-                      style: GoogleFonts.roboto(
-                        textStyle: const TextStyle(
-                          fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold,
-                        )
+                      fit: BoxFit.cover)),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: 48.h,
+                    right: 48.h,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 60.h),
+                      GestureDetector(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: Row(
+                          children: [
+                            SvgPicture.asset("lib/assets/images/back.svg"),
+                            SizedBox(
+                              width: 9.w,
+                            ),
+                            Text(
+                              "Back",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.47.sp,
+                                fontFamily: 'PoppinsSemiBold',
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.56,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    )
-									),
-									Align(
-										alignment: const Alignment(0, -0.5),
-										child: SizedBox(
-											width: double.infinity,
-											child: Text(
-												"Cambiar contraseña",
-												style: GoogleFonts.roboto(
-													textStyle: const TextStyle(
-														fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold
-													)
-												),
-											textAlign: TextAlign.left,
-                    	)
-										)
-									),
-									Align(
-										alignment: const Alignment(0, -0.4),
-										child: Text(
-                      "Para cambiar tu contraseña, danos tu correo electrónico. Te enviaremos instrucciones para cambiar tu contraseña",
-                      style: GoogleFonts.roboto(
-                        textStyle: const TextStyle(
-                          fontSize: 16, color: Colors.white
-                        )
+                      SizedBox(
+                        height: 40.h,
                       ),
-                    )
-									),
-									Align(
-										alignment: const Alignment(0, -0.1),
-										child: TextField(
-											controller: emailController,
-											obscureText: false,
-											decoration: const InputDecoration(
-												labelText: 'Correo electrónico',
-											),
-										),
-									),
-									Align(
-										alignment: const Alignment(0, 0.1),
-										child: TextButton(
-											child: const Text("Continuar"),
-											onPressed: () {
-												BlocProvider.of<ForgotPasswordBloc>(context).add(ForgotPassword(email: emailController.text));
-											},
-										)
-									)
-								],
-							),
-						)
-					)
-				);
-			},
-		);
-	}
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Enter registered mail\nto ',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 23.77.sp,
+                                fontFamily: 'PoppinsSemiBold',
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            TextSpan(
+                              text: 'reset password',
+                              style: TextStyle(
+                                color: const Color(0xFF7892FF),
+                                fontSize: 23.77.sp,
+                                fontFamily: 'PoppinsSemiBold',
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 40.h,
+                      ),
+                      TextField(
+                        onSubmitted: (value) {
+                          BlocProvider.of<ForgotPasswordBloc>(context)
+                              .add(ForgotPassword(email: emailController.text));
+                        },
+                        controller: emailController,
+                        autofocus: true,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontFamily: 'PoppinsSemiBold',
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.12,
+                        ),
+                        cursorColor: const Color(0xff7893FF),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'example@gmail.com',
+                          hintStyle: TextStyle(
+                            color: Colors.white.withOpacity(0.3100000023841858),
+                            fontSize: 20.sp,
+                            fontFamily: 'PoppinsSemiBold',
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.12,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 600.h,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          BlocProvider.of<ForgotPasswordBloc>(context)
+                              .add(ForgotPassword(email: emailController.text));
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 58.h,
+                          alignment: Alignment.center,
+                          decoration: ShapeDecoration(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          child: Text(
+                            'Enviar email de confirmación',
+                            style: TextStyle(
+                              color: const Color(0xFF040406),
+                              fontSize: 14.63.sp,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 0.37,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+  }
 }

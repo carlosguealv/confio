@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confio/models/payment.dart';
 
 enum Recurrences { weekly, monthly, yearly }
 
@@ -11,6 +12,18 @@ class FirebaseService {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  // get next week in timestamps
+  List<Timestamp> _getNextThirtyDays() {
+    List<Timestamp> nextThirtyDays = [];
+    for (int i = 0; i < 30; i++) {
+      nextThirtyDays
+          .add(Timestamp.fromDate(DateTime.now().add(Duration(days: i))));
+    }
+
+    return nextThirtyDays;
+  }
+
+  // generate timestamps for a payment to be created
   List<Timestamp> generateTimestampList(
       Recurrences recurrence, Timestamp endDate, List<int> inputs) {
     List<Timestamp> timestampList = [];
@@ -99,6 +112,7 @@ class FirebaseService {
     } on FirebaseException {
       return null;
     }
+    return null;
   }
 
   Future<List<Map<String, dynamic>>?> getPaymentsByUid(String uid) async {
@@ -119,6 +133,31 @@ class FirebaseService {
     } on FirebaseException {
       return null;
     }
+    return null;
+  }
+
+  Future<List<Payment>?> getPaymentsNextThirtyDays() async {
+    List<Timestamp> days = _getNextThirtyDays();
+
+    try {
+      List<Payment?> listOfPayments = [];
+
+      await _firestore
+          .collection("payments")
+          .where('due', arrayContainsAny: days)
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          Payment payment = Payment.fromDocument(docSnapshot)!;
+          listOfPayments.add(payment);
+        }
+
+        return listOfPayments;
+      });
+    } on FirebaseException {
+      return null;
+    }
+    return null;
   }
 
   Future<String?> updatePayment(
