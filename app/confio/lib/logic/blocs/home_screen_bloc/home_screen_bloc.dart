@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:confio/models/payment.dart';
 import 'package:confio/services/firebase_service.dart';
 import 'package:get/route_manager.dart';
 import 'package:meta/meta.dart';
@@ -12,7 +13,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       if (event is PaymentLoad) {
         emit.call(PaymentsLoading());
 
-        List<Map<String, dynamic>>? listOfPayments =
+        List<Payment>? listOfPayments =
             await firebaseService.getPaymentsNextThirtyDays();
 
         if (listOfPayments == null) {

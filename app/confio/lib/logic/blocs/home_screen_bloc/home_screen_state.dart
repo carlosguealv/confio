@@ -8,7 +8,7 @@ class InitialState extends HomeState {}
 class PaymentsLoading extends HomeState {}
 
 class PaymentsLoaded extends HomeState {
-  List<Map<String, dynamic>> payments;
+  final List<Payment>? payments;
 
   PaymentsLoaded({required this.payments});
 }

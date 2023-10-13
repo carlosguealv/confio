@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confio/models/payment.dart';
 
 enum Recurrences { weekly, monthly, yearly }
 
@@ -135,11 +136,11 @@ class FirebaseService {
     return null;
   }
 
-  Future<List<Map<String, dynamic>>?> getPaymentsNextThirtyDays() async {
+  Future<List<Payment>?> getPaymentsNextThirtyDays() async {
     List<Timestamp> days = _getNextThirtyDays();
 
     try {
-      List<Map<String, dynamic>> listOfMaps = [];
+      List<Payment?> listOfPayments = [];
 
       await _firestore
           .collection("payments")
@@ -147,10 +148,11 @@ class FirebaseService {
           .get()
           .then((QuerySnapshot querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
-          listOfMaps.add(docSnapshot.data() as Map<String, dynamic>);
+          Payment payment = Payment.fromDocument(docSnapshot)!;
+          listOfPayments.add(payment);
         }
 
-        return listOfMaps;
+        return listOfPayments;
       });
     } on FirebaseException {
       return null;
