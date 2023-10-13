@@ -1,9 +1,12 @@
 import 'dart:ffi';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confio/models/payment.dart';
 import 'package:confio/screens/home_screen/navbar.dart';
 import 'package:confio/services/authentication_service.dart';
 import 'package:confio/services/firebase_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -173,6 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(
                       height: 18,
                     ),
+                    // TODO: Add list of payments from blocs
                     CalendarWidget(
                       mode: mode,
                     ),
@@ -436,8 +440,11 @@ class VenceProntoPayment extends StatelessWidget {
 }
 
 class CalendarWidget extends StatelessWidget {
-  const CalendarWidget({Key? key, required this.mode}) : super(key: key);
+  const CalendarWidget(
+      {Key? key, required this.mode, this.paymentsList = const []})
+      : super(key: key);
   final Modes? mode;
+  final List<Payment> paymentsList;
 
   @override
   Widget build(BuildContext context) {
@@ -484,9 +491,15 @@ class CalendarWidget extends StatelessWidget {
             height: 10,
           ),
           TableCalendar(
+            eventLoader: (day) {
+              return (paymentsList.any((payment) =>
+                      payment.due.contains(Timestamp.fromDate(day)))
+                  ? ['Event']
+                  : []);
+            },
             daysOfWeekHeight: 30,
             startingDayOfWeek: StartingDayOfWeek.monday,
-            weekendDays: [],
+            weekendDays: const [],
             rowHeight: 33,
             headerStyle: HeaderStyle(
               rightChevronPadding: EdgeInsets.zero,
