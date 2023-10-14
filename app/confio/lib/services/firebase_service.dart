@@ -2,6 +2,8 @@ import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confio/models/payment.dart';
+import 'package:confio/services/authentication_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 enum Recurrences { weekly, monthly, yearly }
 
@@ -11,6 +13,7 @@ class FirebaseService {
   static final FirebaseService instance = FirebaseService._();
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   // get next week in timestamps
   List<Timestamp> _getNextThirtyDays() {
@@ -193,6 +196,32 @@ class FirebaseService {
       return null;
     } on FirebaseException catch (e) {
       return e.message;
+    }
+  }
+
+  Future<void> uploadToken(String? token) async {
+    if ((await _firebaseMessaging.requestPermission()).authorizationStatus ==
+        AuthorizationStatus.authorized) {
+      token = await _firebaseMessaging.getToken();
+    }
+    return await _firestore
+        .collection("users")
+        .doc(authenticationService.currentUser!.uid)
+        .update({
+      "token": FieldValue.arrayUnion([token]),
+    });
+  }
+
+  Future<void> deleteToken(String? token) {
+    if (token != null) {
+      return _firestore
+          .collection("users")
+          .doc(authenticationService.currentUser!.uid)
+          .update({
+        "token": FieldValue.arrayRemove([token]),
+      });
+    } else {
+      return Future<void>.value();
     }
   }
 }
