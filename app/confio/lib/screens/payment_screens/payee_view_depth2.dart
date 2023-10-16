@@ -28,7 +28,7 @@ class _PayeeViewState extends State<PayeeView> {
                       image: AssetImage("lib/assets/images/logo.png"),
                       fit: BoxFit.scaleDown)),
             ),
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
             Text(
@@ -98,7 +98,7 @@ class _PayeeViewState extends State<PayeeView> {
                         width: 36,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.r),
-                            image: DecorationImage(
+                            image: const DecorationImage(
                                 image: NetworkImage(
                                     "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80"),
                                 fit: BoxFit.scaleDown)),
@@ -120,13 +120,13 @@ class _PayeeViewState extends State<PayeeView> {
                     width: 36,
                     height: 36,
                     decoration: ShapeDecoration(
-                      image: DecorationImage(
+                      image: const DecorationImage(
                           image: AssetImage("lib/assets/images/calender.png")),
-                      color: Color(0xAA181819),
+                      color: const Color(0xAA181819),
                       shape: RoundedRectangleBorder(
                         side: BorderSide(
                           width: 1.w,
-                          color: Color(0xff19191A),
+                          color: const Color(0xff19191A),
                         ),
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -150,7 +150,7 @@ class _PayeeViewState extends State<PayeeView> {
                       letterSpacing: 0.16,
                     ),
                   ),
-                  Text(
+                  const Text(
                     'Semana',
                     style: TextStyle(
                       color: Color(0xFF7892FF),
@@ -286,7 +286,7 @@ class _PayeeViewState extends State<PayeeView> {
                                 width: 28,
                                 height: 88,
                                 decoration: ShapeDecoration(
-                                  color: Color(0xFFD999FF),
+                                  color: const Color(0xFFD999FF),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(7)),
                                 ),
@@ -327,7 +327,7 @@ class _PayeeViewState extends State<PayeeView> {
                                 width: 28,
                                 height: 127,
                                 decoration: ShapeDecoration(
-                                  color: Color(0xFF72E39F),
+                                  color: const Color(0xFF72E39F),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(7)),
                                 ),
@@ -368,7 +368,7 @@ class _PayeeViewState extends State<PayeeView> {
                                 width: 28,
                                 height: 166,
                                 decoration: ShapeDecoration(
-                                  color: Color(0xFF6DD999),
+                                  color: const Color(0xFF6DD999),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(7)),
                                 ),
@@ -409,7 +409,7 @@ class _PayeeViewState extends State<PayeeView> {
                                 width: 28,
                                 height: 72,
                                 decoration: ShapeDecoration(
-                                  color: Color(0xFFB9F1EE),
+                                  color: const Color(0xFFB9F1EE),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(7)),
                                 ),
@@ -450,7 +450,7 @@ class _PayeeViewState extends State<PayeeView> {
                                 width: 28,
                                 height: 72,
                                 decoration: ShapeDecoration(
-                                  color: Color(0xFFC28AE7),
+                                  color: const Color(0xFFC28AE7),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(7)),
                                 ),
@@ -470,10 +470,10 @@ class _PayeeViewState extends State<PayeeView> {
                 width: 388,
                 height: 47.44,
                 decoration: ShapeDecoration(
-                  image: DecorationImage(
+                  image: const DecorationImage(
                       image: AssetImage("lib/assets/images/dollar.png"),
                       fit: BoxFit.scaleDown),
-                  color: Color(0xff0A0A0A),
+                  color: const Color(0xff0A0A0A),
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
                       width: 0.61,
@@ -510,8 +510,8 @@ class _PayeeViewState extends State<PayeeView> {
                             TextSpan(
                               text: 'Has recibido ',
                               style: TextStyle(
-                                color:
-                                    Colors.white.withOpacity(0.44999998807907104),
+                                color: Colors.white
+                                    .withOpacity(0.44999998807907104),
                                 fontSize: 13,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w400,
@@ -519,7 +519,7 @@ class _PayeeViewState extends State<PayeeView> {
                                 letterSpacing: 0.24,
                               ),
                             ),
-                            TextSpan(
+                            const TextSpan(
                               text: 'S/ 35,000.00 ',
                               style: TextStyle(
                                 color: Colors.white,
@@ -533,8 +533,8 @@ class _PayeeViewState extends State<PayeeView> {
                             TextSpan(
                               text: 'de ',
                               style: TextStyle(
-                                color:
-                                    Colors.white.withOpacity(0.44999998807907104),
+                                color: Colors.white
+                                    .withOpacity(0.44999998807907104),
                                 fontSize: 13,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w400,
@@ -542,7 +542,7 @@ class _PayeeViewState extends State<PayeeView> {
                                 letterSpacing: 0.24,
                               ),
                             ),
-                            TextSpan(
+                            const TextSpan(
                               text: 'Payer 1 ',
                               style: TextStyle(
                                 color: Colors.white,
@@ -556,8 +556,8 @@ class _PayeeViewState extends State<PayeeView> {
                             TextSpan(
                               text: 'en ',
                               style: TextStyle(
-                                color:
-                                    Colors.white.withOpacity(0.44999998807907104),
+                                color: Colors.white
+                                    .withOpacity(0.44999998807907104),
                                 fontSize: 13,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w400,
@@ -565,7 +565,7 @@ class _PayeeViewState extends State<PayeeView> {
                                 letterSpacing: 0.24,
                               ),
                             ),
-                            TextSpan(
+                            const TextSpan(
                               text: '1 año',
                               style: TextStyle(
                                 color: Colors.white,
@@ -588,7 +588,7 @@ class _PayeeViewState extends State<PayeeView> {
               ),
               Divider(
                 height: 1.h,
-                color: Color(0xff1B1B1B),
+                color: const Color(0xff1B1B1B),
               ),
               SizedBox(
                 height: 41.h,
@@ -610,18 +610,17 @@ class _PayeeViewState extends State<PayeeView> {
               Container(
                 width: 388.w,
                 child: ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 5,
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context,index){
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 20.h),
-                    child: TusCobrosWidget(),
-                  );
-                }),
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: 5,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 20.h),
+                        child: const TusCobrosWidget(),
+                      );
+                    }),
               )
-           
             ],
           ),
         ),
