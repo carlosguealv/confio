@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:confio/models/payment.dart';
+import 'package:confio/services/authentication_service.dart';
 import 'package:confio/services/firebase_service.dart';
 import 'package:get/route_manager.dart';
 import 'package:meta/meta.dart';
@@ -14,7 +15,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit.call(PaymentsLoading());
 
         List<Payment>? listOfPayments =
-            await firebaseService.getPaymentsNextThirtyDays();
+            await firebaseService.getUserPaymentsNextThirtyDays(
+                authenticationService.currentUser!.uid);
 
         if (listOfPayments == null) {
           emit.call(PaymentsFailed());
