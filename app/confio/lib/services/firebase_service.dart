@@ -139,7 +139,7 @@ class FirebaseService {
     return null;
   }
 
-  Future<List<Payment>?> getPaymentsNextThirtyDays() async {
+  Future<List<Payment>?> getUserPaymentsNextThirtyDays(String uid) async {
     List<Timestamp> days = _getNextThirtyDays();
 
     try {
@@ -147,6 +147,7 @@ class FirebaseService {
 
       await _firestore
           .collection("payments")
+          .where('uid', isEqualTo: uid)
           .where('due', arrayContainsAny: days)
           .get()
           .then((QuerySnapshot querySnapshot) {
