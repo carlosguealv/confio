@@ -46,397 +46,424 @@ class _HomeLayoutState extends State<HomeLayout> {
   Modes mode = Modes.cobrar;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Theme(
       data: ThemeData.dark(),
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-          if (state is PaymentsLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return SafeArea(
-            child: Stack(
-              children: [
-                SingleChildScrollView(
-                  padding: const EdgeInsets.only(
-                      left: 20, bottom: 108 + 20, right: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
+        body: BlocBuilder<HomeBloc, HomeState>(
+            bloc: BlocProvider.of<HomeBloc>(context)..add(PaymentLoad()),
+            builder: (context, state) {
+              if (state is PaymentsLoading || state is InitialState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return SafeArea(
+                child: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      padding: const EdgeInsets.only(
+                          left: 20, bottom: 108 + 20, right: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Confio",
-                            style: GoogleFonts.delaGothicOne(
-                                fontSize: 36, color: themeColor),
+                          const SizedBox(
+                            height: 20,
                           ),
-                          const Spacer(),
-                          InkWell(
-                            onTap: () {},
-                            child: Container(
-                              height: 25.h,
-                              width: 25.w,
-                              decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "lib/assets/images/notification.png"),
-                                      fit: BoxFit.scaleDown)),
-                            ),
+                          Row(
+                            children: [
+                              Text(
+                                "Confio",
+                                style: GoogleFonts.delaGothicOne(
+                                    fontSize: 36, color: themeColor),
+                              ),
+                              const Spacer(),
+                              InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  height: 25.h,
+                                  width: 25.w,
+                                  decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              "lib/assets/images/notification.png"),
+                                          fit: BoxFit.scaleDown)),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 12,
+                              ),
+                              InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  height: 25.h,
+                                  width: 23.48.w,
+                                  decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              "lib/assets/images/Setting.png"),
+                                          fit: BoxFit.scaleDown)),
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(
-                            width: 12,
+                            height: 6,
                           ),
-                          InkWell(
-                            onTap: () {},
-                            child: Container(
-                              height: 25.h,
-                              width: 23.48.w,
-                              decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "lib/assets/images/Setting.png"),
-                                      fit: BoxFit.scaleDown)),
-                            ),
+                          Text(
+                            "¡Hola, ${authenticationService.currentUser!.email!}! ¿Qué quieres hacer hoy?",
+                            style: GoogleFonts.inter(
+                                color: Colors.white.withOpacity(0.4)),
                           ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Text(
-                        "¡Hola, ${authenticationService.currentUser!.email!}! ¿Qué quieres hacer hoy?",
-                        style: GoogleFonts.inter(
-                            color: Colors.white.withOpacity(0.4)),
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                              color: const Color(0xff131313), width: 2),
-                          color: const Color(0xff0f0f0f),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mode = Modes.cobrar;
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: mode == Modes.cobrar
-                                        ? themeColor
-                                        : Colors.transparent,
-                                  ),
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 14),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Cobrar",
-                                    style: GoogleFonts.inter(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ),
+                          const SizedBox(
+                            height: 25,
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  color: const Color(0xff131313), width: 2),
+                              color: const Color(0xff0f0f0f),
                             ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mode = Modes.pagar;
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: mode == Modes.pagar
-                                        ? themeColor
-                                        : Colors.transparent,
-                                  ),
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 14),
-                                  alignment: Alignment.center,
-                                  child: Text("Pagar",
-                                      style: GoogleFonts.inter(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      )),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      const Divider(
-                        height: 46,
-                        thickness: 1.7,
-                        color: Colors.white10,
-                      ),
-                      Text(
-                        "Calendario",
-                        style: GoogleFonts.inter(
-                            letterSpacing: 2.9,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white.withOpacity(0.45)),
-                      ),
-                      const SizedBox(
-                        height: 18,
-                      ),
-                      // TODO: Add list of payments from blocs
-                      CalendarWidget(
-                        mode: mode,
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Text(
-                        "Vence Pronto",
-                        style: GoogleFonts.inter(
-                            letterSpacing: 2.9,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white.withOpacity(0.45)),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      SizedBox(
-                        height: 160,
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5,
-                            itemBuilder: (buildContext, index) {
-                              return Center(
-                                child: Container(
-                                  margin: const EdgeInsets.only(right: 10),
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white12,
-                                    borderRadius: BorderRadius.circular(9),
-                                    border: Border.all(
-                                        color: Colors.white12, width: 1),
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        cardColors[index % 3],
-                                        Colors.grey
-                                      ],
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        mode = Modes.cobrar;
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: mode == Modes.cobrar
+                                            ? themeColor
+                                            : Colors.transparent,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 14),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Cobrar",
+                                        style: GoogleFonts.inter(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
                                   ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        child: Stack(
-                                          children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                color: cardColors[index % 3],
-                                              ),
-                                              width: 100,
-                                              height: 30,
-                                            ),
-                                            Container(
-                                              width: 100,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 10),
-                                                child: Container(
-                                                  height: 39,
-                                                  width: 39,
-                                                  decoration: BoxDecoration(
-                                                      image: const DecorationImage(
-                                                          image: AssetImage(
-                                                              "lib/assets/images/demo_pfp.png")),
-                                                      shape: BoxShape.circle,
-                                                      color: Colors.grey,
-                                                      border: Border.all(
-                                                          color: Colors.black87,
-                                                          width: 2)),
-                                                ),
-                                              ),
-                                            )
+                                ),
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        mode = Modes.pagar;
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: mode == Modes.pagar
+                                            ? themeColor
+                                            : Colors.transparent,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 14),
+                                      alignment: Alignment.center,
+                                      child: Text("Pagar",
+                                          style: GoogleFonts.inter(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                          )),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          const Divider(
+                            height: 46,
+                            thickness: 1.7,
+                            color: Colors.white10,
+                          ),
+                          Text(
+                            "Calendario",
+                            style: GoogleFonts.inter(
+                                letterSpacing: 2.9,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white.withOpacity(0.45)),
+                          ),
+                          const SizedBox(
+                            height: 18,
+                          ),
+                          // TODO: Add list of payments from blocs
+                          CalendarWidget(
+                            mode: mode,
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            "Vence Pronto",
+                            style: GoogleFonts.inter(
+                                letterSpacing: 2.9,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white.withOpacity(0.45)),
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          SizedBox(
+                            height: 160,
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                // make itemCount be the number of payments in the Next 7 days with "to"
+                                // uid equal to the current user's uid if mode is cobrar, and "from" uid equal
+                                // to the current user's uid if mode is pagar
+                                itemCount: (state as PaymentsLoaded)
+                                    .first7DaysPayments!
+                                    .where((element) => mode == Modes.cobrar
+                                        ? element.to ==
+                                            authenticationService
+                                                .currentUser!.uid
+                                        : element.from ==
+                                            authenticationService
+                                                .currentUser!.uid)
+                                    .length,
+                                itemBuilder: (buildContext, index) {
+                                  Payment payment =
+                                      state.first7DaysPayments![index];
+                                  return Center(
+                                    child: Container(
+                                      margin: const EdgeInsets.only(right: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white12,
+                                        borderRadius: BorderRadius.circular(9),
+                                        border: Border.all(
+                                            color: Colors.white12, width: 1),
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            cardColors[index % 3],
+                                            Colors.grey
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(
-                                        height: 6,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            child: Stack(
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    color:
+                                                        cardColors[index % 3],
+                                                  ),
+                                                  width: 100,
+                                                  height: 30,
+                                                ),
+                                                Container(
+                                                  width: 100,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 10),
+                                                    child: Container(
+                                                      height: 39,
+                                                      width: 39,
+                                                      decoration: BoxDecoration(
+                                                          image: const DecorationImage(
+                                                              image: AssetImage(
+                                                                  "lib/assets/images/demo_pfp.png")),
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: Colors.grey,
+                                                          border: Border.all(
+                                                              color: Colors
+                                                                  .black87,
+                                                              width: 2)),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 6,
+                                          ),
+                                          Text(
+                                            mode == Modes.cobrar ? "{}" : "{}",
+                                            style: GoogleFonts.inter(
+                                                color: Colors.white
+                                                    .withOpacity(0.3),
+                                                fontSize: 12),
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            "S/8,000.00",
+                                            style: GoogleFonts.ibmPlexMono(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 12),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          const SizedBox(
+                                              width: 120,
+                                              child: Divider(
+                                                color: Colors.white12,
+                                                height: 20,
+                                                thickness: 0.9,
+                                              )),
+                                          Text(
+                                            "TODAY",
+                                            style: GoogleFonts.ibmPlexMono(
+                                                letterSpacing: 2.9,
+                                                fontSize: 11,
+                                                color: Colors.white
+                                                    .withOpacity(0.28)),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        "Payer 1",
-                                        style: GoogleFonts.inter(
-                                            color:
-                                                Colors.white.withOpacity(0.3),
-                                            fontSize: 12),
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Text(
-                                        "S/8,000.00",
-                                        style: GoogleFonts.ibmPlexMono(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 12),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      const SizedBox(
-                                          width: 120,
-                                          child: Divider(
-                                            color: Colors.white12,
-                                            height: 20,
-                                            thickness: 0.9,
-                                          )),
-                                      Text(
-                                        "TODAY",
-                                        style: GoogleFonts.ibmPlexMono(
-                                            letterSpacing: 2.9,
-                                            fontSize: 11,
-                                            color:
-                                                Colors.white.withOpacity(0.28)),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Text(
-                        "Más Adelante",
-                        style: GoogleFonts.inter(
-                            letterSpacing: 2.9,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white.withOpacity(0.45)),
-                      ),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: 5,
-                        itemBuilder: (buildContent, index) {
-                          return Container(
-                            margin: const EdgeInsets.only(top: 22),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 14, vertical: 22),
-                            decoration: BoxDecoration(
-                                color: const Color(0xff0D0E10),
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(
-                                    color: Colors.white.withOpacity(0.04),
-                                    width: 1)),
-                            child: Row(
-                              children: [
-                                const SizedBox(
-                                    height: 51,
-                                    width: 51,
-                                    child: CircleAvatar(
-                                      backgroundImage: AssetImage(
-                                          "lib/assets/images/demo_pfp.png"),
-                                    )),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                    ),
+                                  );
+                                }),
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            "Más Adelante",
+                            style: GoogleFonts.inter(
+                                letterSpacing: 2.9,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white.withOpacity(0.45)),
+                          ),
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: 5,
+                            itemBuilder: (buildContent, index) {
+                              return Container(
+                                margin: const EdgeInsets.only(top: 22),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 14, vertical: 22),
+                                decoration: BoxDecoration(
+                                    color: const Color(0xff0D0E10),
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(
+                                        color: Colors.white.withOpacity(0.04),
+                                        width: 1)),
+                                child: Row(
                                   children: [
+                                    const SizedBox(
+                                        height: 51,
+                                        width: 51,
+                                        child: CircleAvatar(
+                                          backgroundImage: AssetImage(
+                                              "lib/assets/images/demo_pfp.png"),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Payer 3",
+                                          style: GoogleFonts.inter(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        const SizedBox(
+                                          height: 6,
+                                        ),
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                                height: 3,
+                                                width: 34,
+                                                child: LinearProgressIndicator(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  value: 0.35,
+                                                )),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              "Quedan 6 días",
+                                              style: GoogleFonts.inter(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 12,
+                                                  color: Colors.white
+                                                      .withOpacity(0.35)),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    const Spacer(),
                                     Text(
-                                      "Payer 3",
-                                      style: GoogleFonts.inter(
-                                          fontWeight: FontWeight.w600),
+                                      "S/ 8,000.00",
+                                      style: GoogleFonts.robotoMono(
+                                          fontWeight: FontWeight.w500),
                                     ),
                                     const SizedBox(
-                                      height: 6,
+                                      width: 5,
                                     ),
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                            height: 3,
-                                            width: 34,
-                                            child: LinearProgressIndicator(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              value: 0.35,
-                                            )),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
-                                        Text(
-                                          "Quedan 6 días",
-                                          style: GoogleFonts.inter(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 12,
-                                              color: Colors.white
-                                                  .withOpacity(0.35)),
-                                        ),
-                                      ],
-                                    )
+                                    InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        height: 25.h,
+                                        width: 25.w,
+                                        decoration: const BoxDecoration(
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    "lib/assets/images/grabIcon.png"),
+                                                fit: BoxFit.scaleDown)),
+                                      ),
+                                    ),
                                   ],
                                 ),
-                                const Spacer(),
-                                Text(
-                                  "S/ 8,000.00",
-                                  style: GoogleFonts.robotoMono(
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    height: 25.h,
-                                    width: 25.w,
-                                    decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                "lib/assets/images/grabIcon.png"),
-                                            fit: BoxFit.scaleDown)),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      )
-                    ],
-                  ),
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    Positioned.fill(
+                        child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: NavBar(
+                              currentIndex: 0,
+                            )))
+                  ],
                 ),
-                Positioned.fill(
-                    child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: NavBar(
-                          currentIndex: 0,
-                        )))
-              ],
-            ),
-          );
-        }),
+              );
+            }),
       ),
     );
   }

@@ -8,9 +8,11 @@ class InitialState extends HomeState {}
 class PaymentsLoading extends HomeState {}
 
 class PaymentsLoaded extends HomeState {
-  final List<Payment>? payments;
+  final List<Payment>? first7DaysPayments;
+  final List<Payment>? restOfPayments;
 
-  PaymentsLoaded({required this.payments});
+  PaymentsLoaded(
+      {required this.first7DaysPayments, required this.restOfPayments});
 }
 
 class PaymentsFailed extends HomeState {}

@@ -19,9 +19,9 @@ class Payment {
 
   static Payment? fromDocument(DocumentSnapshot doc) {
     return Payment._(
-      amount: doc["amount"],
+      amount: doc["amount"].toDouble(),
       currency: doc["currency"],
-      due: doc["due"],
+      due: doc["due"].map<Timestamp>((e) => e as Timestamp).toList(),
       from: doc["from"],
       to: doc["to"],
       doc: doc,
