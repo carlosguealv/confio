@@ -204,9 +204,13 @@ class _HomeLayoutState extends State<HomeLayout> {
                           const SizedBox(
                             height: 18,
                           ),
-                          // TODO: Add list of payments from blocs
                           CalendarWidget(
                             mode: mode,
+                            paymentsList: [
+                              ...((state as PaymentsLoaded)
+                                  .first7DaysPayments!),
+                              ...((state as PaymentsLoaded).restOfPayments!)
+                            ],
                           ),
                           const SizedBox(
                             height: 30,
@@ -310,21 +314,50 @@ class _HomeLayoutState extends State<HomeLayout> {
                                           const SizedBox(
                                             height: 6,
                                           ),
-                                          Text(
-                                            mode == Modes.cobrar ? "{}" : "{}",
-                                            style: GoogleFonts.inter(
-                                                color: Colors.white
-                                                    .withOpacity(0.3),
-                                                fontSize: 12),
+                                          FutureBuilder(
+                                            future:
+                                                firebaseService.getUserByUid(
+                                              mode == Modes.cobrar
+                                                  ? payment.from
+                                                  : payment.to,
+                                            ),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return Text(
+                                                  "Loading...",
+                                                  style: GoogleFonts.inter(
+                                                      color: Colors.white
+                                                          .withOpacity(0.3),
+                                                      fontSize: 12),
+                                                );
+                                              }
+                                              return Expanded(
+                                                child: SizedBox(
+                                                  width: 100,
+                                                  child: Text(
+                                                    mode == Modes.cobrar
+                                                        ? "${snapshot.data!['email']}"
+                                                        : "${snapshot.data!['email']}",
+                                                    style: GoogleFonts.inter(
+                                                        color: Colors.white
+                                                            .withOpacity(0.3),
+                                                        fontSize: 12),
+                                                    overflow: TextOverflow.clip,
+                                                  ),
+                                                ),
+                                              );
+                                            },
                                           ),
                                           const SizedBox(
                                             height: 8,
                                           ),
                                           Text(
-                                            "S/8,000.00",
+                                            "${payment.amount}",
                                             style: GoogleFonts.ibmPlexMono(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12),
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 12,
+                                            ),
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -489,12 +522,20 @@ class VenceProntoPayment extends StatelessWidget {
   }
 }
 
-class CalendarWidget extends StatelessWidget {
+class CalendarWidget extends StatefulWidget {
   const CalendarWidget(
       {Key? key, required this.mode, this.paymentsList = const []})
       : super(key: key);
   final Modes? mode;
   final List<Payment> paymentsList;
+
+  @override
+  State<CalendarWidget> createState() => _CalendarWidgetState();
+}
+
+class _CalendarWidgetState extends State<CalendarWidget> {
+  DateTime _focusedDay = DateTime.now();
+  DateTime _selectedDay = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -530,21 +571,30 @@ class CalendarWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              "Tienes # pagos por ${mode == Modes.cobrar ? "cobrar" : "pagar"} en los próximos 7 días por S/ 64,000.00",
+              "Tienes # pagos por ${widget.mode == Modes.cobrar ? "cobrar" : "pagar"} en los próximos 7 días por S/ 64,000.00",
               style: GoogleFonts.inter(color: Colors.white.withOpacity(0.4)),
             ),
           ),
           const SizedBox(
-            height: 16,
+            height: 8,
           ),
           const Divider(
             height: 10,
           ),
           TableCalendar(
+            locale: 'es_ES',
             eventLoader: (day) {
-              return (paymentsList.any((payment) =>
-                      payment.due.contains(Timestamp.fromDate(day)))
-                  ? ['Event']
+              return (widget.paymentsList.any(
+                (payment) => payment.due
+                    .where(
+                      (dueDate) => () {
+                        return DateUtils.isSameDay(day, dueDate.toDate());
+                      }(),
+                    )
+                    .toList()
+                    .isNotEmpty,
+              )
+                  ? [1]
                   : []);
             },
             daysOfWeekHeight: 30,
@@ -569,6 +619,10 @@ class CalendarWidget extends StatelessWidget {
               ),
             ),
             calendarStyle: const CalendarStyle(
+              markerDecoration: BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.circle,
+              ),
               cellMargin: EdgeInsets.all(2),
               todayTextStyle: TextStyle(fontSize: 14),
               todayDecoration:
@@ -578,6 +632,15 @@ class CalendarWidget extends StatelessWidget {
             firstDay: DateTime.utc(2010, 10, 16),
             lastDay: DateTime.utc(2030, 3, 14),
             focusedDay: DateTime.now(),
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDay, day);
+            },
+            onDaySelected: (selectedDay, focusedDay) {
+              setState(() {
+                _selectedDay = selectedDay;
+                _focusedDay = focusedDay; // update `_focusedDay` here as well
+              });
+            },
           )
         ],
       ),
