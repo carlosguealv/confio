@@ -1,15 +1,31 @@
+import 'package:confio/models/overall_payment.dart';
 import 'package:confio/screens/home_screen/widget/tuscobros.dart';
+import 'package:confio/services/firebase_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/route_manager.dart';
 
 class PayeeView extends StatefulWidget {
-  const PayeeView({super.key});
+  final OverallPayment overallPayment = Get.arguments;
+
+  PayeeView({super.key});
 
   @override
   State<PayeeView> createState() => _PayeeViewState();
 }
 
 class _PayeeViewState extends State<PayeeView> {
+  String otherId = '';
+  @override
+  void initState() {
+    otherId =
+        widget.overallPayment.from == FirebaseAuth.instance.currentUser!.uid
+            ? widget.overallPayment.to
+            : widget.overallPayment.from;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,13 +122,24 @@ class _PayeeViewState extends State<PayeeView> {
                       SizedBox(
                         width: 19.w,
                       ),
-                      Text(
-                        "Payer 1",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.sp,
-                            fontFamily: 'InterSemiBold',
-                            fontWeight: FontWeight.w600),
+                      FutureBuilder(
+                        future: firebaseService
+                            .getUserByUid(otherId)
+                            .then((value) => value!['email'] as String),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState !=
+                              ConnectionState.done) {
+                            return Container();
+                          }
+                          return Text(
+                            snapshot.data!,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20.sp,
+                                fontFamily: 'InterSemiBold',
+                                fontWeight: FontWeight.w600),
+                          );
+                        },
                       )
                     ],
                   ),

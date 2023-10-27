@@ -1,3 +1,4 @@
+import 'package:confio/screens/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -33,6 +34,12 @@ class ConfioApp extends StatelessWidget {
             return FutureBuilder<String>(
                 future: Routes.getInitialRoute(),
                 builder: (context, initRouteSnapshot) {
+                  if (initRouteSnapshot.connectionState !=
+                      ConnectionState.done) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
                   return GetMaterialApp(
                     debugShowCheckedModeBanner: false,
                     title: 'Confio',

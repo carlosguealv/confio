@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:confio/models/payment.dart';
+import 'package:confio/models/overall_payment.dart';
 import 'package:confio/services/authentication_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/route_manager.dart';
@@ -100,9 +100,9 @@ class FirebaseService {
     }
   }
 
-  Future<List<Payment>?> getPaymentsByUid(String uid) async {
+  Future<List<OverallPayment>?> getPaymentsByUid(String uid) async {
     try {
-      final List<Payment> listOfMaps = [];
+      final List<OverallPayment> listOfMaps = [];
 
       QuerySnapshot querySnapshot = await _firestore
           .collection("payments")
@@ -111,7 +111,29 @@ class FirebaseService {
           .get();
 
       for (var docSnapshot in querySnapshot.docs) {
-        listOfMaps.add(Payment.fromDocument(docSnapshot)!);
+        listOfMaps.add(OverallPayment.fromDocument(docSnapshot)!);
+      }
+
+      return listOfMaps;
+    } on FirebaseException catch (e) {
+      Get.snackbar("Error al cargar los pagos", e.message!);
+      return null;
+    }
+  }
+
+  Future<List<OverallPayment>?> getPaymentsFromTo(
+      String from, String to) async {
+    try {
+      final List<OverallPayment> listOfMaps = [];
+
+      QuerySnapshot querySnapshot = await _firestore
+          .collection("payments")
+          .where("from", isEqualTo: from)
+          .where("to", isEqualTo: to)
+          .get();
+
+      for (var docSnapshot in querySnapshot.docs) {
+        listOfMaps.add(OverallPayment.fromDocument(docSnapshot)!);
       }
 
       return listOfMaps;

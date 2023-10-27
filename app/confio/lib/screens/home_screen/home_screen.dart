@@ -1,7 +1,6 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confio/logic/blocs/home_screen_bloc/home_screen_bloc.dart';
+import 'package:confio/models/overall_payment.dart';
 import 'package:confio/models/payment.dart';
 import 'package:confio/screens/home_screen/navbar.dart';
 import 'package:confio/services/authentication_service.dart';
@@ -234,8 +233,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                 // make itemCount be the number of payments in the Next 7 days with "to"
                                 // uid equal to the current user's uid if mode is cobrar, and "from" uid equal
                                 // to the current user's uid if mode is pagar
-                                itemCount: (state as PaymentsLoaded)
-                                    .first7DaysPayments!
+                                itemCount: state.first7DaysPayments
                                     .where((element) => mode == Modes.cobrar
                                         ? element.to ==
                                             authenticationService
@@ -246,7 +244,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                     .length,
                                 itemBuilder: (buildContext, index) {
                                   Payment payment =
-                                      state.first7DaysPayments![index];
+                                      state.first7DaysPayments[index];
                                   return Center(
                                     child: Container(
                                       margin: const EdgeInsets.only(right: 10),
@@ -369,14 +367,6 @@ class _HomeLayoutState extends State<HomeLayout> {
                                                 height: 20,
                                                 thickness: 0.9,
                                               )),
-                                          Text(
-                                            "TODAY",
-                                            style: GoogleFonts.ibmPlexMono(
-                                                letterSpacing: 2.9,
-                                                fontSize: 11,
-                                                color: Colors.white
-                                                    .withOpacity(0.28)),
-                                          ),
                                         ],
                                       ),
                                     ),
@@ -397,7 +387,13 @@ class _HomeLayoutState extends State<HomeLayout> {
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: 5,
+                            itemCount: state.restOfPayments
+                                .where((element) => mode == Modes.cobrar
+                                    ? element.to ==
+                                        authenticationService.currentUser!.uid
+                                    : element.from ==
+                                        authenticationService.currentUser!.uid)
+                                .length,
                             itemBuilder: (buildContent, index) {
                               return Container(
                                 margin: const EdgeInsets.only(top: 22),
@@ -422,37 +418,71 @@ class _HomeLayoutState extends State<HomeLayout> {
                                       width: 10,
                                     ),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text(
-                                          "Payer 3",
-                                          style: GoogleFonts.inter(
-                                              fontWeight: FontWeight.w600),
-                                        ),
+                                        FutureBuilder(
+                                            future: firebaseService
+                                                .getUserByUid(mode ==
+                                                        Modes.cobrar
+                                                    ? state
+                                                        .restOfPayments[index]
+                                                        .from
+                                                    : state
+                                                        .restOfPayments[index]
+                                                        .to)
+                                                .then((value) =>
+                                                    value!['email'] as String),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState !=
+                                                  ConnectionState.done) {
+                                                return const Text("");
+                                              }
+                                              // TODO: Text overflows, fix it
+                                              return Text(
+                                                snapshot.data!,
+                                                softWrap: false,
+                                                maxLines: 5,
+                                                overflow: TextOverflow.clip,
+                                                style: GoogleFonts.inter(
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              );
+                                            }),
                                         const SizedBox(
                                           height: 6,
                                         ),
                                         Row(
                                           children: [
                                             SizedBox(
-                                                height: 3,
-                                                width: 34,
-                                                child: LinearProgressIndicator(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  value: 0.35,
-                                                )),
+                                              height: 3,
+                                              width: 34,
+                                              child: LinearProgressIndicator(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                value: (DateTime.now()
+                                                            .difference(state
+                                                                .restOfPayments[
+                                                                    index]
+                                                                .due
+                                                                .toDate())
+                                                            .inDays)
+                                                        .abs() /
+                                                    30,
+                                              ),
+                                            ),
                                             const SizedBox(
                                               width: 8,
                                             ),
-                                            Text(
-                                              "Quedan 6 días",
-                                              style: GoogleFonts.inter(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 12,
-                                                  color: Colors.white
-                                                      .withOpacity(0.35)),
+                                            SizedBox(
+                                              width: 100,
+                                              child: Text(
+                                                "Quedan ${(DateTime.now().difference(state.restOfPayments[index].due.toDate()).inDays).abs()} días",
+                                                style: GoogleFonts.inter(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 12,
+                                                    color: Colors.white
+                                                        .withOpacity(0.35)),
+                                              ),
                                             ),
                                           ],
                                         )
@@ -460,7 +490,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                     ),
                                     const Spacer(),
                                     Text(
-                                      "S/ 8,000.00",
+                                      "${state.restOfPayments[index].amount} ${state.restOfPayments[index].currency}",
                                       style: GoogleFonts.robotoMono(
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -504,7 +534,7 @@ class _HomeLayoutState extends State<HomeLayout> {
 
 class MasAdelantePayment extends StatelessWidget {
   const MasAdelantePayment({super.key, required this.amount});
-  final Float amount;
+  final double amount;
 
   @override
   Widget build(BuildContext context) {
@@ -514,7 +544,7 @@ class MasAdelantePayment extends StatelessWidget {
 
 class VenceProntoPayment extends StatelessWidget {
   const VenceProntoPayment({super.key, required this.amount});
-  final Float amount;
+  final double amount;
 
   @override
   Widget build(BuildContext context) {
@@ -585,14 +615,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             locale: 'es_ES',
             eventLoader: (day) {
               return (widget.paymentsList.any(
-                (payment) => payment.due
-                    .where(
-                      (dueDate) => () {
-                        return DateUtils.isSameDay(day, dueDate.toDate());
-                      }(),
-                    )
-                    .toList()
-                    .isNotEmpty,
+                (payment) => DateUtils.isSameDay(day, payment.due.toDate()),
               )
                   ? [1]
                   : []);
