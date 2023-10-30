@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:confio/services/authentication_service.dart';
 
 
 
@@ -101,6 +102,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.15 + (2 * circleRadius) + 20,
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      authenticationService.currentUser!.email!,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 19,
+                      ),
+                    ),
+                    SizedBox(height: 10), // Spacing between the two texts
+                    Text(
+                      "Ver registros de pagos",
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7), // Less bright white
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),
