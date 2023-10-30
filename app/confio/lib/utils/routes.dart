@@ -15,7 +15,7 @@ class Routes {
       // profile screen
       GetPage(
         name: '/profile',
-        page: () => const ProfileScreen(),
+        page: () => ProfileScreen(),
       ),
       GetPage(
         name: '/payee-view',
