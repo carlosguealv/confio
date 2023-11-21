@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'dart:ui' as ui;
 
 import 'package:get/route_manager.dart';
 
@@ -33,7 +32,7 @@ class _AuthOptionScreenState extends State<AuthOptionScreen> {
             decoration: BoxDecoration(
                 color: const Color(0xff303030),
                 borderRadius: BorderRadius.circular(11.r),
-                border: Border.all(width: 1.w, color: Color(0xff666666))),
+                border: Border.all(width: 1.w, color: const Color(0xff666666))),
             child: Padding(
               padding: EdgeInsets.only(
                   top: 14.h, left: 32.w, right: 32.w, bottom: 34.h),
@@ -164,9 +163,9 @@ class RPSCustomPainter extends CustomPainter {
     path_0.cubicTo(8.05886, 36, 0, 27.9411, 0, 18);
     path_0.close();
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = Colors.white.withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_fill);
+    Paint paint0Fill = Paint()..style = PaintingStyle.fill;
+    paint0Fill.color = Colors.white.withOpacity(1.0);
+    canvas.drawPath(path_0, paint0Fill);
   }
 
   @override

@@ -5,7 +5,6 @@ import 'package:confio/models/overall_payment.dart';
 import 'package:confio/services/authentication_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/route_manager.dart';
-import 'package:meta/meta.dart';
 
 enum Recurrences { weekly, monthly, yearly }
 

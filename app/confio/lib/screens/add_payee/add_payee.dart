@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
 class AddPayee extends StatefulWidget {
   const AddPayee({super.key});
@@ -99,7 +98,7 @@ class _AddPayeeState extends State<AddPayee> {
                             child: Container(
                           height: 14.h,
                           width: 14.h,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               image: DecorationImage(
                                   image: AssetImage(
                                       "lib/assets/images/search.png"),
@@ -124,15 +123,15 @@ class _AddPayeeState extends State<AddPayee> {
                   height: 30.h,
                 ),
                 //*list view for top people
-                Container(
+                SizedBox(
                   width: double.infinity.w,
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: 4,
                       itemBuilder: (context, index) {
-                        return AddPeopleContainer();
+                        return const AddPeopleContainer();
                       }),
                 ),
                 SizedBox(
@@ -151,7 +150,7 @@ class _AddPayeeState extends State<AddPayee> {
                 SizedBox(
                   height: 30.h,
                 ),
-                Container(
+                SizedBox(
                   width: double.infinity.w,
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
@@ -159,7 +158,7 @@ class _AddPayeeState extends State<AddPayee> {
                       shrinkWrap: true,
                       itemCount: 3,
                       itemBuilder: (context, index) {
-                        return AddPeopleContainer();
+                        return const AddPeopleContainer();
                       }),
                 ),
               ],
@@ -209,94 +208,92 @@ class AddPeopleContainer extends StatefulWidget {
 }
 
 class _AddPeopleContainerState extends State<AddPeopleContainer> {
-  @override
   bool isAdded = false;
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(bottom: 30.h),
-      child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 44.w,
-                  height: 44.h,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage("https://via.placeholder.com/44x44"),
-                      fit: BoxFit.cover,
-                    ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 44.w,
+                height: 44.h,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: NetworkImage("https://via.placeholder.com/44x44"),
+                    fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(
-                  width: 14.w,
+              ),
+              SizedBox(
+                width: 14.w,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Eleanor Pena',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 13.sp,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.08,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    '@ben+aron',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.47999998927116394),
+                      fontSize: 12.sp,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.07,
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+          InkWell(
+            onTap: () {
+              setState(() {
+                if (isAdded == true) {
+                  isAdded = false;
+                } else {
+                  isAdded = true;
+                }
+              });
+            },
+            child: Container(
+                width: 24.w,
+                height: 24.w,
+                decoration: ShapeDecoration(
+                  color: Colors.white.withOpacity(0.07000000029802322),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      width: 1,
+                      color: Colors.white.withOpacity(0.05999999865889549),
+                    ),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Eleanor Pena',
-                      style: TextStyle(
+                child: isAdded
+                    ? const Icon(
+                        Icons.check,
                         color: Colors.white,
-                        fontSize: 13.sp,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.08,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Text(
-                      '@ben+aron',
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.47999998927116394),
-                        fontSize: 12.sp,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.07,
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            InkWell(
-              onTap: (){
-                setState(() {
-                 if(isAdded==true){
-                  isAdded= false;
-                 } else{
-                  isAdded=true;
-                 }
-                });
-              },
-              child: Container(
-                  width: 24.w,
-                  height: 24.w,
-                  decoration: ShapeDecoration(
-                    color: Colors.white.withOpacity(0.07000000029802322),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        width: 1,
-                        color: Colors.white.withOpacity(0.05999999865889549),
-                      ),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                  child: isAdded
-                      ? const Icon(
-                          Icons.check,
-                          color: Colors.white,
-                          size: 13,
-                        )
-                      : null),
-            )
-          ],
-        ),
+                        size: 13,
+                      )
+                    : null),
+          )
+        ],
       ),
     );
   }

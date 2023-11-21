@@ -1,4 +1,3 @@
-import 'package:confio/screens/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +13,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  initializeDateFormatting('es_ES').then((_) => runApp(ConfioApp()));
+  initializeDateFormatting('es_ES').then((_) => runApp(const ConfioApp()));
 }
 
 class ConfioApp extends StatelessWidget {

@@ -11,17 +11,18 @@ class SetAmountScreen extends StatefulWidget {
 }
 
 class _SetAmountScreenState extends State<SetAmountScreen> {
-   String amount = "";
-   void updateAmount(String input){
+  String amount = "";
+  void updateAmount(String input) {
     setState(() {
-      amount = amount+input;
+      amount = amount + input;
     });
-   }
-   void backspace(){
+  }
+
+  void backspace() {
     setState(() {
-      amount = amount.substring(0, amount.length-1);
+      amount = amount.substring(0, amount.length - 1);
     });
-   }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,74 +40,72 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
           ])),
           child: Column(
             children: [
-              Container(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 18.w, right: 18.w, top: 50),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      //*Displays avartar
-                      Container(
-                        height: 69.h,
-                        width: 69.w,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border:
-                                Border.all(width: 2.27.w, color: Colors.white),
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://images.unsplash.com/photo-1682688759350-050208b1211c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"))),
-                      ),
-                      SizedBox(
-                        height: 24.h,
-                      ),
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Robert N Fox\n',
-                              style: TextStyle(
-                                color: Colors.white
-                                    .withOpacity(0.8399999737739563),
-                                fontSize: 17,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w600,
-                              ),
+              Padding(
+                padding: EdgeInsets.only(left: 18.w, right: 18.w, top: 50),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    //*Displays avartar
+                    Container(
+                      height: 69.h,
+                      width: 69.w,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border:
+                              Border.all(width: 2.27.w, color: Colors.white),
+                          image: const DecorationImage(
+                              image: NetworkImage(
+                                  "https://images.unsplash.com/photo-1682688759350-050208b1211c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"))),
+                    ),
+                    SizedBox(
+                      height: 24.h,
+                    ),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Robert N Fox\n',
+                            style: TextStyle(
+                              color:
+                                  Colors.white.withOpacity(0.8399999737739563),
+                              fontSize: 17,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w600,
                             ),
-                            TextSpan(
-                              text: '@rebrto_92.fire',
-                              style: TextStyle(
-                                color: Colors.white
-                                    .withOpacity(0.6000000238418579),
-                                fontSize: 15,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 0.51,
-                              ),
+                          ),
+                          TextSpan(
+                            text: '@rebrto_92.fire',
+                            style: TextStyle(
+                              color:
+                                  Colors.white.withOpacity(0.6000000238418579),
+                              fontSize: 15,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 0.51,
                             ),
-                          ],
-                        ),
-                        textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        height: 35.h,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 35.h,
+                    ),
+                    //*displays amount
+                    Text(
+                      'S/ $amount',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.47999998927116394),
+                        fontSize: 42.sp,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w500,
                       ),
-                      //*displays amount
-                      Text(
-                        'S/ $amount',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.47999998927116394),
-                          fontSize: 42.sp,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 55.h,
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 55.h,
+                    ),
+                  ],
                 ),
               ),
               Expanded(
@@ -157,7 +156,7 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
                                           )),
                                     ),
                                     InkWell(
-                                       onTap: () => updateAmount("2"),
+                                      onTap: () => updateAmount("2"),
                                       child: Container(
                                           height: 62.5.h,
                                           width: 62.5.w,
@@ -178,7 +177,7 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
                                           )),
                                     ),
                                     InkWell(
-                                       onTap: () => updateAmount("3"),
+                                      onTap: () => updateAmount("3"),
                                       child: Container(
                                           height: 62.5.h,
                                           width: 62.5.w,
@@ -229,7 +228,7 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
                                           )),
                                     ),
                                     InkWell(
-                                  onTap: () => updateAmount("5"),
+                                      onTap: () => updateAmount("5"),
                                       child: Container(
                                           height: 62.5.h,
                                           width: 62.5.w,
@@ -250,7 +249,7 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
                                           )),
                                     ),
                                     InkWell(
-                                    onTap: () => updateAmount("6"),
+                                      onTap: () => updateAmount("6"),
                                       child: Container(
                                           height: 62.5.h,
                                           width: 62.5.w,
@@ -280,7 +279,7 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     InkWell(
-                                 onTap: () => updateAmount("7"),
+                                      onTap: () => updateAmount("7"),
                                       child: Container(
                                           height: 62.5.h,
                                           width: 62.5.w,
@@ -301,7 +300,7 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
                                           )),
                                     ),
                                     InkWell(
-                                       onTap: () => updateAmount("8"),
+                                      onTap: () => updateAmount("8"),
                                       child: Container(
                                           height: 62.5.h,
                                           width: 62.5.w,
@@ -322,7 +321,7 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
                                           )),
                                     ),
                                     InkWell(
-                                    onTap: () => updateAmount("9"),
+                                      onTap: () => updateAmount("9"),
                                       child: Container(
                                           height: 62.5.h,
                                           width: 62.5.w,
@@ -353,7 +352,7 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
                                       width: 131.w,
                                     ),
                                     InkWell(
-                                     onTap: () => updateAmount("0"),
+                                      onTap: () => updateAmount("0"),
                                       child: Container(
                                           height: 62.5.h,
                                           width: 62.5.w,
@@ -392,8 +391,13 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
                             height: 49.h,
                           ),
                           InkWell(
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context){return SetPreferenceScreen(amount: amount,);}));
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return SetPreferenceScreen(
+                                  amount: amount,
+                                );
+                              }));
                             },
                             child: Container(
                               width: 373.w,
@@ -433,8 +437,6 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
         ),
       ),
     );
-  
-  
   }
 }
 
@@ -479,9 +481,9 @@ class RPSCustomPainter extends CustomPainter {
         size.height * 0.001222029);
     path_0.close();
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = Colors.black.withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_fill);
+    Paint paint0Fill = Paint()..style = PaintingStyle.fill;
+    paint0Fill.color = Colors.black.withOpacity(1.0);
+    canvas.drawPath(path_0, paint0Fill);
   }
 
   @override
@@ -489,5 +491,3 @@ class RPSCustomPainter extends CustomPainter {
     return true;
   }
 }
-
-

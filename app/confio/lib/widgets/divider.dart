@@ -18,7 +18,7 @@ class _CustomDividerState extends State<CustomDivider> {
           side: BorderSide(
             width: 0.50.w,
             strokeAlign: BorderSide.strokeAlignCenter,
-            color: Color(0xff1a1a1a),
+            color: const Color(0xff1a1a1a),
           ),
         ),
       ),
