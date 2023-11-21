@@ -192,7 +192,7 @@ class _PayeeViewState extends State<PayeeView> {
               SizedBox(
                 height: 38.h,
               ),
-              Container(
+              SizedBox(
                 width: 389,
                 height: 255,
                 child: Stack(
@@ -285,7 +285,7 @@ class _PayeeViewState extends State<PayeeView> {
                     Positioned(
                       left: 73,
                       top: 117,
-                      child: Container(
+                      child: SizedBox(
                         width: 28,
                         height: 122,
                         child: Stack(
@@ -326,7 +326,7 @@ class _PayeeViewState extends State<PayeeView> {
                     Positioned(
                       left: 129,
                       top: 78,
-                      child: Container(
+                      child: SizedBox(
                         width: 28,
                         height: 161,
                         child: Stack(
@@ -367,7 +367,7 @@ class _PayeeViewState extends State<PayeeView> {
                     Positioned(
                       left: 245,
                       top: 39,
-                      child: Container(
+                      child: SizedBox(
                         width: 28,
                         height: 200,
                         child: Stack(
@@ -408,7 +408,7 @@ class _PayeeViewState extends State<PayeeView> {
                     Positioned(
                       left: 187,
                       top: 133,
-                      child: Container(
+                      child: SizedBox(
                         width: 28,
                         height: 106,
                         child: Stack(
@@ -449,7 +449,7 @@ class _PayeeViewState extends State<PayeeView> {
                     Positioned(
                       left: 301,
                       top: 133,
-                      child: Container(
+                      child: SizedBox(
                         width: 29,
                         height: 106,
                         child: Stack(
@@ -634,7 +634,7 @@ class _PayeeViewState extends State<PayeeView> {
               SizedBox(
                 height: 25.h,
               ),
-              Container(
+              SizedBox(
                 width: 388.w,
                 child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),

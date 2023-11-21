@@ -1,13 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confio/logic/blocs/home_screen_bloc/home_screen_bloc.dart';
-import 'package:confio/models/overall_payment.dart';
 import 'package:confio/models/payment.dart';
 import 'package:confio/screens/home_screen/navbar.dart';
 import 'package:confio/services/authentication_service.dart';
 import 'package:confio/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -206,9 +203,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                           CalendarWidget(
                             mode: mode,
                             paymentsList: [
-                              ...((state as PaymentsLoaded)
-                                  .first7DaysPayments!),
-                              ...((state as PaymentsLoaded).restOfPayments!)
+                              ...((state as PaymentsLoaded).first7DaysPayments),
+                              ...((state).restOfPayments)
                             ],
                           ),
                           const SizedBox(
@@ -283,7 +279,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                                   width: 100,
                                                   height: 30,
                                                 ),
-                                                Container(
+                                                SizedBox(
                                                   width: 100,
                                                   child: Padding(
                                                     padding:
@@ -564,7 +560,6 @@ class CalendarWidget extends StatefulWidget {
 }
 
 class _CalendarWidgetState extends State<CalendarWidget> {
-  DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
 
   @override
@@ -661,7 +656,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 _selectedDay = selectedDay;
-                _focusedDay = focusedDay; // update `_focusedDay` here as well
+// update `_focusedDay` here as well
               });
             },
           )

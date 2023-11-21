@@ -34,102 +34,100 @@ class _AddPaymentState extends State<AddPayment> {
           ])),
           child: Column(
             children: [
-              Container(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 18.w, right: 18.w, top: 50),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      //*Displays avartar
-                      Container(
-                        height: 69.h,
-                        width: 69.w,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border:
-                                Border.all(width: 2.27.w, color: Colors.white),
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://images.unsplash.com/photo-1682688759350-050208b1211c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"))),
-                      ),
-                      SizedBox(
-                        height: 24.h,
-                      ),
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Robert N Fox\n',
-                              style: TextStyle(
-                                color: Colors.white
-                                    .withOpacity(0.8399999737739563),
-                                fontSize: 17,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            TextSpan(
-                              text: '@rebrto_92.fire',
-                              style: TextStyle(
-                                color: Colors.white
-                                    .withOpacity(0.6000000238418579),
-                                fontSize: 15,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 0.51,
-                              ),
-                            ),
-                          ],
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(
-                        height: 35.h,
-                      ),
-                      //*displays amount
-                      Text(
-                        'S/ ${widget.amount}',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 42.sp,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 29.h,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 40.h),
-                        child: Container(
-                          width: 128.w,
-                          height: 37.h,
-                          alignment: Alignment.center,
-                          decoration: ShapeDecoration(
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  width: 0.50, color: Colors.white),
-                              borderRadius: BorderRadius.circular(18.50),
+              Padding(
+                padding: EdgeInsets.only(left: 18.w, right: 18.w, top: 50),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    //*Displays avartar
+                    Container(
+                      height: 69.h,
+                      width: 69.w,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border:
+                              Border.all(width: 2.27.w, color: Colors.white),
+                          image: const DecorationImage(
+                              image: NetworkImage(
+                                  "https://images.unsplash.com/photo-1682688759350-050208b1211c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"))),
+                    ),
+                    SizedBox(
+                      height: 24.h,
+                    ),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Robert N Fox\n',
+                            style: TextStyle(
+                              color:
+                                  Colors.white.withOpacity(0.8399999737739563),
+                              fontSize: 17,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Text(
-                              'Editar monto',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.sp,
-                                fontFamily: 'PoppinsRegular',
-                                fontWeight: FontWeight.w500,
-                              ),
+                          TextSpan(
+                            text: '@rebrto_92.fire',
+                            style: TextStyle(
+                              color:
+                                  Colors.white.withOpacity(0.6000000238418579),
+                              fontSize: 15,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 0.51,
+                            ),
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 35.h,
+                    ),
+                    //*displays amount
+                    Text(
+                      'S/ ${widget.amount}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 42.sp,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 29.h,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 40.h),
+                      child: Container(
+                        width: 128.w,
+                        height: 37.h,
+                        alignment: Alignment.center,
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                                width: 0.50, color: Colors.white),
+                            borderRadius: BorderRadius.circular(18.50),
+                          ),
+                        ),
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Text(
+                            'Editar monto',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.sp,
+                              fontFamily: 'PoppinsRegular',
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               Expanded(
@@ -170,7 +168,7 @@ class _AddPaymentState extends State<AddPayment> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 InkWell(
-                                  onTap: (){
+                                  onTap: () {
                                     setState(() {
                                       index = 0;
                                     });
@@ -179,16 +177,18 @@ class _AddPaymentState extends State<AddPayment> {
                                     height: 88.h,
                                     width: 170.w,
                                     decoration: BoxDecoration(
-                                        color: Color(0xff0D0D0D),
-                                        borderRadius: BorderRadius.circular(8.r),
+                                        color: const Color(0xff0D0D0D),
+                                        borderRadius:
+                                            BorderRadius.circular(8.r),
                                         border: Border.all(
                                             width: 1.w,
-                                            color: Color(0xff262626))),
+                                            color: const Color(0xff262626))),
                                     child: Padding(
                                       padding: EdgeInsets.only(
                                           top: 14.h, left: 17.w, right: 17.w),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Align(
                                             alignment: Alignment.topRight,
@@ -197,12 +197,14 @@ class _AddPaymentState extends State<AddPayment> {
                                               width: 15.w,
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  color: Color(0xff0e0e0e),
+                                                  color:
+                                                      const Color(0xff0e0e0e),
                                                   border: Border.all(
                                                       width: 2.w,
                                                       color: Colors.white)),
                                               child: Padding(
-                                                padding: EdgeInsets.all(1.8),
+                                                padding:
+                                                    const EdgeInsets.all(1.8),
                                                 child: Container(
                                                   height: 8.h,
                                                   width: 8.w,
@@ -215,7 +217,7 @@ class _AddPaymentState extends State<AddPayment> {
                                               ),
                                             ),
                                           ),
-                                          Container(
+                                          SizedBox(
                                             height: 37.h,
                                             width: 90.w,
                                             child: SvgPicture.asset(
@@ -227,7 +229,7 @@ class _AddPaymentState extends State<AddPayment> {
                                   ),
                                 ),
                                 InkWell(
-                                   onTap: (){
+                                  onTap: () {
                                     setState(() {
                                       index = 1;
                                     });
@@ -236,16 +238,18 @@ class _AddPaymentState extends State<AddPayment> {
                                     height: 88.h,
                                     width: 170.w,
                                     decoration: BoxDecoration(
-                                        color: Color(0xff0D0D0D),
-                                        borderRadius: BorderRadius.circular(8.r),
+                                        color: const Color(0xff0D0D0D),
+                                        borderRadius:
+                                            BorderRadius.circular(8.r),
                                         border: Border.all(
                                             width: 1.w,
-                                            color: Color(0xff262626))),
+                                            color: const Color(0xff262626))),
                                     child: Padding(
                                       padding: EdgeInsets.only(
                                           top: 14.h, left: 17.w, right: 17.w),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Align(
                                             alignment: Alignment.topRight,
@@ -254,12 +258,14 @@ class _AddPaymentState extends State<AddPayment> {
                                               width: 15.w,
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  color: Color(0xff0e0e0e),
+                                                  color:
+                                                      const Color(0xff0e0e0e),
                                                   border: Border.all(
                                                       width: 2.w,
                                                       color: Colors.white)),
                                               child: Padding(
-                                                padding: EdgeInsets.all(1.8),
+                                                padding:
+                                                    const EdgeInsets.all(1.8),
                                                 child: Container(
                                                   height: 8.h,
                                                   width: 8.w,
@@ -272,7 +278,7 @@ class _AddPaymentState extends State<AddPayment> {
                                               ),
                                             ),
                                           ),
-                                          Container(
+                                          SizedBox(
                                             height: 37.h,
                                             width: 90.w,
                                             child: SvgPicture.asset(
@@ -285,15 +291,14 @@ class _AddPaymentState extends State<AddPayment> {
                                 )
                               ],
                             ),
-                          
                             SizedBox(
                               height: 13.h,
                             ),
-                             Row(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 InkWell(
-                                   onTap: (){
+                                  onTap: () {
                                     setState(() {
                                       index = 2;
                                     });
@@ -302,16 +307,18 @@ class _AddPaymentState extends State<AddPayment> {
                                     height: 88.h,
                                     width: 170.w,
                                     decoration: BoxDecoration(
-                                        color: Color(0xff0D0D0D),
-                                        borderRadius: BorderRadius.circular(8.r),
+                                        color: const Color(0xff0D0D0D),
+                                        borderRadius:
+                                            BorderRadius.circular(8.r),
                                         border: Border.all(
                                             width: 1.w,
-                                            color: Color(0xff262626))),
+                                            color: const Color(0xff262626))),
                                     child: Padding(
                                       padding: EdgeInsets.only(
                                           top: 14.h, left: 17.w, right: 17.w),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Align(
                                             alignment: Alignment.topRight,
@@ -320,12 +327,14 @@ class _AddPaymentState extends State<AddPayment> {
                                               width: 15.w,
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  color: Color(0xff0e0e0e),
+                                                  color:
+                                                      const Color(0xff0e0e0e),
                                                   border: Border.all(
                                                       width: 2.w,
                                                       color: Colors.white)),
                                               child: Padding(
-                                                padding: EdgeInsets.all(1.8),
+                                                padding:
+                                                    const EdgeInsets.all(1.8),
                                                 child: Container(
                                                   height: 8.h,
                                                   width: 8.w,
@@ -338,7 +347,7 @@ class _AddPaymentState extends State<AddPayment> {
                                               ),
                                             ),
                                           ),
-                                          Container(
+                                          SizedBox(
                                             height: 37.h,
                                             width: 90.w,
                                             child: SvgPicture.asset(
@@ -350,7 +359,7 @@ class _AddPaymentState extends State<AddPayment> {
                                   ),
                                 ),
                                 InkWell(
-                                   onTap: (){
+                                  onTap: () {
                                     setState(() {
                                       index = 3;
                                     });
@@ -359,16 +368,18 @@ class _AddPaymentState extends State<AddPayment> {
                                     height: 88.h,
                                     width: 170.w,
                                     decoration: BoxDecoration(
-                                        color: Color(0xff0D0D0D),
-                                        borderRadius: BorderRadius.circular(8.r),
+                                        color: const Color(0xff0D0D0D),
+                                        borderRadius:
+                                            BorderRadius.circular(8.r),
                                         border: Border.all(
                                             width: 1.w,
-                                            color: Color(0xff262626))),
+                                            color: const Color(0xff262626))),
                                     child: Padding(
                                       padding: EdgeInsets.only(
                                           top: 14.h, left: 17.w, right: 17.w),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Align(
                                             alignment: Alignment.topRight,
@@ -377,12 +388,14 @@ class _AddPaymentState extends State<AddPayment> {
                                               width: 15.w,
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  color: Color(0xff0e0e0e),
+                                                  color:
+                                                      const Color(0xff0e0e0e),
                                                   border: Border.all(
                                                       width: 2.w,
                                                       color: Colors.white)),
                                               child: Padding(
-                                                padding: EdgeInsets.all(1.8),
+                                                padding:
+                                                    const EdgeInsets.all(1.8),
                                                 child: Container(
                                                   height: 8.h,
                                                   width: 8.w,
@@ -395,7 +408,7 @@ class _AddPaymentState extends State<AddPayment> {
                                               ),
                                             ),
                                           ),
-                                          Container(
+                                          SizedBox(
                                             height: 37.h,
                                             width: 90.w,
                                             child: SvgPicture.asset(
@@ -408,7 +421,6 @@ class _AddPaymentState extends State<AddPayment> {
                                 )
                               ],
                             ),
-                          
                             SizedBox(
                               height: 206.h,
                             ),
@@ -497,9 +509,9 @@ class RPSCustomPainter extends CustomPainter {
         size.height * 0.001222029);
     path_0.close();
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = Colors.black.withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_fill);
+    Paint paint0Fill = Paint()..style = PaintingStyle.fill;
+    paint0Fill.color = Colors.black.withOpacity(1.0);
+    canvas.drawPath(path_0, paint0Fill);
   }
 
   @override

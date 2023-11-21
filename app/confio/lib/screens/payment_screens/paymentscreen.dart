@@ -30,229 +30,228 @@ class _PaymentScreenState extends State<PaymentScreen> {
           ])),
           child: Column(
             children: [
-              Container(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 18.w, right: 18.w, top: 50),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      //*Displays date
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Container(
-                          width: 122.w,
-                          height: 41.h,
-                          alignment: Alignment.center,
-                          decoration: ShapeDecoration(
-                            color:
-                                Colors.white.withOpacity(0.20999999344348907),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6.r)),
+              Padding(
+                padding: EdgeInsets.only(left: 18.w, right: 18.w, top: 50),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    //*Displays date
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        width: 122.w,
+                        height: 41.h,
+                        alignment: Alignment.center,
+                        decoration: ShapeDecoration(
+                          color:
+                              Colors.white.withOpacity(0.20999999344348907),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.r)),
+                        ),
+                        child: Text(
+                          'Mon, Jul 10',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.sp,
+                            fontFamily: 'InterMedium',
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 0.14,
                           ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 48.h,
+                    ),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Pago de\n',
+                            style: TextStyle(
+                              color: Colors.white
+                                  .withOpacity(0.6399999856948853),
+                              fontSize: 16.sp,
+                              fontFamily: 'PoppinsRegular',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'Agosto 2023',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.sp,
+                              fontFamily: 'PoppinsMedium',
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 27.h,
+                    ),
+                    Text(
+                      'S/ 1,500.00',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.47999998927116394),
+                        fontSize: 42.sp,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 33.h,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 40.h),
+                      child: Container(
+                        width: 128.w,
+                        height: 37.h,
+                        alignment: Alignment.center,
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                                width: 0.50, color: Colors.white),
+                            borderRadius: BorderRadius.circular(18.50),
+                          ),
+                        ),
+                        child: GestureDetector(
+                          onTap: () => {
+                            showModalBottomSheet(
+                                showDragHandle: true,
+                                constraints: BoxConstraints(
+                                  maxHeight: sx! * 0.4,
+                                  maxWidth: sy! * 0.9,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                backgroundColor: const Color(0xff0F1012),
+                                context: context,
+                                builder: (builder) {
+                                  return Column(
+                                    children: [
+                                      Text("Confirma el pago recibido",
+                                          style: GoogleFonts.roboto(
+                                              color: Colors.white,
+                                              fontSize: 14)),
+                                      const Gap(
+                                        height: 0.025,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Gap(width: 0.05),
+                                          _userTile("Payer 1"),
+                                          const Gap(width: 0.1),
+                                          Image.asset(
+                                              "lib/assets/images/Arrow---Right.png"),
+                                          const Gap(width: 0.075),
+                                          _userTile("Raj Singh"),
+                                        ],
+                                      ),
+                                      const Gap(
+                                        height: 0.015,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Gap(width: 0.05),
+                                          Container(
+                                            width: sy! * 0.8,
+                                            height: sx! * 0.05,
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(7.5)),
+                                              color: Colors.white10,
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                const Gap(
+                                                  width: 0.03,
+                                                ),
+                                                Text(
+                                                  "Selecciona método de pago",
+                                                  style: GoogleFonts.inter(
+                                                      color: Colors.white,
+                                                      fontSize: 11),
+                                                ),
+                                                const Gap(
+                                                  width: 0.05,
+                                                ),
+                                                PaymentMethods(
+                                                  changeMethodCallback:
+                                                      (String? newMethod) {
+                                                    method = newMethod;
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const Gap(
+                                        height: 0.015,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Gap(
+                                            width: 0.25,
+                                          ),
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                "Cancelar",
+                                                style: GoogleFonts.inter(
+                                                    fontSize: 13,
+                                                    color:
+                                                        const Color.fromARGB(
+                                                            255,
+                                                            120,
+                                                            147,
+                                                            255)),
+                                              )),
+                                          ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      const Color.fromARGB(
+                                                          255, 120, 147, 255),
+                                                  shape:
+                                                      RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      60))),
+                                              onPressed: () {
+                                                // ignore: avoid_print
+                                                print(method);
+                                              },
+                                              child: const Text(
+                                                  "Marcar como Pagado"))
+                                        ],
+                                      )
+                                    ],
+                                  );
+                                })
+                          },
                           child: Text(
-                            'Mon, Jul 10',
+                            'Confirmar Pago',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 14.sp,
-                              fontFamily: 'InterMedium',
+                              fontSize: 12.sp,
+                              fontFamily: 'PoppinsRegular',
                               fontWeight: FontWeight.w500,
-                              letterSpacing: 0.14,
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 48.h,
-                      ),
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Pago de\n',
-                              style: TextStyle(
-                                color: Colors.white
-                                    .withOpacity(0.6399999856948853),
-                                fontSize: 16.sp,
-                                fontFamily: 'PoppinsRegular',
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'Agosto 2023',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20.sp,
-                                fontFamily: 'PoppinsMedium',
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(
-                        height: 27.h,
-                      ),
-                      Text(
-                        'S/ 1,500.00',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.47999998927116394),
-                          fontSize: 42.sp,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 33.h,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 40.h),
-                        child: Container(
-                          width: 128.w,
-                          height: 37.h,
-                          alignment: Alignment.center,
-                          decoration: ShapeDecoration(
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  width: 0.50, color: Colors.white),
-                              borderRadius: BorderRadius.circular(18.50),
-                            ),
-                          ),
-                          child: GestureDetector(
-                            onTap: () => {
-                              showModalBottomSheet(
-                                  showDragHandle: true,
-                                  constraints: BoxConstraints(
-                                    maxHeight: sx! * 0.4,
-                                    maxWidth: sy! * 0.9,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  backgroundColor: const Color(0xff0F1012),
-                                  context: context,
-                                  builder: (builder) {
-                                    return Column(
-                                      children: [
-                                        Text("Confirma el pago recibido",
-                                            style: GoogleFonts.roboto(
-                                                color: Colors.white,
-                                                fontSize: 14)),
-                                        const Gap(
-                                          height: 0.025,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Gap(width: 0.05),
-                                            _userTile("Payer 1"),
-                                            const Gap(width: 0.1),
-                                            Image.asset(
-                                                "lib/assets/images/Arrow---Right.png"),
-                                            const Gap(width: 0.075),
-                                            _userTile("Raj Singh"),
-                                          ],
-                                        ),
-                                        const Gap(
-                                          height: 0.015,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Gap(width: 0.05),
-                                            Container(
-                                              width: sy! * 0.8,
-                                              height: sx! * 0.05,
-                                              decoration: const BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(7.5)),
-                                                color: Colors.white10,
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  const Gap(
-                                                    width: 0.03,
-                                                  ),
-                                                  Text(
-                                                    "Selecciona método de pago",
-                                                    style: GoogleFonts.inter(
-                                                        color: Colors.white,
-                                                        fontSize: 11),
-                                                  ),
-                                                  const Gap(
-                                                    width: 0.05,
-                                                  ),
-                                                  PaymentMethods(
-                                                    changeMethodCallback:
-                                                        (String? newMethod) {
-                                                      method = newMethod;
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const Gap(
-                                          height: 0.015,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Gap(
-                                              width: 0.25,
-                                            ),
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text(
-                                                  "Cancelar",
-                                                  style: GoogleFonts.inter(
-                                                      fontSize: 13,
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              120,
-                                                              147,
-                                                              255)),
-                                                )),
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        const Color.fromARGB(
-                                                            255, 120, 147, 255),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        60))),
-                                                onPressed: () {
-                                                  print(method);
-                                                },
-                                                child: const Text(
-                                                    "Marcar como Pagado"))
-                                          ],
-                                        )
-                                      ],
-                                    );
-                                  })
-                            },
-                            child: Text(
-                              'Confirmar Pago',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.sp,
-                                fontFamily: 'PoppinsRegular',
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
               ),
               Expanded(
@@ -424,10 +423,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
   }
 
-  
-  
-  
-  
   Widget _userTile(String userName) {
     return Container(
         decoration: const BoxDecoration(
@@ -478,7 +473,7 @@ class PaymentMethodsState extends State<PaymentMethods> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: sy! * 0.3,
       child: DropdownButton(
           isExpanded: true,
@@ -582,9 +577,9 @@ class RPSCustomPainter extends CustomPainter {
         size.height * 0.001222029);
     path_0.close();
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = Colors.black.withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_fill);
+    Paint paint0Fill = Paint()..style = PaintingStyle.fill;
+    paint0Fill.color = Colors.black.withOpacity(1.0);
+    canvas.drawPath(path_0, paint0Fill);
   }
 
   @override
