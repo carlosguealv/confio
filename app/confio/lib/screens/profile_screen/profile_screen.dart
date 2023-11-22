@@ -1,9 +1,10 @@
-import 'package:confio/screens/home_screen/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:confio/services/authentication_service.dart';
+
+import '../home_screen/navbar.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
