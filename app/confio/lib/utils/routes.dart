@@ -1,9 +1,10 @@
+import 'package:confio/screens/add_payee/add_payee.dart';
 import 'package:confio/screens/auth/forgot_password_screen.dart';
 import 'package:confio/screens/auth/login_screen.dart';
 import 'package:confio/screens/auth/signup_screen.dart';
 import 'package:confio/screens/greeting_screens/auth_option_screen.dart';
-import 'package:confio/screens/payment_screens/payee_view_depth2.dart';
-import 'package:confio/screens/payment_screens/paymentscreen.dart';
+import 'package:confio/screens/payment_screens/home_screen_depth2.dart';
+import 'package:confio/screens/payment_screens/payment_screen.dart';
 import 'package:confio/screens/profile_screen/profile_screen.dart';
 import 'package:confio/services/authentication_service.dart';
 import 'package:get/get.dart';
@@ -18,16 +19,16 @@ class Routes {
         page: () => const ProfileScreen(),
       ),
       GetPage(
-        name: '/payee-view',
-        page: () => PayeeView(),
+        name: '/home/depth2',
+        page: () => HomeScreenDepth2(),
       ),
       GetPage(
         name: '/login',
         page: () => const LoginScreen(),
       ),
       GetPage(
-        name: '/',
-        page: () => const HomeScreen(),
+        name: '/home',
+        page: () => const AddPayee(),
       ),
       GetPage(
         name: '/signup',

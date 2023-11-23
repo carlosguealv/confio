@@ -16,6 +16,11 @@ class FirebaseService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDocument(
+      String uid) async {
+    return FirebaseFirestore.instance.collection('users').doc(uid).get();
+  }
+
   // generate timestamps for a payment to be created
   List<Timestamp> generateTimestampList(
       Recurrences recurrence, Timestamp endDate, List<int> inputs) {

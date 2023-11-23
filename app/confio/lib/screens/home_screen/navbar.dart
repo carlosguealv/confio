@@ -76,7 +76,10 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
   Widget navbarItemCircle({required int index}) {
     return InkWell(
       onTap: () {
-        setState(() {});
+        setState(() {
+          widget.currentIndex = index;
+          Get.toNamed(screens[index]);
+        });
       },
       child: Container(
         width: 59.w,

@@ -433,7 +433,6 @@ class _HomeLayoutState extends State<HomeLayout> {
                                                   ConnectionState.done) {
                                                 return const Text("");
                                               }
-                                              // TODO: Text overflows, fix it
                                               return Text(
                                                 snapshot.data!,
                                                 softWrap: false,
@@ -525,26 +524,6 @@ class _HomeLayoutState extends State<HomeLayout> {
             }),
       ),
     );
-  }
-}
-
-class MasAdelantePayment extends StatelessWidget {
-  const MasAdelantePayment({super.key, required this.amount});
-  final double amount;
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-class VenceProntoPayment extends StatelessWidget {
-  const VenceProntoPayment({super.key, required this.amount});
-  final double amount;
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
 

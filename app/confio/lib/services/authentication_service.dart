@@ -1,3 +1,4 @@
+import 'package:confio/models/confio_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -12,6 +13,12 @@ class AuthenticationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   User? get currentUser => _firebaseAuth.currentUser;
+
+  Future<ConfioUser?> get currentConfioUser async =>
+      _firebaseAuth.currentUser != null
+          ? ConfioUser.fromDocument(await firebaseService
+              .getUserDocument(_firebaseAuth.currentUser!.uid))
+          : null;
 
   Future<String?> loginWithEmailAndPassword(
       String email, String password) async {

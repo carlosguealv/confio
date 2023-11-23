@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 
-class PayeeView extends StatefulWidget {
+class HomeScreenDepth2 extends StatefulWidget {
   final OverallPayment overallPayment = Get.arguments;
 
-  PayeeView({super.key});
+  HomeScreenDepth2({super.key});
 
   @override
-  State<PayeeView> createState() => _PayeeViewState();
+  State<HomeScreenDepth2> createState() => _HomeScreenDepth2State();
 }
 
-class _PayeeViewState extends State<PayeeView> {
+class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
   String otherId = '';
   @override
   void initState() {
