@@ -3,8 +3,61 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:confio/services/authentication_service.dart';
-
 import '../home_screen/navbar.dart';
+const themeColor = Color(0xff7893FF);
+enum RecordMode { payers, payee } // Place the enum definition here, outside of any class
+
+class PaymentRecordButton extends StatelessWidget {
+  final String label;
+  final String count;
+  final Color color; // This will be used for the background color of the button
+  final VoidCallback onTap; // This is the callback that will be called on tap
+
+  const PaymentRecordButton({
+    Key? key,
+    required this.label,
+    required this.count,
+    required this.color, // Color is now required
+    required this.onTap, // onTap callback is now required
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // GestureDetector wraps the entire Container to make it tappable
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: color, // Use the passed color for the background
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              label,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 11,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              count,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -14,6 +67,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  RecordMode mode = RecordMode.payers;
   XFile? _image;
 
   Future<void> _pickImage() async {
@@ -133,6 +187,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         fontSize: 16,
                       ),
                     ),
+                    // Inside the ProfileScreen's build method, after "Ver registros de pagos"
+                    GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      childAspectRatio: (2.3),
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      padding: const EdgeInsets.all(15),
+                      children: <Widget>[
+                        PaymentRecordButton(
+                          label: 'Payers',
+                          count: '10',
+                          color: mode == RecordMode.payers ? themeColor : Colors.grey[900]!,
+                          onTap: () {
+                            setState(() {
+                              mode = RecordMode.payers;
+                            });
+                          },
+                        ),
+                        PaymentRecordButton(
+                          label: 'Payee',
+                          count: '17',
+                          color: mode == RecordMode.payee ? themeColor : Colors.grey[900]!,
+                          onTap: () {
+                            setState(() {
+                              mode = RecordMode.payee;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -146,81 +232,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 
 
-//
-// class ProfileScreen extends StatelessWidget {
-//   const ProfileScreen({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.black,  // keeps the background color as black
-//       body: SafeArea(
-//         child: Stack(
-//           children: [
-//             // Positioned elements in the stack will be displayed on top of each other.
-//             Positioned(
-//               top: 0, // position at the top of the stack
-//               left: 0, // position at the start of the screen (left for LTR layouts)
-//               right: 0, // also position at the end of the screen (right for LTR layout s)
-//               child: Padding(
-//                 padding: const EdgeInsets.all(20.0),
-//                 child: Row(
-//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                   children: [
-//                     // Logo "Confio"
-//                     Text(
-//                       "Confio",
-//                       style: GoogleFonts.delaGothicOne(
-//                           fontSize: 36, color: Color(0xff7893FF)), // make sure the color is correctly defined
-//                     ),
-//                     // Notification and Settings icons
-//                     Row(
-//                       children: [
-//                         GestureDetector(
-//                           onTap: () {
-//                             // action for notification tap
-//                             print('Notification icon tapped!');
-//                           },
-//                           child: Image.asset(
-//                             "lib/assets/images/notification.png",
-//                             width: 25, // defines the width of the image
-//                             height: 25, // defines the height of the image
-//                             // make sure the asset is correctly loaded
-//                           ),
-//                         ),
-//                         SizedBox(width: 12), // spacing between the icons
-//                         GestureDetector(
-//                           onTap: () {
-//                             // action for settings tap
-//                             print('settings icon tapped!');
-//                           },
-//                           child: Image.asset(
-//                             "lib/assets/images/Setting.png",
-//                             width: 25, // defines the width of the image
-//                             height: 25, // defines the height of the image
-//                             // make sure the asset is correctly loaded
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//             // Other positioned widgets or containers in the stack...
-//             // Make sure they do not overlap completely with the top positioned widget
-//             Positioned.fill(
-//                 child: Align(
-//                     alignment: Alignment.bottomCenter,
-//                     child: NavBar(
-//                       currentIndex: 2, // this was set in your original profile screen code
-//                     )
-//                 )
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-//
-// }
