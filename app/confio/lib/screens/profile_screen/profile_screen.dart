@@ -1,11 +1,17 @@
+import 'package:confio/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:confio/services/authentication_service.dart';
 import '../home_screen/navbar.dart';
+
 const themeColor = Color(0xff7893FF);
-enum RecordMode { payers, payee } // Place the enum definition here, outside of any class
+
+enum RecordMode {
+  payer,
+  payee
+} // Place the enum definition here, outside of any class
 
 class PaymentRecordButton extends StatelessWidget {
   final String label;
@@ -58,7 +64,6 @@ class PaymentRecordButton extends StatelessWidget {
   }
 }
 
-
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -67,7 +72,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  RecordMode mode = RecordMode.payers;
+  RecordMode mode = RecordMode.payer;
   XFile? _image;
 
   Future<void> _pickImage() async {
@@ -82,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     double circleRadius =
-        MediaQuery.of(context).size.width * 0.175; // Reduced by 30%
+        MediaQuery.of(context).size.width * 0.125; // Reduced by 30%
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -90,17 +95,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Stack(
           children: [
             Positioned(
-              top: 20.0,
-              left: 20.0,
-              child: Text(
-                "Confio",
-                style: GoogleFonts.delaGothicOne(
-                    fontSize: 36, color: const Color(0xff7893FF)),
+              top: sx! * 0.025,
+              left: sy! * 0.05,
+              child: Image.asset(
+                "lib/assets/images/logo.png",
               ),
             ),
             Positioned(
-              top: 36.0,
-              right: 20.0,
+              top: sx! * 0.03,
+              right: sy! * 0.05,
               child: Row(
                 children: [
                   GestureDetector(
@@ -136,7 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   backgroundColor: Colors.white,
                   backgroundImage: _image != null
                       ? FileImage(File(_image!.path)) as ImageProvider<Object>
-                      : const AssetImage("lib/assets/images/white_circle.png"),
+                      : const AssetImage("lib/assets/images/blankuser.png"),
                 ),
               ),
             ),
@@ -200,17 +203,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         PaymentRecordButton(
                           label: 'Payers',
                           count: '10',
-                          color: mode == RecordMode.payers ? themeColor : Colors.grey[900]!,
+                          color: mode == RecordMode.payer
+                              ? themeColor
+                              : Colors.grey[900]!,
                           onTap: () {
                             setState(() {
-                              mode = RecordMode.payers;
+                              mode = RecordMode.payer;
                             });
                           },
                         ),
                         PaymentRecordButton(
                           label: 'Payee',
                           count: '17',
-                          color: mode == RecordMode.payee ? themeColor : Colors.grey[900]!,
+                          color: mode == RecordMode.payee
+                              ? themeColor
+                              : Colors.grey[900]!,
                           onTap: () {
                             setState(() {
                               mode = RecordMode.payee;
@@ -229,6 +236,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
-
-
-

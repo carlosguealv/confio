@@ -131,7 +131,7 @@ class _AddPayeeState extends State<AddPayee> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.done) {
                           return AddPeopleContainer(
-                            people: snapshot.data!.contacts,
+                            people: snapshot.data!.payers,
                           );
                         }
                         return const Center(

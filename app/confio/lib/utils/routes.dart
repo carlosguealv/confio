@@ -28,7 +28,7 @@ class Routes {
       ),
       GetPage(
         name: '/home',
-        page: () => const AddPayee(),
+        page: () => const HomeScreen(),
       ),
       GetPage(
         name: '/signup',
