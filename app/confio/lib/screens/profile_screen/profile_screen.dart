@@ -1,3 +1,5 @@
+import 'package:confio/models/confio_user.dart';
+import 'package:confio/services/storage_service.dart';
 import 'package:confio/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -79,6 +81,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
+    final ConfioUser? currentUser = await authenticationService.currentConfioUser;
+    storageService.uploadProfilePicture(
+        currentUser!, File(image!.path));
     setState(() {
       _image = image;
     });
