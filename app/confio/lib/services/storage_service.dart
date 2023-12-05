@@ -21,6 +21,22 @@ class StorageService {
       );
     }
   }
+
+  Future<File?> getProfilePic(ConfioUser user) async {
+    try {
+      await FirebaseStorage.instance
+          .ref()
+          .child('images/${user.email}.png')
+          .writeToFile(File('picture.png'));
+
+      return File('picture.png');
+    } on FirebaseException catch (e) {
+      GetSnackBar(
+        title: "Error",
+        message: e.message,
+      );
+    }
+  }
 }
 
 final storageService = StorageService.instance;

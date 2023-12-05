@@ -1,12 +1,14 @@
 import 'package:confio/models/confio_user.dart';
+import 'package:confio/services/firebase_service.dart';
 import 'package:confio/services/storage_service.dart';
 import 'package:confio/utils/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'package:confio/services/authentication_service.dart';
-import '../home_screen/navbar.dart';
+import 'package:confio/screens/home_screen/navbar.dart';
+import 'package:path_provider/path_provider.dart';
 
 const themeColor = Color(0xff7893FF);
 
@@ -75,17 +77,30 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   RecordMode mode = RecordMode.payer;
-  XFile? _image;
+  File? _image;
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
-    final ConfioUser? currentUser = await authenticationService.currentConfioUser;
-    storageService.uploadProfilePicture(
-        currentUser!, File(image!.path));
+    final ConfioUser? currentUser =
+        await authenticationService.currentConfioUser;
+    storageService.uploadProfilePicture(currentUser!, File(image!.path));
     setState(() {
-      _image = image;
+      _image = File(image.path);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    authenticationService.currentConfioUser.then((user) {
+      storageService.getProfilePic(user!).then((value) {
+        setState(() {
+          print(value);
+          _image = value;
+        });
+      });
     });
   }
 
@@ -143,7 +158,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   radius: circleRadius,
                   backgroundColor: Colors.white,
                   backgroundImage: _image != null
-                      ? FileImage(File(_image!.path)) as ImageProvider<Object>
+                      ? FileImage(_image!) as ImageProvider<Object>
                       : const AssetImage("lib/assets/images/blankuser.png"),
                 ),
               ),

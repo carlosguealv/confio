@@ -84,7 +84,7 @@ class _AuthOptionScreenState extends State<AuthOptionScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 35.h,
+                    height: 25.h,
                   ),
                   Stack(
                     children: [

@@ -27,8 +27,9 @@ class LoginLayout extends StatefulWidget {
 }
 
 class _LoginLayoutState extends State<LoginLayout> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  static final TextEditingController emailController = TextEditingController();
+  static final TextEditingController passwordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +69,7 @@ class _LoginLayoutState extends State<LoginLayout> {
                           SizedBox(height: 60.h),
                           GestureDetector(
                             onTap: () {
+                              print("object");
                               Get.back();
                             },
                             child: Row(
