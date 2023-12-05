@@ -45,6 +45,7 @@ class _AuthTextFieldContainerState extends State<AuthTextFieldContainer> {
           ),
         ),
         child: TextField(
+          onTapOutside: (event) => print("your mom"),
           obscureText: widget.isPassword ? !isShown : false,
           controller: widget.controller,
           cursorColor: const Color(0xff7893FF),

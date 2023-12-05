@@ -69,7 +69,6 @@ class _LoginLayoutState extends State<LoginLayout> {
                           SizedBox(height: 60.h),
                           GestureDetector(
                             onTap: () {
-                              print("object");
                               Get.back();
                             },
                             child: Row(
