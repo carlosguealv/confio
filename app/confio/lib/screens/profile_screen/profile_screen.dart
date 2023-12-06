@@ -24,12 +24,12 @@ class PaymentRecordButton extends StatelessWidget {
   final VoidCallback onTap; // This is the callback that will be called on tap
 
   const PaymentRecordButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.count,
     required this.color, // Color is now required
     required this.onTap, // onTap callback is now required
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +37,8 @@ class PaymentRecordButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        width: sy! * 0.25,
+        height: sx! * 0.15,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: color, // Use the passed color for the background
@@ -201,7 +203,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         fontSize: 19,
                       ),
                     ),
-                    const SizedBox(height: 10), // Spacing between the two texts
+                    SizedBox(
+                        height: sx! * 0.025), // Spacing between the two texts
                     Text(
                       "Ver registros de pagos",
                       style: TextStyle(
@@ -210,18 +213,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         fontSize: 16,
                       ),
                     ),
+                    SizedBox(
+                        height: sx! * 0.025), // Spacing between the two texts
                     // Inside the ProfileScreen's build method, after "Ver registros de pagos"
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      childAspectRatio: (2.3),
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      padding: const EdgeInsets.all(15),
-                      children: <Widget>[
+                    Row(
+                      children: [
                         PaymentRecordButton(
-                          label: 'Payers',
+                          label: 'Pagadores',
                           count: '10',
                           color: mode == RecordMode.payer
                               ? themeColor
@@ -233,7 +231,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                         ),
                         PaymentRecordButton(
-                          label: 'Payee',
+                          label: 'Cobradores',
                           count: '17',
                           color: mode == RecordMode.payee
                               ? themeColor

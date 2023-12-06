@@ -51,7 +51,7 @@ class Routes {
 
   static Future<String> getInitialRoute() async {
     if (authenticationService.isUserLoggedIn()) {
-      return '/';
+      return '/home';
     }
     return '/';
   }
