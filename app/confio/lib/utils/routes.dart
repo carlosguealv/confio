@@ -13,6 +13,14 @@ import 'package:confio/screens/home_screen/home_screen.dart';
 class Routes {
   static List<GetPage> getPages() {
     return [
+      GetPage(
+        name: '/',
+        page: () => const AuthOptionScreen(),
+      ),
+      GetPage(
+        name: '/auth-options',
+        page: () => const AuthOptionScreen(),
+      ),
       // profile screen
       GetPage(
         name: '/profile',
@@ -41,10 +49,6 @@ class Routes {
       GetPage(
         name: '/payment',
         page: () => const PaymentScreen(),
-      ),
-      GetPage(
-        name: '/',
-        page: () => const AuthOptionScreen(),
       ),
     ];
   }

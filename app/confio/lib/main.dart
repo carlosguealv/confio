@@ -33,12 +33,6 @@ class ConfioApp extends StatelessWidget {
             return FutureBuilder<String>(
                 future: Routes.getInitialRoute(),
                 builder: (context, initRouteSnapshot) {
-                  if (initRouteSnapshot.connectionState !=
-                      ConnectionState.done) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
                   return GetMaterialApp(
                     debugShowCheckedModeBanner: false,
                     title: 'Confio',
