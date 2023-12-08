@@ -1,14 +1,14 @@
 import 'package:confio/models/confio_user.dart';
-import 'package:confio/services/firebase_service.dart';
+import 'package:confio/screens/components/gap.dart';
 import 'package:confio/services/storage_service.dart';
 import 'package:confio/utils/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'package:confio/services/authentication_service.dart';
 import 'package:confio/screens/home_screen/navbar.dart';
-import 'package:path_provider/path_provider.dart';
 
 const themeColor = Color(0xff7893FF);
 
@@ -42,25 +42,46 @@ class PaymentRecordButton extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: color, // Use the passed color for the background
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(9),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(
+              width: 37,
+              height: 37,
+              decoration: const ShapeDecoration(
+                color: Color(0xFFB9F1EE),
+                shape: OvalBorder(),
+              ),
+              child: label == "Pagadores"
+                  ? Image.asset("lib/assets/images/Group.png",
+                      width: 15, height: 15)
+                  : Image.asset("lib/assets/images/Vector.png",
+                      width: 15, height: 15),
+            ),
+            const SizedBox(height: 5),
             Text(
               label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 11,
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.3100000023841858),
+                fontSize: 12,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w500,
+                height: 0,
+                letterSpacing: 0.36,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 5),
             Text(
               count,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                fontFamily: 'IBM Plex Mono',
+                fontWeight: FontWeight.w500,
+                height: 0,
+                letterSpacing: 0.90,
               ),
             ),
           ],
@@ -141,7 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(width: 12),
                   GestureDetector(
                     onTap: () {
-                      print('Settings icon tapped!');
+                      Get.toNamed('/settings');
                     },
                     child: Image.asset(
                       "lib/assets/images/Setting.png",
@@ -218,24 +239,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     // Inside the ProfileScreen's build method, after "Ver registros de pagos"
                     Row(
                       children: [
+                        const Gap(
+                          width: 0.225,
+                        ),
                         PaymentRecordButton(
                           label: 'Pagadores',
                           count: '10',
-                          color: mode == RecordMode.payer
-                              ? themeColor
-                              : Colors.grey[900]!,
+                          color: const Color.fromARGB(170, 66, 66, 66),
                           onTap: () {
                             setState(() {
                               mode = RecordMode.payer;
                             });
                           },
                         ),
+                        const Gap(
+                          width: 0.05,
+                        ),
                         PaymentRecordButton(
                           label: 'Cobradores',
                           count: '17',
-                          color: mode == RecordMode.payee
-                              ? themeColor
-                              : Colors.grey[900]!,
+                          color: const Color.fromARGB(170, 66, 66, 66),
                           onTap: () {
                             setState(() {
                               mode = RecordMode.payee;

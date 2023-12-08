@@ -74,10 +74,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                           ),
                           Row(
                             children: [
-                              Text(
-                                "Confio",
-                                style: GoogleFonts.delaGothicOne(
-                                    fontSize: 36, color: themeColor),
+                              Image.asset(
+                                "lib/assets/images/logo.png",
                               ),
                               const Spacer(),
                               InkWell(
