@@ -85,7 +85,7 @@ class SettingsScreen extends StatelessWidget {
                       width: 0.05,
                     ),
                     Text(
-                      'Account Info',
+                      'Info de la cuenta',
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.7699999809265137),
                         fontSize: 14,
@@ -105,6 +105,151 @@ class SettingsScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              // Ask for help button
+              GestureDetector(
+                onTap: () {
+                  print("Ask for help tapped");
+                },
+                child: Row(
+                  children: [
+                    const Gap(
+                      width: 0.05,
+                    ),
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: ShapeDecoration(
+                        color: Colors.white.withOpacity(0.09000000357627869),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7)),
+                      ),
+                      child: Image.asset(
+                        "lib/assets/images/2-User.png",
+                        width: 20,
+                        height: 20,
+                      ),
+                    ),
+                    const Gap(
+                      width: 0.05,
+                    ),
+                    Text(
+                      'Pedir Ayuda',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7699999809265137),
+                        fontSize: 14,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w400,
+                        height: 0.22,
+                      ),
+                    ),
+                    const Gap(
+                      width: 0.55,
+                    ),
+                    Image.asset(
+                      "lib/assets/images/arrow_button.png",
+                      width: 10,
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
+              // Data & Privacy button
+              GestureDetector(
+                onTap: () {
+                  print("Data & Privacy button tapped");
+                },
+                child: Row(
+                  children: [
+                    const Gap(
+                      width: 0.05,
+                    ),
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: ShapeDecoration(
+                        color: Colors.white.withOpacity(0.09000000357627869),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7)),
+                      ),
+                      child: Image.asset(
+                        "lib/assets/images/2-User.png",
+                        width: 20,
+                        height: 20,
+                      ),
+                    ),
+                    const Gap(
+                      width: 0.05,
+                    ),
+                    Text(
+                      'Datos y Privacidad',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7699999809265137),
+                        fontSize: 14,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w400,
+                        height: 0.22,
+                      ),
+                    ),
+                    const Gap(
+                      width: 0.55,
+                    ),
+                    Image.asset(
+                      "lib/assets/images/arrow_button.png",
+                      width: 10,
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
+              // Notification preferences button
+              GestureDetector(
+                onTap: () {
+                  print("Notification preferences button tapped");
+                },
+                child: Row(
+                  children: [
+                    const Gap(
+                      width: 0.05,
+                    ),
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: ShapeDecoration(
+                        color: Colors.white.withOpacity(0.09000000357627869),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7)),
+                      ),
+                      child: Image.asset(
+                        "lib/assets/images/2-User.png",
+                        width: 20,
+                        height: 20,
+                      ),
+                    ),
+                    const Gap(
+                      width: 0.05,
+                    ),
+                    Text(
+                      'Preferencias de Notificación',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7699999809265137),
+                        fontSize: 14,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w400,
+                        height: 0.22,
+                      ),
+                    ),
+                    const Gap(
+                      width: 0.55,
+                    ),
+                    Image.asset(
+                      "lib/assets/images/arrow_button.png",
+                      width: 10,
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
+
             ],
           ),
         ),
