@@ -3,6 +3,7 @@ import 'package:confio/screens/components/gap.dart';
 import 'package:confio/services/storage_service.dart';
 import 'package:confio/utils/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
@@ -145,7 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             Positioned(
-              top: sx! * 0.03,
+              top: sx! * 0.04,
               right: sy! * 0.05,
               child: Row(
                 children: [
@@ -155,8 +156,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     child: Image.asset(
                       "lib/assets/images/notification.png",
-                      width: 25,
-                      height: 25,
+                      width: 25.w,
+                      height: 25.h,
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -166,8 +167,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     child: Image.asset(
                       "lib/assets/images/Setting.png",
-                      width: 25,
-                      height: 25,
+                      width: 25.w,
+                      height: 25.h,
                     ),
                   ),
                 ],
@@ -267,6 +268,129 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ],
                     ),
+                    const Gap(
+                      height: 0.05,
+                    ),
+                    GestureDetector(
+                      onTap: () => print('Invite button tapped!'),
+                      child: SizedBox(
+                        width: 388,
+                        height: 59,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              left: 0,
+                              top: 0,
+                              child: Container(
+                                width: 388,
+                                height: 59,
+                                decoration: ShapeDecoration(
+                                  color: Colors.white
+                                      .withOpacity(0.03999999910593033),
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                      width: 1.22,
+                                      color: Colors.white
+                                          .withOpacity(0.07999999821186066),
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.16),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              left: 58,
+                              top: 30,
+                              child: Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'Invita a otros ',
+                                      style: TextStyle(
+                                        color: Colors.white
+                                            .withOpacity(0.44999998807907104),
+                                        fontSize: 13,
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0.12,
+                                        letterSpacing: 0.24,
+                                      ),
+                                    ),
+                                    const TextSpan(
+                                      text: 'pagadores',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0.12,
+                                        letterSpacing: 0.24,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: ' or ',
+                                      style: TextStyle(
+                                        color: Colors.white
+                                            .withOpacity(0.44999998807907104),
+                                        fontSize: 13,
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0.12,
+                                        letterSpacing: 0.24,
+                                      ),
+                                    ),
+                                    const TextSpan(
+                                      text: 'cobradores',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0.12,
+                                        letterSpacing: 0.24,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              left: 13,
+                              top: 16,
+                              child: SizedBox(
+                                width: 27.97,
+                                height: 27.97,
+                                child: Stack(
+                                  children: [
+                                    Positioned(
+                                      left: 0,
+                                      top: 0,
+                                      child: Container(
+                                        width: 27.97,
+                                        height: 27.97,
+                                        decoration: ShapeDecoration(
+                                          color: Colors.white
+                                              .withOpacity(0.05000000074505806),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8.32),
+                                          ),
+                                        ),
+                                        child: Image.asset(
+                                          "lib/assets/images/invite.png",
+                                          width: 27.97,
+                                          height: 27.97,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:confio/screens/components/gap.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -35,8 +36,8 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   Image.asset(
                     "lib/assets/images/Setting.png",
-                    width: 25,
-                    height: 25,
+                    width: 25.w,
+                    height: 25.h,
                   ),
                   const Gap(
                     width: 0.025,
@@ -95,7 +96,7 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     const Gap(
-                      width: 0.55,
+                      width: 0.50335,
                     ),
                     Image.asset(
                       "lib/assets/images/arrow_button.png",
@@ -104,6 +105,9 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+              const Gap(
+                height: 0.025,
               ),
               // Ask for help button
               GestureDetector(
@@ -124,7 +128,7 @@ class SettingsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(7)),
                       ),
                       child: Image.asset(
-                        "lib/assets/images/2-User.png",
+                        "lib/assets/images/Danger-Circle.png",
                         width: 20,
                         height: 20,
                       ),
@@ -143,7 +147,7 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     const Gap(
-                      width: 0.55,
+                      width: 0.58,
                     ),
                     Image.asset(
                       "lib/assets/images/arrow_button.png",
@@ -152,6 +156,9 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+              const Gap(
+                height: 0.025,
               ),
               // Data & Privacy button
               GestureDetector(
@@ -172,7 +179,7 @@ class SettingsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(7)),
                       ),
                       child: Image.asset(
-                        "lib/assets/images/2-User.png",
+                        "lib/assets/images/Lock.png",
                         width: 20,
                         height: 20,
                       ),
@@ -191,7 +198,7 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     const Gap(
-                      width: 0.55,
+                      width: 0.467,
                     ),
                     Image.asset(
                       "lib/assets/images/arrow_button.png",
@@ -201,10 +208,79 @@ class SettingsScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              const Gap(
+                height: 0.025,
+              ),
               // Notification preferences button
               GestureDetector(
                 onTap: () {
                   print("Notification preferences button tapped");
+                },
+                child: Row(
+                  children: [
+                    const Gap(
+                      width: 0.05,
+                    ),
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: ShapeDecoration(
+                        color: Colors.white.withOpacity(0.09000000357627869),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7)),
+                      ),
+                      child: Image.asset(
+                        "lib/assets/images/Notification.png",
+                        width: 20,
+                        height: 20,
+                      ),
+                    ),
+                    const Gap(
+                      width: 0.05,
+                    ),
+                    Text(
+                      'Preferencias de Notificación',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7699999809265137),
+                        fontSize: 14,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w400,
+                        height: 0.22,
+                      ),
+                    ),
+                    const Gap(
+                      width: 0.305,
+                    ),
+                    Image.asset(
+                      "lib/assets/images/arrow_button.png",
+                      width: 10,
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
+              const Gap(
+                height: 0.03,
+              ),
+              Container(
+                width: 388,
+                decoration: const ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      width: 1,
+                      strokeAlign: BorderSide.strokeAlignCenter,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              const Gap(
+                height: 0.03,
+              ),
+              // Log out button
+              GestureDetector(
+                onTap: () {
+                  print("Log out button tapped");
                 },
                 child: Row(
                   children: [
@@ -229,7 +305,7 @@ class SettingsScreen extends StatelessWidget {
                       width: 0.05,
                     ),
                     Text(
-                      'Preferencias de Notificación',
+                      'Cerrar Sesión',
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.7699999809265137),
                         fontSize: 14,
@@ -249,7 +325,6 @@ class SettingsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-
             ],
           ),
         ),
