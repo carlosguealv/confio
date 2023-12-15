@@ -226,12 +226,12 @@ class FirebaseService {
     }
   }
 
-  Future<Map<String, dynamic>?> getUserByUid(String uid) async {
+  Future<DocumentSnapshot?> getUserByUid(String uid) async {
     try {
       DocumentSnapshot doc =
           await _firestore.collection("users").doc(uid).get();
 
-      final data = doc.data() as Map<String, dynamic>;
+      final data = doc;
 
       return data;
     } on FirebaseException {

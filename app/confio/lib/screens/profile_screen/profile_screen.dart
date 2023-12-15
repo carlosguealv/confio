@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confio/models/confio_user.dart';
 import 'package:confio/screens/components/gap.dart';
+import 'package:confio/services/firebase_service.dart';
 import 'package:confio/services/storage_service.dart';
 import 'package:confio/utils/size_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -23,6 +26,7 @@ class PaymentRecordButton extends StatelessWidget {
   final String count;
   final Color color; // This will be used for the background color of the button
   final VoidCallback onTap; // This is the callback that will be called on tap
+  final bool outlined;
 
   const PaymentRecordButton({
     super.key,
@@ -30,6 +34,7 @@ class PaymentRecordButton extends StatelessWidget {
     required this.count,
     required this.color, // Color is now required
     required this.onTap, // onTap callback is now required
+    required this.outlined,
   });
 
   @override
@@ -37,6 +42,7 @@ class PaymentRecordButton extends StatelessWidget {
     // GestureDetector wraps the entire Container to make it tappable
     return GestureDetector(
       onTap: onTap,
+      // outline container only if outlined is true
       child: Container(
         width: sy! * 0.25,
         height: sx! * 0.15,
@@ -44,6 +50,12 @@ class PaymentRecordButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: color, // Use the passed color for the background
           borderRadius: BorderRadius.circular(9),
+          border: outlined
+              ? Border.all(
+                  color: const Color(0xCEB7EEEB),
+                  width: 1.5,
+                )
+              : null,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -101,17 +113,22 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   RecordMode mode = RecordMode.payer;
-  File? _image;
+  Uint8List? _image;
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
+    if (image == null) return;
+
+    final Uint8List bytes = await image.readAsBytes();
+
     final ConfioUser? currentUser =
         await authenticationService.currentConfioUser;
-    storageService.uploadProfilePicture(currentUser!, File(image!.path));
+
+    storageService.uploadProfilePicture(currentUser!, bytes);
     setState(() {
-      _image = File(image.path);
+      _image = bytes;
     });
   }
 
@@ -121,7 +138,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     authenticationService.currentConfioUser.then((user) {
       storageService.getProfilePic(user!).then((value) {
         setState(() {
-          print(value);
           _image = value;
         });
       });
@@ -182,7 +198,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   radius: circleRadius,
                   backgroundColor: Colors.white,
                   backgroundImage: _image != null
-                      ? FileImage(_image!) as ImageProvider<Object>
+                      ? MemoryImage(_image!) as ImageProvider<Object>
                       : const AssetImage("lib/assets/images/blankuser.png"),
                 ),
               ),
@@ -198,14 +214,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 backgroundColor: Colors.black,
                 mini: true,
                 child: const Icon(Icons.add_a_photo, size: 28),
-              ),
-            ),
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: NavBar(
-                  currentIndex: 2,
-                ),
               ),
             ),
             Align(
@@ -252,6 +260,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mode = RecordMode.payer;
                             });
                           },
+                          outlined: mode == RecordMode.payer,
                         ),
                         const Gap(
                           width: 0.05,
@@ -265,6 +274,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mode = RecordMode.payee;
                             });
                           },
+                          outlined: mode == RecordMode.payee,
                         ),
                       ],
                     ),
@@ -390,11 +400,94 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ],
                         ),
                       ),
-                    )
+                    ),
+                    const Gap(
+                      height: 0.05,
+                    ),
+                    Text(
+                      'Tus ${mode == RecordMode.payer ? 'pagadores' : 'cobradores'}',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.44999998807907104),
+                        fontSize: 16,
+                        fontFamily: 'Roboto Mono',
+                        fontWeight: FontWeight.w700,
+                        height: 0.12,
+                        letterSpacing: 0.90,
+                      ),
+                    ),
+                    const Gap(
+                      height: 0.05,
+                    ),
+                    // Item list with item count equal to the amount of payer or payees (depending on the mode)
+                    SingleChildScrollView(
+                      child: FutureBuilder(
+                        future: authenticationService.currentConfioUser,
+                        builder: (context, snapshot) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: mode == RecordMode.payer
+                                ? snapshot.data!.payers.length
+                                : snapshot.data!.payees.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                width: 388,
+                                height: 77,
+                                decoration: ShapeDecoration(
+                                  color: const Color(0x66202227),
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                      width: 1,
+                                      color: Colors.white
+                                          .withOpacity(0.03999999910593033),
+                                    ),
+                                    borderRadius: BorderRadius.circular(17),
+                                  ),
+                                ),
+                                child: Row(children: [
+                                  FutureBuilder(
+                                    future: firebaseService.getUserByUid(
+                                        mode == RecordMode.payer
+                                            ? snapshot.data!.payers[index]!
+                                            : snapshot.data!.payees[index]!),
+                                    builder: (context, snapshot) {
+                                      return FutureBuilder(
+                                          future: storageService.getProfilePic(
+                                              ConfioUser.fromDocument(
+                                                  snapshot.data!)),
+                                          builder: (context, snapshot) {
+                                            return CircleAvatar(
+                                              radius: 30,
+                                              backgroundColor: Colors.white,
+                                              backgroundImage: snapshot.data !=
+                                                      null
+                                                  ? MemoryImage(snapshot.data!)
+                                                      as ImageProvider<Object>
+                                                  : const AssetImage(
+                                                      "lib/assets/images/blankuser.png"),
+                                            );
+                                          });
+                                    },
+                                  ),
+                                ]),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
-            )
+            ),
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: NavBar(
+                  currentIndex: 2,
+                ),
+              ),
+            ),
           ],
         ),
       ),

@@ -27,7 +27,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
       height: 108,
       width: double.infinity.w,
       decoration: const BoxDecoration(
-          color: Colors.transparent,
+          color: Colors.black,
           image: DecorationImage(
               image: AssetImage(
                 "lib/assets/images/navbarheader.png",
