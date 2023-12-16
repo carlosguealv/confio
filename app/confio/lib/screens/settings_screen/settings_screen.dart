@@ -1,4 +1,5 @@
 import 'package:confio/screens/components/gap.dart';
+import 'package:confio/services/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -281,7 +282,28 @@ class SettingsScreen extends StatelessWidget {
               // Log out button
               GestureDetector(
                 onTap: () {
-                  print("Log out button tapped");
+                  showDialog(context: context, builder: (context) {
+                    return AlertDialog(
+                      title: const Text("Cerrar Sesión"),
+                      content: const Text("¿Estás seguro de que quieres cerrar sesión?"),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          child: const Text("Cancelar"),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Get.back();
+                            authenticationService.signOutUser();
+                            Get.offAllNamed('/auth-options');
+                          },
+                          child: const Text("Cerrar Sesión"),
+                        ),
+                      ],
+                    );
+                  }),
                 },
                 child: Row(
                   children: [

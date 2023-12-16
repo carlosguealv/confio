@@ -252,30 +252,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const Gap(
                             width: 0.225,
                           ),
-                          PaymentRecordButton(
-                            label: 'Pagadores',
-                            count: '10',
-                            color: const Color.fromARGB(170, 66, 66, 66),
-                            onTap: () {
-                              setState(() {
-                                mode = RecordMode.payer;
-                              });
-                            },
-                            outlined: mode == RecordMode.payer,
+                          FutureBuilder(
+                            future: authenticationService.currentConfioUser,
+                            builder: (context, snapshot) {
+                              return PaymentRecordButton(
+                                label: 'Pagadores',
+                                count: snapshot.data!.payers.length.toString(),
+                                color: const Color.fromARGB(170, 66, 66, 66),
+                                onTap: () {
+                                  setState(() {
+                                    mode = RecordMode.payer;
+                                  });
+                                },
+                                outlined: mode == RecordMode.payer,
+                              );
+                            }
                           ),
                           const Gap(
                             width: 0.05,
                           ),
-                          PaymentRecordButton(
-                            label: 'Cobradores',
-                            count: '17',
-                            color: const Color.fromARGB(170, 66, 66, 66),
-                            onTap: () {
-                              setState(() {
-                                mode = RecordMode.payee;
-                              });
-                            },
-                            outlined: mode == RecordMode.payee,
+                          FutureBuilder(
+                            future: authenticationService.currentConfioUser,
+                            builder: (context, snapshot) {
+                              return PaymentRecordButton(
+                                label: 'Cobradores',
+                                count: snapshot.data!.payees.length.toString(),
+                                color: const Color.fromARGB(170, 66, 66, 66),
+                                onTap: () {
+                                  setState(() {
+                                    mode = RecordMode.payee;
+                                  });
+                                },
+                                outlined: mode == RecordMode.payee,
+                              );
+                            }
                           ),
                         ],
                       ),
