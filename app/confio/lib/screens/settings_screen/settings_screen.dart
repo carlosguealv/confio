@@ -1,6 +1,7 @@
 import 'package:confio/screens/components/gap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -61,7 +62,7 @@ class SettingsScreen extends StatelessWidget {
               // Account info button
               GestureDetector(
                 onTap: () {
-                  print("Account info button tapped");
+                  Get.toNamed('/account-info');
                 },
                 child: Row(
                   children: [
