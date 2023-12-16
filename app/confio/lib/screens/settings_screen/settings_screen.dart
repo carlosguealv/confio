@@ -282,28 +282,31 @@ class SettingsScreen extends StatelessWidget {
               // Log out button
               GestureDetector(
                 onTap: () {
-                  showDialog(context: context, builder: (context) {
-                    return AlertDialog(
-                      title: const Text("Cerrar Sesión"),
-                      content: const Text("¿Estás seguro de que quieres cerrar sesión?"),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          child: const Text("Cancelar"),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Get.back();
-                            authenticationService.signOutUser();
-                            Get.offAllNamed('/auth-options');
-                          },
-                          child: const Text("Cerrar Sesión"),
-                        ),
-                      ],
-                    );
-                  }),
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("Cerrar Sesión"),
+                          content: const Text(
+                              "¿Estás seguro de que quieres cerrar sesión?"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              child: const Text("Cancelar"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Get.back();
+                                authenticationService.signOutUser();
+                                Get.offAllNamed('/auth-options');
+                              },
+                              child: const Text("Cerrar Sesión"),
+                            ),
+                          ],
+                        );
+                      });
                 },
                 child: Row(
                   children: [
