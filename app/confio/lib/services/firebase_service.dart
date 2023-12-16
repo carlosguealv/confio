@@ -231,10 +231,11 @@ class FirebaseService {
       DocumentSnapshot doc =
           await _firestore.collection("users").doc(uid).get();
 
-      final data = doc;
+      print("yay");
 
-      return data;
+      return doc;
     } on FirebaseException {
+      print("could not get user");
       return null;
     }
   }

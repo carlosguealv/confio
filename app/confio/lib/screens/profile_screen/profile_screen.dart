@@ -224,208 +224,208 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       (2 * circleRadius) +
                       20,
                 ),
-                child: Column(
-                  children: [
-                    Text(
-                      authenticationService.currentUser!.email!,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 19,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Text(
+                        authenticationService.currentUser!.email!,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 19,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                        height: sx! * 0.025), // Spacing between the two texts
-                    Text(
-                      "Ver registros de pagos",
-                      style: TextStyle(
-                        color:
-                            Colors.white.withOpacity(0.7), // Less bright white
-                        fontSize: 16,
+                      SizedBox(
+                          height: sx! * 0.025), // Spacing between the two texts
+                      Text(
+                        "Ver registros de pagos",
+                        style: TextStyle(
+                          color:
+                              Colors.white.withOpacity(0.7), // Less bright white
+                          fontSize: 16,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                        height: sx! * 0.025), // Spacing between the two texts
-                    // Inside the ProfileScreen's build method, after "Ver registros de pagos"
-                    Row(
-                      children: [
-                        const Gap(
-                          width: 0.225,
-                        ),
-                        PaymentRecordButton(
-                          label: 'Pagadores',
-                          count: '10',
-                          color: const Color.fromARGB(170, 66, 66, 66),
-                          onTap: () {
-                            setState(() {
-                              mode = RecordMode.payer;
-                            });
-                          },
-                          outlined: mode == RecordMode.payer,
-                        ),
-                        const Gap(
-                          width: 0.05,
-                        ),
-                        PaymentRecordButton(
-                          label: 'Cobradores',
-                          count: '17',
-                          color: const Color.fromARGB(170, 66, 66, 66),
-                          onTap: () {
-                            setState(() {
-                              mode = RecordMode.payee;
-                            });
-                          },
-                          outlined: mode == RecordMode.payee,
-                        ),
-                      ],
-                    ),
-                    const Gap(
-                      height: 0.05,
-                    ),
-                    GestureDetector(
-                      onTap: () => print('Invite button tapped!'),
-                      child: SizedBox(
-                        width: 388,
-                        height: 59,
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              left: 0,
-                              top: 0,
-                              child: Container(
-                                width: 388,
-                                height: 59,
-                                decoration: ShapeDecoration(
-                                  color: Colors.white
-                                      .withOpacity(0.03999999910593033),
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                      width: 1.22,
-                                      color: Colors.white
-                                          .withOpacity(0.07999999821186066),
+                      SizedBox(
+                          height: sx! * 0.025), // Spacing between the two texts
+                      // Inside the ProfileScreen's build method, after "Ver registros de pagos"
+                      Row(
+                        children: [
+                          const Gap(
+                            width: 0.225,
+                          ),
+                          PaymentRecordButton(
+                            label: 'Pagadores',
+                            count: '10',
+                            color: const Color.fromARGB(170, 66, 66, 66),
+                            onTap: () {
+                              setState(() {
+                                mode = RecordMode.payer;
+                              });
+                            },
+                            outlined: mode == RecordMode.payer,
+                          ),
+                          const Gap(
+                            width: 0.05,
+                          ),
+                          PaymentRecordButton(
+                            label: 'Cobradores',
+                            count: '17',
+                            color: const Color.fromARGB(170, 66, 66, 66),
+                            onTap: () {
+                              setState(() {
+                                mode = RecordMode.payee;
+                              });
+                            },
+                            outlined: mode == RecordMode.payee,
+                          ),
+                        ],
+                      ),
+                      const Gap(
+                        height: 0.05,
+                      ),
+                      GestureDetector(
+                        onTap: () => print('Invite button tapped!'),
+                        child: SizedBox(
+                          width: 388,
+                          height: 59,
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                left: 0,
+                                top: 0,
+                                child: Container(
+                                  width: 388,
+                                  height: 59,
+                                  decoration: ShapeDecoration(
+                                    color: Colors.white
+                                        .withOpacity(0.03999999910593033),
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                        width: 1.22,
+                                        color: Colors.white
+                                            .withOpacity(0.07999999821186066),
+                                      ),
+                                      borderRadius: BorderRadius.circular(12.16),
                                     ),
-                                    borderRadius: BorderRadius.circular(12.16),
                                   ),
                                 ),
                               ),
-                            ),
-                            Positioned(
-                              left: 58,
-                              top: 30,
-                              child: Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'Invita a otros ',
-                                      style: TextStyle(
-                                        color: Colors.white
-                                            .withOpacity(0.44999998807907104),
-                                        fontSize: 13,
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w400,
-                                        height: 0.12,
-                                        letterSpacing: 0.24,
+                              Positioned(
+                                left: 58,
+                                top: 30,
+                                child: Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Invita a otros ',
+                                        style: TextStyle(
+                                          color: Colors.white
+                                              .withOpacity(0.44999998807907104),
+                                          fontSize: 13,
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w400,
+                                          height: 0.12,
+                                          letterSpacing: 0.24,
+                                        ),
                                       ),
-                                    ),
-                                    const TextSpan(
-                                      text: 'pagadores',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w400,
-                                        height: 0.12,
-                                        letterSpacing: 0.24,
+                                      const TextSpan(
+                                        text: 'pagadores',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w400,
+                                          height: 0.12,
+                                          letterSpacing: 0.24,
+                                        ),
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text: ' or ',
-                                      style: TextStyle(
-                                        color: Colors.white
-                                            .withOpacity(0.44999998807907104),
-                                        fontSize: 13,
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w400,
-                                        height: 0.12,
-                                        letterSpacing: 0.24,
+                                      TextSpan(
+                                        text: ' or ',
+                                        style: TextStyle(
+                                          color: Colors.white
+                                              .withOpacity(0.44999998807907104),
+                                          fontSize: 13,
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w400,
+                                          height: 0.12,
+                                          letterSpacing: 0.24,
+                                        ),
                                       ),
-                                    ),
-                                    const TextSpan(
-                                      text: 'cobradores',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w400,
-                                        height: 0.12,
-                                        letterSpacing: 0.24,
+                                      const TextSpan(
+                                        text: 'cobradores',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w400,
+                                          height: 0.12,
+                                          letterSpacing: 0.24,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            Positioned(
-                              left: 13,
-                              top: 16,
-                              child: SizedBox(
-                                width: 27.97,
-                                height: 27.97,
-                                child: Stack(
-                                  children: [
-                                    Positioned(
-                                      left: 0,
-                                      top: 0,
-                                      child: Container(
-                                        width: 27.97,
-                                        height: 27.97,
-                                        decoration: ShapeDecoration(
-                                          color: Colors.white
-                                              .withOpacity(0.05000000074505806),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.32),
-                                          ),
-                                        ),
-                                        child: Image.asset(
-                                          "lib/assets/images/invite.png",
+                              Positioned(
+                                left: 13,
+                                top: 16,
+                                child: SizedBox(
+                                  width: 27.97,
+                                  height: 27.97,
+                                  child: Stack(
+                                    children: [
+                                      Positioned(
+                                        left: 0,
+                                        top: 0,
+                                        child: Container(
                                           width: 27.97,
                                           height: 27.97,
+                                          decoration: ShapeDecoration(
+                                            color: Colors.white
+                                                .withOpacity(0.05000000074505806),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.32),
+                                            ),
+                                          ),
+                                          child: Image.asset(
+                                            "lib/assets/images/invite.png",
+                                            width: 27.97,
+                                            height: 27.97,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const Gap(
-                      height: 0.05,
-                    ),
-                    Text(
-                      'Tus ${mode == RecordMode.payer ? 'pagadores' : 'cobradores'}',
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.44999998807907104),
-                        fontSize: 16,
-                        fontFamily: 'Roboto Mono',
-                        fontWeight: FontWeight.w700,
-                        height: 0.12,
-                        letterSpacing: 0.90,
+                      const Gap(
+                        height: 0.05,
                       ),
-                    ),
-                    const Gap(
-                      height: 0.05,
-                    ),
-                    // Item list with item count equal to the amount of payer or payees (depending on the mode)
-                    SingleChildScrollView(
-                      child: FutureBuilder(
+                      Text(
+                        'Tus ${mode == RecordMode.payer ? 'pagadores' : 'cobradores'}',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.44999998807907104),
+                          fontSize: 16,
+                          fontFamily: 'Roboto Mono',
+                          fontWeight: FontWeight.w700,
+                          height: 0.12,
+                          letterSpacing: 0.90,
+                        ),
+                      ),
+                      const Gap(
+                        height: 0.05,
+                      ),
+                      // Item list with item count equal to the amount of payer or payees (depending on the mode)
+                      FutureBuilder(
                         future: authenticationService.currentConfioUser,
                         builder: (context, snapshot) {
                           return ListView.builder(
                             shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: mode == RecordMode.payer
                                 ? snapshot.data!.payers.length
                                 : snapshot.data!.payees.length,
@@ -450,21 +450,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         mode == RecordMode.payer
                                             ? snapshot.data!.payers[index]!
                                             : snapshot.data!.payees[index]!),
-                                    builder: (context, snapshot) {
+                                    builder: (context, snapshot1) {
                                       return FutureBuilder(
                                           future: storageService.getProfilePic(
                                               ConfioUser.fromDocument(
-                                                  snapshot.data!)),
-                                          builder: (context, snapshot) {
-                                            return CircleAvatar(
-                                              radius: 30,
-                                              backgroundColor: Colors.white,
-                                              backgroundImage: snapshot.data !=
-                                                      null
-                                                  ? MemoryImage(snapshot.data!)
-                                                      as ImageProvider<Object>
-                                                  : const AssetImage(
-                                                      "lib/assets/images/blankuser.png"),
+                                                  snapshot1.data!)),
+                                          builder: (context, snapshot2) {
+                                            return Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const Gap(
+                                                      width: 0.05,
+                                                    ),
+                                                    CircleAvatar(
+                                                      radius: 20,
+                                                      backgroundColor: Colors.white,
+                                                      backgroundImage: snapshot2
+                                                                  .data !=
+                                                              null
+                                                          ? MemoryImage(
+                                                                  snapshot2.data!)
+                                                              as ImageProvider<
+                                                                  Object>
+                                                          : const AssetImage(
+                                                              "lib/assets/images/blankuser.png"),
+                                                    ),
+                                                    const Gap(
+                                                      width: 0.05,
+                                                    ),
+                                                    Text(
+                                                      ConfioUser.fromDocument(
+                                                              snapshot1.data!)
+                                                          .email!,
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 16,
+                                                        fontFamily: 'Roboto Mono',
+                                                        fontWeight: FontWeight.w700,
+                                                        height: 0.12,
+                                                        letterSpacing: 0.90,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const Gap(
+                                                  height: 0.05,
+                                                ),
+                                              ],
                                             );
                                           });
                                     },
@@ -475,8 +508,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           );
                         },
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

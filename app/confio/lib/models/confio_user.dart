@@ -17,13 +17,14 @@ class ConfioUser {
 
   factory ConfioUser.fromDocument(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    print(data);
     return ConfioUser._(
       payers: (data['payers'] as List<dynamic>)
           .map<String?>((c) => c.toString())
           .toList(),
       payees: (data['payees'] as List<dynamic>)
           .map<String?>((c) => c.toString())
-          .toList(),     
+          .toList(),
       id: doc.id,
       email: data['email'] as String?,
       doc: doc,
