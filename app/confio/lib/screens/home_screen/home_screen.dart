@@ -1,8 +1,11 @@
 import 'package:confio/logic/blocs/home_screen_bloc/home_screen_bloc.dart';
+import 'package:confio/models/confio_user.dart';
 import 'package:confio/models/payment.dart';
 import 'package:confio/screens/home_screen/navbar.dart';
 import 'package:confio/services/authentication_service.dart';
 import 'package:confio/services/firebase_service.dart';
+import 'package:confio/services/storage_service.dart';
+import 'package:confio/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -401,12 +404,29 @@ class _HomeLayoutState extends State<HomeLayout> {
                                         width: 1)),
                                 child: Row(
                                   children: [
-                                    const SizedBox(
+                                    SizedBox(
                                         height: 51,
                                         width: 51,
-                                        child: CircleAvatar(
-                                          backgroundImage: AssetImage(
-                                              "lib/assets/images/demo_pfp.png"),
+                                        child: FutureBuilder(
+                                          future: firebaseService.getUserByUid(
+                                              mode == Modes.pagar
+                                                  ? state
+                                                      .restOfPayments[index].to
+                                                  : state.restOfPayments[index]
+                                                      .from),
+                                          builder: (context, snapshot) {
+                                            return FutureBuilder(
+                                              future: storageService
+                                                  .getProfilePic(
+                                                      ConfioUser.fromDocument(snapshot
+                                                                  .data!)),
+                                              builder: (context, snapshot1) {
+                                                return CircleAvatar(
+                                                  backgroundImage: snapshot1.data != null ? MemoryImage(snapshot1.data!) as ImageProvider : AssetImage("lib/assets/images/blankuser.png"),
+                                                );
+                                              }
+                                            );
+                                          }
                                         )),
                                     const SizedBox(
                                       width: 10,
@@ -431,19 +451,20 @@ class _HomeLayoutState extends State<HomeLayout> {
                                                   ConnectionState.done) {
                                                 return const Text("");
                                               }
-                                              return Text(
-                                                snapshot.data!,
-                                                softWrap: false,
-                                                maxLines: 5,
-                                                overflow: TextOverflow.clip,
-                                                style: GoogleFonts.inter(
-                                                  fontWeight: FontWeight.w600,
+                                              return Container(
+                                                width: sy! * 0.3,
+                                                height: sx! * 0.05,
+                                                child: Text(
+                                                  snapshot.data!,
+                                                  softWrap: true,
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.clip,
+                                                  style: GoogleFonts.inter(
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
                                               );
                                             }),
-                                        const SizedBox(
-                                          height: 6,
-                                        ),
                                         Row(
                                           children: [
                                             SizedBox(
