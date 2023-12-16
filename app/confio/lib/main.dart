@@ -6,13 +6,14 @@ import 'firebase_options.dart';
 import 'package:get/get.dart';
 import 'package:confio/utils/size_config.dart';
 import 'package:confio/utils/routes.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const ConfioApp());
+  initializeDateFormatting('es_ES').then((_) => runApp(const ConfioApp()));
 }
 
 class ConfioApp extends StatelessWidget {
@@ -27,23 +28,24 @@ class ConfioApp extends StatelessWidget {
     return ScreenUtilInit(
         designSize: const Size(428, 1050),
         builder: (context, child) {
-          return LayoutBuilder(
-						builder: (context, constraints) {
-							SizeConfig.init(constraints, Orientation.portrait);
-							return FutureBuilder<String>(
-								future: Routes.getInitialRoute(),
-								builder: (context, initRouteSnapshot) {
-									return GetMaterialApp(
+          return LayoutBuilder(builder: (context, constraints) {
+            SizeConfig.init(constraints, Orientation.portrait);
+            return FutureBuilder<String>(
+                future: Routes.getInitialRoute(),
+                builder: (context, initRouteSnapshot) {
+                  if (!initRouteSnapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return GetMaterialApp(
                     debugShowCheckedModeBanner: false,
                     title: 'Confio',
-										initialRoute: initRouteSnapshot.data,
-										getPages: Routes.getPages(),
-									);
-								}
-							);
-						}
-					);
-        }
-		);
+                    initialRoute: initRouteSnapshot.data,
+                    getPages: Routes.getPages(),
+                  );
+                });
+          });
+        });
   }
 }

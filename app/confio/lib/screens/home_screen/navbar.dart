@@ -13,7 +13,7 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
-  Color primaryColor = Color(0xff948DFF);
+  Color primaryColor = const Color(0xff948DFF);
 
   List<String> screens = const [
     '/home',
@@ -27,7 +27,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
       height: 108,
       width: double.infinity.w,
       decoration: const BoxDecoration(
-          color: Colors.transparent,
+          color: Colors.black,
           image: DecorationImage(
               image: AssetImage(
                 "lib/assets/images/navbarheader.png",
@@ -76,7 +76,10 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
   Widget navbarItemCircle({required int index}) {
     return InkWell(
       onTap: () {
-        setState(() {});
+        setState(() {
+          widget.currentIndex = index;
+          Get.toNamed(screens[index]);
+        });
       },
       child: Container(
         width: 59.w,
@@ -84,10 +87,10 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
         alignment: Alignment.center,
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(width: 2.43.w, color: Color(0xff575757))),
+            border: Border.all(width: 2.43.w, color: const Color(0xff575757))),
         child: Icon(
           Icons.add,
-          color: (0 == index) ? Color(0xff7893FF) : Colors.white,
+          color: (0 == index) ? const Color(0xff7893FF) : Colors.white,
         ),
       ),
     );
@@ -120,8 +123,8 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
             labelText,
             style: TextStyle(
               color: (widget.currentIndex == index)
-                  ? Color(0xff7893FF)
-                  : Color(0xff575757),
+                  ? const Color(0xff7893FF)
+                  : const Color(0xff575757),
               fontSize: 12,
               fontFamily: 'InterMedium',
               fontWeight: FontWeight.w500,

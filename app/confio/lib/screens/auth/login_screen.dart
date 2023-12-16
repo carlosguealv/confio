@@ -27,8 +27,9 @@ class LoginLayout extends StatefulWidget {
 }
 
 class _LoginLayoutState extends State<LoginLayout> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  static final TextEditingController emailController = TextEditingController();
+  static final TextEditingController passwordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +110,7 @@ class _LoginLayoutState extends State<LoginLayout> {
                                 TextSpan(
                                   text: 'Iniciar sesión',
                                   style: TextStyle(
-                                    color: Color(0xFF7892FF),
+                                    color: const Color(0xFF7892FF),
                                     fontSize: 23.77.sp,
                                     fontFamily: 'PoppinsSemiBold',
                                     fontWeight: FontWeight.w600,
@@ -127,7 +128,7 @@ class _LoginLayoutState extends State<LoginLayout> {
                             child: Text(
                               'Para iniciar sesión, ingrese su correo electrónico y contraseña.',
                               style: TextStyle(
-                                color: Color(0xFF8C8E8F),
+                                color: const Color(0xFF8C8E8F),
                                 fontSize: 13.sp,
                                 fontFamily: 'PoppinsRegular',
                                 fontWeight: FontWeight.w400,
@@ -192,7 +193,7 @@ class _LoginLayoutState extends State<LoginLayout> {
                           ),
                           Divider(
                             thickness: 1.w,
-                            color: Color(0xff4f4f51),
+                            color: const Color(0xff4f4f51),
                           ),
                           SizedBox(
                             height: 44.h,
@@ -201,7 +202,7 @@ class _LoginLayoutState extends State<LoginLayout> {
                             width: double.infinity,
                             height: 58.h,
                             decoration: ShapeDecoration(
-                              color: Color(0xFF7892FF),
+                              color: const Color(0xFF7892FF),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
@@ -215,7 +216,7 @@ class _LoginLayoutState extends State<LoginLayout> {
                               child: Text(
                                 'Continue',
                                 style: TextStyle(
-                                  color: Color(0xFF040406),
+                                  color: const Color(0xFF040406),
                                   fontSize: 14.63.sp,
                                   fontFamily: 'PoppinsSemiBold',
                                   fontWeight: FontWeight.w600,
@@ -249,7 +250,7 @@ class _LoginLayoutState extends State<LoginLayout> {
                                       },
                                     text: ' Sign Up',
                                     style: TextStyle(
-                                      color: Color(0xFF6D75D7),
+                                      color: const Color(0xFF6D75D7),
                                       fontSize: 14.sp,
                                       fontFamily: 'PoppinsMedium',
                                       fontWeight: FontWeight.w500,

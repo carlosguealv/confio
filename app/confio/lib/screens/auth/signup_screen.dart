@@ -1,7 +1,6 @@
 import 'package:confio/logic/blocs/signup_bloc/signup_bloc.dart';
 import 'package:confio/screens/auth/widgets/auth_text_field.dart';
 import 'package:confio/services/authentication_service.dart';
-import 'package:confio/services/firebase_service.dart';
 import 'package:confio/utils/size_config.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

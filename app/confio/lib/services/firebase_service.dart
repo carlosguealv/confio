@@ -1,9 +1,10 @@
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:confio/models/payment.dart';
+import 'package:confio/models/overall_payment.dart';
 import 'package:confio/services/authentication_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:get/route_manager.dart';
 
 enum Recurrences { weekly, monthly, yearly }
 
@@ -15,26 +16,20 @@ class FirebaseService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-  // get next week in timestamps
-  List<Timestamp> _getNextThirtyDays() {
-    List<Timestamp> nextThirtyDays = [];
-    for (int i = 0; i < 30; i++) {
-      nextThirtyDays
-          .add(Timestamp.fromDate(DateTime.now().add(Duration(days: i))));
-    }
-
-    return nextThirtyDays;
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDocument(
+      String uid) async {
+    return FirebaseFirestore.instance.collection('users').doc(uid).get();
   }
 
   // generate timestamps for a payment to be created
   List<Timestamp> generateTimestampList(
       Recurrences recurrence, Timestamp endDate, List<int> inputs) {
     List<Timestamp> timestampList = [];
+    DateTime now = DateTime.utc(DateTime.now().year, DateTime.now().month,
+        DateTime.now().day, 0, 0, 0, 0);
 
     switch (recurrence) {
       case Recurrences.weekly:
-        DateTime now = DateTime.now();
-
         while (now.isBefore(endDate.toDate())) {
           if (inputs.contains(now.weekday)) {
             // weekday is 1 through 7
@@ -46,8 +41,6 @@ class FirebaseService {
 
         break;
       case Recurrences.monthly:
-        DateTime now = DateTime.now();
-
         while (now.isBefore(endDate.toDate())) {
           if (inputs.contains(now.day)) {
             timestampList.add(Timestamp.fromDate(now));
@@ -59,8 +52,6 @@ class FirebaseService {
       case Recurrences.yearly:
         // same as weekly and monthly but now we do one payment at the start
         // of each month in inputs until the endDate
-        DateTime now = DateTime.now();
-
         while (now.isBefore(endDate.toDate())) {
           if (inputs.contains(now.month)) {
             timestampList.add(Timestamp.fromDate(now));
@@ -82,8 +73,8 @@ class FirebaseService {
   * CRUD Payments
   *
   */
-  Future<String?> addPayment(Float amount, String currency, List<Timestamp> due,
-      String uidFrom, String uidTo) async {
+  Future<String?> addPayment(double amount, String currency,
+      List<Timestamp> due, String uidFrom, String uidTo) async {
     try {
       final data = {
         "amount": amount,
@@ -103,65 +94,57 @@ class FirebaseService {
 
   Future<Map<String, dynamic>?> getPayment(String paymentID) async {
     try {
-      await _firestore
-          .collection("payments")
-          .doc(paymentID)
-          .get()
-          .then((DocumentSnapshot doc) {
-        final data = doc.data() as Map<String, dynamic>;
+      DocumentSnapshot doc =
+          await _firestore.collection("payments").doc(paymentID).get();
 
-        return data;
-      });
+      final data = doc.data() as Map<String, dynamic>;
+      return data;
     } on FirebaseException {
       return null;
     }
-    return null;
   }
 
-  Future<List<Map<String, dynamic>>?> getPaymentsByUid(String uid) async {
+  Future<List<OverallPayment>?> getPaymentsByUid(String uid) async {
     try {
-      List listOfMaps = [];
+      final List<OverallPayment> listOfMaps = [];
 
-      await _firestore
+      QuerySnapshot querySnapshot = await _firestore
           .collection("payments")
-          .where("uid", isEqualTo: uid)
-          .get()
-          .then((QuerySnapshot querySnapshot) {
-        for (var docSnapshot in querySnapshot.docs) {
-          listOfMaps.add(docSnapshot.data() as Map<String, dynamic>);
-        }
+          .where(Filter.or(
+              Filter("from", isEqualTo: uid), Filter("to", isEqualTo: uid)))
+          .get();
 
-        return listOfMaps;
-      });
-    } on FirebaseException {
+      for (var docSnapshot in querySnapshot.docs) {
+        listOfMaps.add(OverallPayment.fromDocument(docSnapshot)!);
+      }
+
+      return listOfMaps;
+    } on FirebaseException catch (e) {
+      Get.snackbar("Error al cargar los pagos", e.message!);
       return null;
     }
-    return null;
   }
 
-  Future<List<Payment>?> getUserPaymentsNextThirtyDays(String uid) async {
-    List<Timestamp> days = _getNextThirtyDays();
-
+  Future<List<OverallPayment>?> getPaymentsFromTo(
+      String from, String to) async {
     try {
-      List<Payment?> listOfPayments = [];
+      final List<OverallPayment> listOfMaps = [];
 
-      await _firestore
+      QuerySnapshot querySnapshot = await _firestore
           .collection("payments")
-          .where('uid', isEqualTo: uid)
-          .where('due', arrayContainsAny: days)
-          .get()
-          .then((QuerySnapshot querySnapshot) {
-        for (var docSnapshot in querySnapshot.docs) {
-          Payment payment = Payment.fromDocument(docSnapshot)!;
-          listOfPayments.add(payment);
-        }
+          .where("from", isEqualTo: from)
+          .where("to", isEqualTo: to)
+          .get();
 
-        return listOfPayments;
-      });
-    } on FirebaseException {
+      for (var docSnapshot in querySnapshot.docs) {
+        listOfMaps.add(OverallPayment.fromDocument(docSnapshot)!);
+      }
+
+      return listOfMaps;
+    } on FirebaseException catch (e) {
+      Get.snackbar("Error al cargar los pagos", e.message!);
       return null;
     }
-    return null;
   }
 
   Future<String?> updatePayment(
@@ -223,6 +206,65 @@ class FirebaseService {
       });
     } else {
       return Future<void>.value();
+    }
+  }
+
+  /*
+	** CRUD Users
+	*/
+  Future<String?> addUser(String uid, String email) async {
+    try {
+      final data = {
+        "email": email,
+      };
+
+      await _firestore.collection("users").doc(uid).set(data);
+
+      return null;
+    } on FirebaseException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<DocumentSnapshot?> getUserByUid(String uid) async {
+    try {
+      DocumentSnapshot doc =
+          await _firestore.collection("users").doc(uid).get();
+
+      print("yay");
+
+      return doc;
+    } on FirebaseException {
+      print("could not get user");
+      return null;
+    }
+  }
+
+  Future<String?> updateUser(
+      {required String uid, String? email, List<String>? token}) async {
+    try {
+      Map<String, dynamic> data = {
+        "email": email,
+        "token": token,
+      };
+
+      data.removeWhere((key, value) => value == null);
+
+      await _firestore.collection("users").doc(uid).update(data);
+
+      return null;
+    } on FirebaseException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<String?> deleteUser(String uid) async {
+    try {
+      await _firestore.collection("users").doc(uid).delete();
+
+      return null;
+    } on FirebaseException catch (e) {
+      return e.message;
     }
   }
 }

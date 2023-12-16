@@ -1,3 +1,4 @@
+import 'package:confio/models/confio_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -13,16 +14,27 @@ class AuthenticationService {
 
   User? get currentUser => _firebaseAuth.currentUser;
 
+  Future<ConfioUser?> get currentConfioUser async =>
+      _firebaseAuth.currentUser != null
+          ? ConfioUser.fromDocument(await firebaseService
+              .getUserDocument(_firebaseAuth.currentUser!.uid))
+          : null;
+
   Future<String?> loginWithEmailAndPassword(
       String email, String password) async {
     try {
+      String? token;
+
       final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
 
       // After successful login, get the FCM token
-      String? token = await _firebaseMessaging.getToken();
+      if ((await _firebaseMessaging.requestPermission()).authorizationStatus ==
+          AuthorizationStatus.authorized) {
+        token = await _firebaseMessaging.getToken();
+      }
 
       return userCredential.user != null
           ? await () async {
@@ -51,6 +63,7 @@ class AuthenticationService {
 
       return authResult.user != null
           ? await () async {
+              await firebaseService.addUser(authResult.user!.uid, email);
               await firebaseService.uploadToken(token);
               return null;
             }()

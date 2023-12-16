@@ -1,15 +1,31 @@
+import 'package:confio/models/overall_payment.dart';
 import 'package:confio/screens/home_screen/widget/tuscobros.dart';
+import 'package:confio/services/firebase_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/route_manager.dart';
 
-class PayeeView extends StatefulWidget {
-  const PayeeView({super.key});
+class HomeScreenDepth2 extends StatefulWidget {
+  final OverallPayment overallPayment = Get.arguments;
+
+  HomeScreenDepth2({super.key});
 
   @override
-  State<PayeeView> createState() => _PayeeViewState();
+  State<HomeScreenDepth2> createState() => _HomeScreenDepth2State();
 }
 
-class _PayeeViewState extends State<PayeeView> {
+class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
+  String otherId = '';
+  @override
+  void initState() {
+    otherId =
+        widget.overallPayment.from == FirebaseAuth.instance.currentUser!.uid
+            ? widget.overallPayment.to
+            : widget.overallPayment.from;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,13 +122,24 @@ class _PayeeViewState extends State<PayeeView> {
                       SizedBox(
                         width: 19.w,
                       ),
-                      Text(
-                        "Payer 1",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.sp,
-                            fontFamily: 'InterSemiBold',
-                            fontWeight: FontWeight.w600),
+                      FutureBuilder(
+                        future: firebaseService
+                            .getUserByUid(otherId)
+                            .then((value) => value!['email'] as String),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState !=
+                              ConnectionState.done) {
+                            return Container();
+                          }
+                          return Text(
+                            snapshot.data!,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20.sp,
+                                fontFamily: 'InterSemiBold',
+                                fontWeight: FontWeight.w600),
+                          );
+                        },
                       )
                     ],
                   ),
@@ -165,7 +192,7 @@ class _PayeeViewState extends State<PayeeView> {
               SizedBox(
                 height: 38.h,
               ),
-              Container(
+              SizedBox(
                 width: 389,
                 height: 255,
                 child: Stack(
@@ -258,7 +285,7 @@ class _PayeeViewState extends State<PayeeView> {
                     Positioned(
                       left: 73,
                       top: 117,
-                      child: Container(
+                      child: SizedBox(
                         width: 28,
                         height: 122,
                         child: Stack(
@@ -299,7 +326,7 @@ class _PayeeViewState extends State<PayeeView> {
                     Positioned(
                       left: 129,
                       top: 78,
-                      child: Container(
+                      child: SizedBox(
                         width: 28,
                         height: 161,
                         child: Stack(
@@ -340,7 +367,7 @@ class _PayeeViewState extends State<PayeeView> {
                     Positioned(
                       left: 245,
                       top: 39,
-                      child: Container(
+                      child: SizedBox(
                         width: 28,
                         height: 200,
                         child: Stack(
@@ -381,7 +408,7 @@ class _PayeeViewState extends State<PayeeView> {
                     Positioned(
                       left: 187,
                       top: 133,
-                      child: Container(
+                      child: SizedBox(
                         width: 28,
                         height: 106,
                         child: Stack(
@@ -422,7 +449,7 @@ class _PayeeViewState extends State<PayeeView> {
                     Positioned(
                       left: 301,
                       top: 133,
-                      child: Container(
+                      child: SizedBox(
                         width: 29,
                         height: 106,
                         child: Stack(
@@ -607,7 +634,7 @@ class _PayeeViewState extends State<PayeeView> {
               SizedBox(
                 height: 25.h,
               ),
-              Container(
+              SizedBox(
                 width: 388.w,
                 child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),

@@ -1,9 +1,12 @@
+import 'package:confio/screens/add_payee/add_payee.dart';
 import 'package:confio/screens/auth/forgot_password_screen.dart';
 import 'package:confio/screens/auth/login_screen.dart';
 import 'package:confio/screens/auth/signup_screen.dart';
 import 'package:confio/screens/greeting_screens/auth_option_screen.dart';
-import 'package:confio/screens/payment_screens/paymentscreen.dart';
+import 'package:confio/screens/payment_screens/home_screen_depth2.dart';
+import 'package:confio/screens/payment_screens/payment_screen.dart';
 import 'package:confio/screens/profile_screen/profile_screen.dart';
+import 'package:confio/screens/settings_screen/settings_screen.dart';
 import 'package:confio/services/authentication_service.dart';
 import 'package:get/get.dart';
 import 'package:confio/screens/home_screen/home_screen.dart';
@@ -15,14 +18,18 @@ class Routes {
         name: '/',
         page: () => const AuthOptionScreen(),
       ),
+      GetPage(
+        name: '/auth-options',
+        page: () => const AuthOptionScreen(),
+      ),
       // profile screen
       GetPage(
         name: '/profile',
         page: () => const ProfileScreen(),
       ),
       GetPage(
-        name: '/auth-options',
-        page: () => const AuthOptionScreen(),
+        name: '/home/depth2',
+        page: () => HomeScreenDepth2(),
       ),
       GetPage(
         name: '/login',
@@ -44,13 +51,22 @@ class Routes {
         name: '/payment',
         page: () => const PaymentScreen(),
       ),
+      GetPage(
+        name: '/settings',
+        page: () => const SettingsScreen(),
+      ),
     ];
   }
 
   static Future<String> getInitialRoute() async {
-    if (authenticationService.isUserLoggedIn()) {
-      return '/home';
+    try {
+      print('Checking user login state...');
+      bool isLoggedIn = await authenticationService.isUserLoggedIn();
+      print('User is logged in: $isLoggedIn');
+      return isLoggedIn ? '/home' : '/';
+    } catch (e) {
+      print('Error in getInitialRoute: $e');
+      return '/'; // Fallback route in case of error
     }
-    return '/';
   }
 }
