@@ -98,7 +98,9 @@ class _HomeLayoutState extends State<HomeLayout> {
                                 width: 12,
                               ),
                               InkWell(
-                                onTap: () { Get.toNamed("/settings"); },
+                                onTap: () {
+                                  Get.toNamed("/settings");
+                                },
                                 child: Container(
                                   height: 25.h,
                                   width: 23.48.w,
@@ -409,26 +411,36 @@ class _HomeLayoutState extends State<HomeLayout> {
                                         height: 51,
                                         width: 51,
                                         child: FutureBuilder(
-                                          future: firebaseService.getUserByUid(
-                                              mode == Modes.pagar
-                                                  ? state
-                                                      .restOfPayments[index].to
-                                                  : state.restOfPayments[index]
-                                                      .from),
-                                          builder: (context, snapshot) {
-                                            return FutureBuilder(
-                                              future: storageService
-                                                  .getProfilePic(
-                                                      ConfioUser.fromDocument(snapshot
-                                                                  .data!)),
-                                              builder: (context, snapshot1) {
-                                                return CircleAvatar(
-                                                  backgroundImage: snapshot1.data != null ? MemoryImage(snapshot1.data!) as ImageProvider : AssetImage("lib/assets/images/blankuser.png"),
-                                                );
-                                              }
-                                            );
-                                          }
-                                        )),
+                                            future: firebaseService
+                                                .getUserByUid(mode ==
+                                                        Modes.pagar
+                                                    ? state
+                                                        .restOfPayments[index]
+                                                        .to
+                                                    : state
+                                                        .restOfPayments[index]
+                                                        .from),
+                                            builder: (context, snapshot) {
+                                              return FutureBuilder(
+                                                  future: storageService
+                                                      .getProfilePic(ConfioUser
+                                                          .fromDocument(
+                                                              snapshot.data!)),
+                                                  builder:
+                                                      (context, snapshot1) {
+                                                    return CircleAvatar(
+                                                      backgroundImage: snapshot1
+                                                                  .data !=
+                                                              null
+                                                          ? MemoryImage(
+                                                                  snapshot1
+                                                                      .data!)
+                                                              as ImageProvider
+                                                          : AssetImage(
+                                                              "lib/assets/images/blankuser.png"),
+                                                    );
+                                                  });
+                                            })),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -595,7 +607,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              "Tienes # pagos por ${widget.mode == Modes.cobrar ? "cobrar" : "pagar"} en los próximos 7 días por S/ 64,000.00",
+              "Tienes ${widget.paymentsList.length == 1 ? "1 pago" : "${widget.paymentsList.length} pagos"} en los próximos 7 días",
               style: GoogleFonts.inter(color: Colors.white.withOpacity(0.4)),
             ),
           ),
