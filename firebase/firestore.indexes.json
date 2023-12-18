@@ -1,4 +1,7 @@
 {
   "indexes": [],
-  "fieldOverrides": []
+  "fieldOverrides": [],
+  "firestore": {
+    "rules": "firestore/firestore.rules"
+  }
 }

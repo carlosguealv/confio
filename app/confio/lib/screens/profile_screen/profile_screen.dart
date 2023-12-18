@@ -440,83 +440,98 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ? snapshot.data!.payers.length
                                 : snapshot.data!.payees.length,
                             itemBuilder: (context, index) {
-                              return Container(
-                                width: 388,
-                                height: 77,
-                                decoration: ShapeDecoration(
-                                  color: const Color(0x66202227),
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                      width: 1,
-                                      color: Colors.white
-                                          .withOpacity(0.03999999910593033),
+                              return Column(
+                                children: [
+                                  Container(
+                                    width: 388,
+                                    height: 77,
+                                    decoration: ShapeDecoration(
+                                      color: const Color(0x66202227),
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                          width: 1,
+                                          color: Colors.white
+                                              .withOpacity(0.03999999910593033),
+                                        ),
+                                        borderRadius: BorderRadius.circular(17),
+                                      ),
                                     ),
-                                    borderRadius: BorderRadius.circular(17),
-                                  ),
-                                ),
-                                child: Row(children: [
-                                  FutureBuilder(
-                                    future: firebaseService.getUserByUid(
-                                        mode == RecordMode.payer
-                                            ? snapshot.data!.payers[index]!
-                                            : snapshot.data!.payees[index]!),
-                                    builder: (context, snapshot1) {
-                                      return FutureBuilder(
-                                          future: storageService.getProfilePic(
-                                              ConfioUser.fromDocument(
-                                                  snapshot1.data!)),
-                                          builder: (context, snapshot2) {
-                                            return Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    const Gap(
-                                                      width: 0.05,
-                                                    ),
-                                                    CircleAvatar(
-                                                      radius: 20,
-                                                      backgroundColor: Colors.white,
-                                                      backgroundImage: snapshot2
-                                                                  .data !=
-                                                              null
-                                                          ? MemoryImage(
-                                                                  snapshot2.data!)
-                                                              as ImageProvider<
-                                                                  Object>
-                                                          : const AssetImage(
-                                                              "lib/assets/images/blankuser.png"),
-                                                    ),
-                                                    const Gap(
-                                                      width: 0.05,
-                                                    ),
-                                                    Text(
-                                                      ConfioUser.fromDocument(
-                                                              snapshot1.data!)
-                                                          .email!,
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 16,
-                                                        fontFamily: 'Roboto Mono',
-                                                        fontWeight: FontWeight.w700,
-                                                        height: 0.12,
-                                                        letterSpacing: 0.90,
+                                    child: Row(children: [
+                                      FutureBuilder(
+                                        future: firebaseService.getUserByUid(
+                                            mode == RecordMode.payer
+                                                ? snapshot.data!.payers[index]!
+                                                : snapshot.data!.payees[index]!),
+                                        builder: (context, snapshot1) {
+                                          return FutureBuilder(
+                                              future: storageService.getProfilePic(
+                                                  ConfioUser.fromDocument(
+                                                      snapshot1.data!)),
+                                              builder: (context, snapshot2) {
+                                                return SingleChildScrollView(
+                                                  child: Column(
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          const Gap(
+                                                            width: 0.05,
+                                                          ),
+                                                          CircleAvatar(
+                                                            radius: 20,
+                                                            backgroundColor: Colors.white,
+                                                            backgroundImage: snapshot2
+                                                                        .data !=
+                                                                    null
+                                                                ? MemoryImage(
+                                                                        snapshot2.data!)
+                                                                    as ImageProvider<
+                                                                        Object>
+                                                                : const AssetImage(
+                                                                    "lib/assets/images/blankuser.png"),
+                                                          ),
+                                                          const Gap(
+                                                            width: 0.05,
+                                                          ),
+                                                          Container(
+                                                            width: sy! * 0.7,
+                                                            child: Text(
+                                                              ConfioUser.fromDocument(
+                                                                      snapshot1.data!)
+                                                                  .email!,
+                                                              style: const TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 16,
+                                                                fontFamily: 'Roboto Mono',
+                                                                fontWeight: FontWeight.w700,
+                                                                height: 1,
+                                                                letterSpacing: 0.90,
+                                                              ),
+                                                              overflow: TextOverflow.clip,
+                                                              softWrap: true,
+                                                              maxLines: 1,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const Gap(
-                                                  height: 0.05,
-                                                ),
-                                              ],
-                                            );
-                                          });
-                                    },
+                                                    ],
+                                                  ),
+                                                );
+                                              });
+                                        },
+                                      ),
+                                    ]),
                                   ),
-                                ]),
+                                  const Gap(
+                                    height: 0.025,
+                                  ),
+                                ],
                               );
                             },
                           );
                         },
+                      ),
+                      const Gap(
+                        height: 0.1,
                       ),
                     ],
                   ),
