@@ -10,7 +10,7 @@ class AuthenticationService {
   static final AuthenticationService instance = AuthenticationService._();
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
   User? get currentUser => _firebaseAuth.currentUser;
 
@@ -31,9 +31,9 @@ class AuthenticationService {
       );
 
       // After successful login, get the FCM token
-      if ((await _firebaseMessaging.requestPermission()).authorizationStatus ==
+      if ((await firebaseMessaging.requestPermission()).authorizationStatus ==
           AuthorizationStatus.authorized) {
-        token = await _firebaseMessaging.getToken();
+        token = await firebaseMessaging.getToken();
       }
 
       return userCredential.user != null
@@ -56,9 +56,9 @@ class AuthenticationService {
       );
       String? token;
       // After successful sign-up, get the FCM token
-      if ((await _firebaseMessaging.requestPermission()).authorizationStatus ==
+      if ((await firebaseMessaging.requestPermission()).authorizationStatus ==
           AuthorizationStatus.authorized) {
-        token = await _firebaseMessaging.getToken();
+        token = await firebaseMessaging.getToken();
       }
 
       return authResult.user != null
@@ -75,7 +75,7 @@ class AuthenticationService {
 
   Future<void> signOutUser() async {
     // Delete FCM token before signing out
-    await firebaseService.deleteToken(await _firebaseMessaging.getToken());
+    await firebaseService.deleteToken(await firebaseMessaging.getToken());
     await _firebaseAuth.signOut();
   }
 
@@ -104,6 +104,14 @@ class AuthenticationService {
 
   Future<void> deleteCurrentUserAccount(bool hasImage) async {
     await _firebaseAuth.currentUser?.delete();
+  }
+
+  Future<void> createAndUploadToken() async {
+    String? token = await firebaseMessaging.getToken();
+
+    if (token != null) {
+      await firebaseService.uploadToken(token);
+    }
   }
 }
 

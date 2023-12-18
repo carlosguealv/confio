@@ -1,7 +1,9 @@
 import 'package:confio/models/overall_payment.dart';
 import 'package:confio/screens/home_screen/widget/tuscobros.dart';
+import 'package:confio/services/authentication_service.dart';
 import 'package:confio/services/firebase_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
@@ -63,7 +65,44 @@ class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
             child: Row(
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Cambiar preferencias'),
+                          content: const Text(
+                              '¿Seguro que quieres cambiar las preferencias de las notificaciones?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Cancelar'),
+                            ),
+                            FutureBuilder(
+                                future: (authenticationService.firebaseMessaging
+                                    .requestPermission()),
+                                builder: (context, snapshot) {
+                                  return TextButton(
+                                    onPressed: () {
+                                      if (snapshot.data!.authorizationStatus !=
+                                          AuthorizationStatus.authorized) {
+                                        authenticationService
+                                            .createAndUploadToken();
+                                      }
+                                      authenticationService.firebaseMessaging
+                                          .deleteToken();
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('Cambiar preferencias'),
+                                  );
+                                }),
+                          ],
+                        );
+                      },
+                    );
+                  },
                   child: Container(
                     height: 22.h,
                     width: 22.w,

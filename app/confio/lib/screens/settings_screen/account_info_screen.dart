@@ -1,6 +1,7 @@
 import 'package:confio/screens/components/gap.dart';
 import 'package:confio/services/authentication_service.dart';
 import 'package:confio/services/storage_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -37,7 +38,44 @@ class AccountInfoScreen extends StatelessWidget {
                 ),
                 const Spacer(),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Cambiar preferencias'),
+                          content: const Text(
+                              '¿Seguro que quieres cambiar las preferencias de las notificaciones?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Cancelar'),
+                            ),
+                            FutureBuilder(
+                                future: (authenticationService.firebaseMessaging
+                                    .requestPermission()),
+                                builder: (context, snapshot) {
+                                  return TextButton(
+                                    onPressed: () {
+                                      if (snapshot.data!.authorizationStatus !=
+                                          AuthorizationStatus.authorized) {
+                                        authenticationService
+                                            .createAndUploadToken();
+                                      }
+                                      authenticationService.firebaseMessaging
+                                          .deleteToken();
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('Cambiar preferencias'),
+                                  );
+                                }),
+                          ],
+                        );
+                      },
+                    );
+                  },
                   child: Container(
                     height: 25.h,
                     width: 25.w,
