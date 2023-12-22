@@ -67,7 +67,7 @@ class _AddPayeeState extends State<AddPayee> {
                 height: 22.h,
                 decoration: const BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("lib/assets/images/notification.png"),
+                        image: AssetImage("assets/images/notification.png"),
                         fit: BoxFit.scaleDown)),
               ),
             ),
@@ -81,7 +81,7 @@ class _AddPayeeState extends State<AddPayee> {
                 height: 22.h,
                 decoration: const BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("lib/assets/images/Setting.png"),
+                        image: AssetImage("assets/images/Setting.png"),
                         fit: BoxFit.scaleDown)),
               ),
             ),
@@ -91,7 +91,7 @@ class _AddPayeeState extends State<AddPayee> {
             height: 28.33.h,
             decoration: const BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("lib/assets/images/logoletters.png"),
+                    image: AssetImage("assets/images/logoletters.png"),
                     fit: BoxFit.scaleDown)),
           ),
         ),
@@ -143,8 +143,7 @@ class _AddPayeeState extends State<AddPayee> {
                           width: 14.h,
                           decoration: const BoxDecoration(
                               image: DecorationImage(
-                                  image: AssetImage(
-                                      "lib/assets/images/search.png"),
+                                  image: AssetImage("assets/images/search.png"),
                                   fit: BoxFit.scaleDown)),
                         ))),
                   ),

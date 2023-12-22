@@ -69,9 +69,9 @@ class PaymentRecordButton extends StatelessWidget {
                 shape: OvalBorder(),
               ),
               child: label == "Pagadores"
-                  ? Image.asset("lib/assets/images/Group.png",
+                  ? Image.asset("assets/images/Group.png",
                       width: 15, height: 15)
-                  : Image.asset("lib/assets/images/Vector.png",
+                  : Image.asset("assets/images/Vector.png",
                       width: 15, height: 15),
             ),
             const SizedBox(height: 5),
@@ -159,7 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               top: sx! * 0.025,
               left: sy! * 0.05,
               child: Image.asset(
-                "lib/assets/images/logo.png",
+                "assets/images/logo.png",
               ),
             ),
             Positioned(
@@ -200,8 +200,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             .deleteToken();
                                         Navigator.of(context).pop();
                                       },
-                                      child:
-                                          const Text('Cambiar preferencias'),
+                                      child: const Text('Cambiar preferencias'),
                                     );
                                   }),
                             ],
@@ -210,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       );
                     },
                     child: Image.asset(
-                      "lib/assets/images/notification.png",
+                      "assets/images/notification.png",
                       width: 25.w,
                       height: 25.h,
                     ),
@@ -221,7 +220,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Get.toNamed('/settings');
                     },
                     child: Image.asset(
-                      "lib/assets/images/Setting.png",
+                      "assets/images/Setting.png",
                       width: 25.w,
                       height: 25.h,
                     ),
@@ -238,7 +237,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   backgroundColor: Colors.white,
                   backgroundImage: _image != null
                       ? MemoryImage(_image!) as ImageProvider<Object>
-                      : const AssetImage("lib/assets/images/blankuser.png"),
+                      : const AssetImage("assets/images/blankuser.png"),
                 ),
               ),
             ),
@@ -438,7 +437,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             ),
                                           ),
                                           child: Image.asset(
-                                            "lib/assets/images/invite.png",
+                                            "assets/images/invite.png",
                                             width: 27.97,
                                             height: 27.97,
                                           ),
@@ -531,7 +530,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                     as ImageProvider<
                                                                         Object>
                                                                 : const AssetImage(
-                                                                    "lib/assets/images/blankuser.png"),
+                                                                    "assets/images/blankuser.png"),
                                                           ),
                                                           const Gap(
                                                             width: 0.05,

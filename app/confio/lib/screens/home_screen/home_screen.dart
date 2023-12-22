@@ -80,7 +80,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                           Row(
                             children: [
                               Image.asset(
-                                "lib/assets/images/logo.png",
+                                "assets/images/logo.png",
                               ),
                               const Spacer(),
                               InkWell(
@@ -134,7 +134,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                   decoration: const BoxDecoration(
                                       image: DecorationImage(
                                           image: AssetImage(
-                                              "lib/assets/images/notification.png"),
+                                              "assets/images/notification.png"),
                                           fit: BoxFit.scaleDown)),
                                 ),
                               ),
@@ -151,7 +151,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                   decoration: const BoxDecoration(
                                       image: DecorationImage(
                                           image: AssetImage(
-                                              "lib/assets/images/Setting.png"),
+                                              "assets/images/Setting.png"),
                                           fit: BoxFit.scaleDown)),
                                 ),
                               ),
@@ -339,7 +339,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                                       decoration: BoxDecoration(
                                                           image: const DecorationImage(
                                                               image: AssetImage(
-                                                                  "lib/assets/images/demo_pfp.png")),
+                                                                  "assets/images/demo_pfp.png")),
                                                           shape:
                                                               BoxShape.circle,
                                                           color: Colors.grey,
@@ -481,7 +481,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                                                       .data!)
                                                               as ImageProvider
                                                           : AssetImage(
-                                                              "lib/assets/images/blankuser.png"),
+                                                              "assets/images/blankuser.png"),
                                                     );
                                                   });
                                             })),
@@ -508,7 +508,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                                   ConnectionState.done) {
                                                 return const Text("");
                                               }
-                                              return Container(
+                                              return SizedBox(
                                                 width: sy! * 0.3,
                                                 height: sx! * 0.05,
                                                 child: Text(
@@ -576,7 +576,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                         decoration: const BoxDecoration(
                                             image: DecorationImage(
                                                 image: AssetImage(
-                                                    "lib/assets/images/grabIcon.png"),
+                                                    "assets/images/grabIcon.png"),
                                                 fit: BoxFit.scaleDown)),
                                       ),
                                     ),
@@ -605,8 +605,7 @@ class _HomeLayoutState extends State<HomeLayout> {
 
 class CalendarWidget extends StatefulWidget {
   const CalendarWidget(
-      {Key? key, required this.mode, this.paymentsList = const []})
-      : super(key: key);
+      {super.key, required this.mode, this.paymentsList = const []});
   final Modes? mode;
   final List<Payment> paymentsList;
 
@@ -624,7 +623,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       decoration: BoxDecoration(
           image: const DecorationImage(
             repeat: ImageRepeat.repeatY,
-            image: AssetImage("lib/assets/images/calendar_overlay.png"),
+            image: AssetImage("assets/images/calendar_overlay.png"),
           ),
           color: const Color(0xff2d2d2d),
           gradient: const LinearGradient(

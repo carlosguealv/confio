@@ -221,7 +221,7 @@ class _AddPaymentState extends State<AddPayment> {
                                             height: 37.h,
                                             width: 90.w,
                                             child: SvgPicture.asset(
-                                                "lib/assets/images/googlepay.svg"),
+                                                "assets/images/googlepay.svg"),
                                           )
                                         ],
                                       ),
@@ -282,7 +282,7 @@ class _AddPaymentState extends State<AddPayment> {
                                             height: 37.h,
                                             width: 90.w,
                                             child: SvgPicture.asset(
-                                                "lib/assets/images/applepay.svg"),
+                                                "assets/images/applepay.svg"),
                                           )
                                         ],
                                       ),
@@ -351,7 +351,7 @@ class _AddPaymentState extends State<AddPayment> {
                                             height: 37.h,
                                             width: 90.w,
                                             child: SvgPicture.asset(
-                                                "lib/assets/images/cash.svg"),
+                                                "assets/images/cash.svg"),
                                           )
                                         ],
                                       ),
@@ -412,7 +412,7 @@ class _AddPaymentState extends State<AddPayment> {
                                             height: 37.h,
                                             width: 90.w,
                                             child: SvgPicture.asset(
-                                                "lib/assets/images/bank.svg"),
+                                                "assets/images/bank.svg"),
                                           )
                                         ],
                                       ),

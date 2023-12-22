@@ -34,7 +34,7 @@ class AccountInfoScreen extends StatelessWidget {
                   width: 0.05,
                 ),
                 Image.asset(
-                  "lib/assets/images/logo.png",
+                  "assets/images/logo.png",
                 ),
                 const Spacer(),
                 InkWell(
@@ -81,8 +81,7 @@ class AccountInfoScreen extends StatelessWidget {
                     width: 25.w,
                     decoration: const BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage(
-                                "lib/assets/images/notification.png"),
+                            image: AssetImage("assets/images/notification.png"),
                             fit: BoxFit.scaleDown)),
                   ),
                 ),
@@ -108,7 +107,7 @@ class AccountInfoScreen extends StatelessWidget {
                           return const CircleAvatar(
                             radius: 50,
                             backgroundImage: AssetImage(
-                              "lib/assets/images/blankuser.png",
+                              "assets/images/blankuser.png",
                             ),
                           );
                         });

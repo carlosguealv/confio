@@ -292,7 +292,7 @@ class _SetPreferenceScreenState extends State<SetPreferenceScreen> {
                                         height: 18.h,
                                         width: 18.w,
                                         child: SvgPicture.asset(
-                                            "lib/assets/images/uploadIcon.svg",
+                                            "assets/images/uploadIcon.svg",
                                             fit: BoxFit.scaleDown),
                                       )
                                     ],

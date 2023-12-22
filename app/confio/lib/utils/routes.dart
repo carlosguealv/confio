@@ -1,4 +1,3 @@
-import 'package:confio/screens/add_payee/add_payee.dart';
 import 'package:confio/screens/auth/forgot_password_screen.dart';
 import 'package:confio/screens/auth/login_screen.dart';
 import 'package:confio/screens/auth/signup_screen.dart';

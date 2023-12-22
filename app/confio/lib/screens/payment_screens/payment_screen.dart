@@ -43,8 +43,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         height: 41.h,
                         alignment: Alignment.center,
                         decoration: ShapeDecoration(
-                          color:
-                              Colors.white.withOpacity(0.20999999344348907),
+                          color: Colors.white.withOpacity(0.20999999344348907),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(6.r)),
                         ),
@@ -70,8 +69,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           TextSpan(
                             text: 'Pago de\n',
                             style: TextStyle(
-                              color: Colors.white
-                                  .withOpacity(0.6399999856948853),
+                              color:
+                                  Colors.white.withOpacity(0.6399999856948853),
                               fontSize: 16.sp,
                               fontFamily: 'PoppinsRegular',
                               fontWeight: FontWeight.w500,
@@ -148,7 +147,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           _userTile("Payer 1"),
                                           const Gap(width: 0.1),
                                           Image.asset(
-                                              "lib/assets/images/Arrow---Right.png"),
+                                              "assets/images/Arrow---Right.png"),
                                           const Gap(width: 0.075),
                                           _userTile("Raj Singh"),
                                         ],
@@ -208,24 +207,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                 "Cancelar",
                                                 style: GoogleFonts.inter(
                                                     fontSize: 13,
-                                                    color:
-                                                        const Color.fromARGB(
-                                                            255,
-                                                            120,
-                                                            147,
-                                                            255)),
+                                                    color: const Color.fromARGB(
+                                                        255, 120, 147, 255)),
                                               )),
                                           ElevatedButton(
                                               style: ElevatedButton.styleFrom(
                                                   backgroundColor:
                                                       const Color.fromARGB(
                                                           255, 120, 147, 255),
-                                                  shape:
-                                                      RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      60))),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              60))),
                                               onPressed: () {
                                                 // ignore: avoid_print
                                                 print(method);
@@ -348,7 +341,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                         color: const Color(0xff2A2A2A),
                                         image: const DecorationImage(
                                             image: AssetImage(
-                                                "lib/assets/images/dollar.png")),
+                                                "assets/images/dollar.png")),
                                         borderRadius:
                                             BorderRadius.circular(8.r),
                                         border: Border.all(
@@ -515,7 +508,7 @@ class CircularOptions extends StatelessWidget {
           decoration: BoxDecoration(
               color: const Color(0xFF202227),
               image: DecorationImage(
-                  image: AssetImage("lib/assets/images/$iconName.png")),
+                  image: AssetImage("assets/images/$iconName.png")),
               shape: BoxShape.circle),
         ),
         SizedBox(

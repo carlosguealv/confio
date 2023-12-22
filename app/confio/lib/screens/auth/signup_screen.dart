@@ -67,7 +67,7 @@ class _SignupLayoutState extends State<SignupLayout> {
                 decoration: const BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage(
-                          "lib/assets/images/Dark.png",
+                          "assets/images/Dark.png",
                         ),
                         fit: BoxFit.cover)),
                 child: SingleChildScrollView(
@@ -86,7 +86,7 @@ class _SignupLayoutState extends State<SignupLayout> {
                           },
                           child: Row(
                             children: [
-                              SvgPicture.asset("lib/assets/images/back.svg"),
+                              SvgPicture.asset("assets/images/back.svg"),
                               SizedBox(
                                 width: 9.w,
                               ),

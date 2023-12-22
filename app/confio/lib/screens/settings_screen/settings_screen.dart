@@ -13,8 +13,7 @@ class SettingsScreen extends StatelessWidget {
     final Uri params = Uri(
       scheme: 'mailto',
       path: 'confio.latam@gmail.com',
-      query:
-          'subject=Ayuda', //add subject and body here
+      query: 'subject=Ayuda', //add subject and body here
     );
 
     if (await canLaunchUrl(params)) {
@@ -41,7 +40,7 @@ class SettingsScreen extends StatelessWidget {
                     width: 0.05,
                   ),
                   Image.asset(
-                    "lib/assets/images/logo.png",
+                    "assets/images/logo.png",
                   ),
                 ],
               ),
@@ -54,7 +53,7 @@ class SettingsScreen extends StatelessWidget {
                     width: 0.05,
                   ),
                   Image.asset(
-                    "lib/assets/images/Setting.png",
+                    "assets/images/Setting.png",
                     width: 25.w,
                     height: 25.h,
                   ),
@@ -96,7 +95,7 @@ class SettingsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(7)),
                       ),
                       child: Image.asset(
-                        "lib/assets/images/2-User.png",
+                        "assets/images/2-User.png",
                         width: 20,
                         height: 20,
                       ),
@@ -118,7 +117,7 @@ class SettingsScreen extends StatelessWidget {
                       width: 0.1,
                     ),
                     Image.asset(
-                      "lib/assets/images/arrow_button.png",
+                      "assets/images/arrow_button.png",
                       width: 10,
                       height: 10,
                     ),
@@ -147,7 +146,7 @@ class SettingsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(7)),
                       ),
                       child: Image.asset(
-                        "lib/assets/images/Danger-Circle.png",
+                        "assets/images/Danger-Circle.png",
                         width: 20,
                         height: 20,
                       ),
@@ -169,7 +168,7 @@ class SettingsScreen extends StatelessWidget {
                       width: 0.1,
                     ),
                     Image.asset(
-                      "lib/assets/images/arrow_button.png",
+                      "assets/images/arrow_button.png",
                       width: 10,
                       height: 10,
                     ),
@@ -233,7 +232,7 @@ class SettingsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(7)),
                       ),
                       child: Image.asset(
-                        "lib/assets/images/Notification.png",
+                        "assets/images/notification.png",
                         width: 20,
                         height: 20,
                       ),
@@ -255,7 +254,7 @@ class SettingsScreen extends StatelessWidget {
                       width: 0.1,
                     ),
                     Image.asset(
-                      "lib/assets/images/arrow_button.png",
+                      "assets/images/arrow_button.png",
                       width: 10,
                       height: 10,
                     ),
@@ -323,7 +322,7 @@ class SettingsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(7)),
                       ),
                       child: Image.asset(
-                        "lib/assets/images/2-User.png",
+                        "assets/images/2-User.png",
                         width: 20,
                         height: 20,
                       ),
@@ -345,7 +344,7 @@ class SettingsScreen extends StatelessWidget {
                       width: 0.1,
                     ),
                     Image.asset(
-                      "lib/assets/images/arrow_button.png",
+                      "assets/images/arrow_button.png",
                       width: 10,
                       height: 10,
                     ),

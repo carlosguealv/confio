@@ -379,7 +379,7 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
                                       onTap: () => backspace(),
                                       child: SizedBox(
                                         child: SvgPicture.asset(
-                                            "lib/assets/images/backspace.svg"),
+                                            "assets/images/backspace.svg"),
                                       ),
                                     )
                                   ],

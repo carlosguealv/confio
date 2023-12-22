@@ -43,7 +43,7 @@ class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
               width: 22.73,
               decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("lib/assets/images/logo.png"),
+                      image: AssetImage("assets/images/logo.png"),
                       fit: BoxFit.scaleDown)),
             ),
             const SizedBox(
@@ -108,8 +108,7 @@ class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
                     width: 22.w,
                     decoration: const BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage(
-                                "lib/assets/images/notification.png"),
+                            image: AssetImage("assets/images/notification.png"),
                             fit: BoxFit.scaleDown)),
                   ),
                 ),
@@ -123,7 +122,7 @@ class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
                     width: 20.48.w,
                     decoration: const BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage("lib/assets/images/Setting.png"),
+                            image: AssetImage("assets/images/Setting.png"),
                             fit: BoxFit.scaleDown)),
                   ),
                 ),
@@ -187,7 +186,7 @@ class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
                     height: 36,
                     decoration: ShapeDecoration(
                       image: const DecorationImage(
-                          image: AssetImage("lib/assets/images/calender.png")),
+                          image: AssetImage("assets/images/calender.png")),
                       color: const Color(0xAA181819),
                       shape: RoundedRectangleBorder(
                         side: BorderSide(
@@ -537,7 +536,7 @@ class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
                 height: 47.44,
                 decoration: ShapeDecoration(
                   image: const DecorationImage(
-                      image: AssetImage("lib/assets/images/dollar.png"),
+                      image: AssetImage("assets/images/dollar.png"),
                       fit: BoxFit.scaleDown),
                   color: const Color(0xff0A0A0A),
                   shape: RoundedRectangleBorder(

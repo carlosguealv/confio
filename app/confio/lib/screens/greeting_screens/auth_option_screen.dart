@@ -21,7 +21,7 @@ class _AuthOptionScreenState extends State<AuthOptionScreen> {
         decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage(
-                  "lib/assets/images/onboardingillustration.png",
+                  "assets/images/onboardingillustration.png",
                 ),
                 fit: BoxFit.cover)),
         child: Padding(
@@ -43,7 +43,7 @@ class _AuthOptionScreenState extends State<AuthOptionScreen> {
                     width: 76.w,
                     decoration: const BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage("lib/assets/images/logo.png"))),
+                            image: AssetImage("assets/images/logo.png"))),
                   ),
                   SizedBox(
                     height: 24.h,
