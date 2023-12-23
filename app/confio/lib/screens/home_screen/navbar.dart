@@ -61,13 +61,14 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
             child: navbarItemCircle(index: 1),
           ),
           Positioned(
-              top: 50,
-              right: 50,
-              child: navbarItem(
-                assetname: "perfil",
-                labelText: "Perfil",
-                index: 2,
-              )),
+            top: 50,
+            right: 50,
+            child: navbarItem(
+              assetname: "perfil",
+              labelText: "Perfil",
+              index: 2,
+            ),
+          ),
         ],
       ),
     );

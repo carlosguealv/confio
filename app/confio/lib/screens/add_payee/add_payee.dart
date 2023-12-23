@@ -169,7 +169,8 @@ class _AddPayeeState extends State<AddPayee> {
                   child: FutureBuilder<ConfioUser?>(
                       future: authenticationService.currentConfioUser,
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
+                        print(snapshot);
+                        if (snapshot.hasData) {
                           return AddPeopleContainer(
                             people: snapshot.data!.payers,
                           );

@@ -5,7 +5,7 @@ class Gap extends StatelessWidget {
   final double? height;
   final double? width;
 
-  const Gap({Key? key, this.height, this.width}) : super(key: key);
+  const Gap({super.key, this.height, this.width});
 
   @override
   Widget build(BuildContext context) {
