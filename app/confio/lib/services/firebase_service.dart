@@ -68,6 +68,36 @@ class FirebaseService {
     return timestampList;
   }
 
+  // generate simple timestamps for a payment to be created
+  // Warning: this function is only used for the MVP
+  List<Timestamp> generateSimpleTimestampList(
+    Recurrences recurrence,
+    Timestamp startDate,
+    Timestamp endDate,
+  ) {
+    List<Timestamp> timestampList = [];
+    DateTime now = DateTime.utc(startDate.toDate().year,
+        startDate.toDate().month, startDate.toDate().day, 0, 0, 0, 0);
+
+    while (now.isBefore(endDate.toDate())) {
+      timestampList.add(Timestamp.fromDate(now));
+      switch (recurrence) {
+        case Recurrences.yearly:
+          now = now.add(const Duration(days: 365));
+          break;
+        case Recurrences.monthly:
+          now = now.add(const Duration(days: 30));
+          break;
+        case Recurrences.weekly:
+        default:
+          now = now.add(const Duration(days: 7));
+          break;
+      }
+    }
+
+    return timestampList;
+  }
+
   /*
   *
   * CRUD Payments

@@ -6,6 +6,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'set_amount.dart';
+
 class AddPayee extends StatefulWidget {
   const AddPayee({super.key});
 
@@ -18,6 +20,7 @@ class _AddPayeeState extends State<AddPayee> {
   final _addedPersonChangeNotifier = AddedPersonChangeNotifier();
   Widget? searchResult;
   bool _alreadySearching = false;
+  bool _alreadySubmitting = false;
 
   @override
   void initState() {
@@ -260,8 +263,35 @@ class _AddPayeeState extends State<AddPayee> {
         children: [
           Padding(
               padding: const EdgeInsets.only(bottom: 30, left: 100),
-              child: InkWell(
-                onTap: () {},
+              child: GestureDetector(
+                onTap: () async {
+                  if (_alreadySubmitting) return;
+                  _alreadySubmitting = true;
+                  if (_addedPersonChangeNotifier.person != null) {
+                    try {
+                      final navigator = Navigator.of(context);
+                      final currentUserId =
+                          (authenticationService.currentUser!).uid;
+                      final selectedUserId =
+                          (await firebaseService.getUserByEmail(
+                                  _addedPersonChangeNotifier.person!))!
+                              .id;
+                      await navigator.push(
+                        MaterialPageRoute(
+                          builder: (context) => SetAmountScreen(
+                            payeeId: selectedUserId,
+                            payerId: currentUserId,
+                            selectedEmail: _addedPersonChangeNotifier.person!,
+                          ),
+                        ),
+                      );
+                    } catch (e) {
+                      return;
+                    } finally {
+                      _alreadySubmitting = false;
+                    }
+                  }
+                },
                 child: Text(
                   'Add Payee',
                   textAlign: TextAlign.center,
@@ -275,8 +305,35 @@ class _AddPayeeState extends State<AddPayee> {
               )),
           Padding(
               padding: const EdgeInsets.only(left: 250),
-              child: InkWell(
-                onTap: () {},
+              child: GestureDetector(
+                onTap: () async {
+                  if (_alreadySubmitting) return;
+                  _alreadySubmitting = true;
+                  if (_addedPersonChangeNotifier.person != null) {
+                    try {
+                      final navigator = Navigator.of(context);
+                      final currentUserId =
+                          (authenticationService.currentUser!).uid;
+                      final selectedUserId =
+                          (await firebaseService.getUserByEmail(
+                                  _addedPersonChangeNotifier.person!))!
+                              .id;
+                      await navigator.push(
+                        MaterialPageRoute(
+                          builder: (context) => SetAmountScreen(
+                            payeeId: currentUserId,
+                            payerId: selectedUserId,
+                            selectedEmail: _addedPersonChangeNotifier.person!,
+                          ),
+                        ),
+                      );
+                    } catch (e) {
+                      return;
+                    } finally {
+                      _alreadySubmitting = false;
+                    }
+                  }
+                },
                 child: Text(
                   'Add Payer',
                   textAlign: TextAlign.center,
@@ -361,6 +418,7 @@ class _AddPeopleContainerState extends State<AddPeopleContainer> {
                         letterSpacing: 0.08,
                       ),
                     ),
+                    const Spacer(),
                     ListenableBuilder(
                       listenable: widget.addedPersonChangeNotifier,
                       builder: (context, child) {
