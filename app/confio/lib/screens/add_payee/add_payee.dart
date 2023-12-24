@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confio/models/confio_user.dart';
 import 'package:confio/services/authentication_service.dart';
+import 'package:confio/services/firebase_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +16,46 @@ class AddPayee extends StatefulWidget {
 class _AddPayeeState extends State<AddPayee> {
   TextEditingController searchController = TextEditingController();
   final _addedPersonChangeNotifier = AddedPersonChangeNotifier();
+  Widget? searchResult;
+  bool _alreadySearching = false;
+
+  @override
+  void initState() {
+    super.initState();
+    searchController.addListener(() {
+      if (_alreadySearching) return;
+      _alreadySearching = true;
+
+      if (searchController.text.length > 3) {
+        setState(() {
+          searchResult = SizedBox(
+            width: double.infinity.w,
+            child: FutureBuilder<DocumentSnapshot<Object?>?>(
+                future: firebaseService.getUserByEmail(searchController.text),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return AddPeopleContainer(
+                      people: [searchController.text],
+                      addedPersonChangeNotifier: _addedPersonChangeNotifier,
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }),
+          );
+        });
+      } else {
+        setState(() {
+          searchResult = null;
+        });
+      }
+      Future.delayed(Durations.extralong4, () {
+        if (mounted) setState(() => _alreadySearching = false);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,6 +193,7 @@ class _AddPayeeState extends State<AddPayee> {
               SizedBox(
                 height: 36.h,
               ),
+              searchResult ?? Container(),
               Text(
                 'Your payers',
                 style: TextStyle(
@@ -169,7 +212,6 @@ class _AddPayeeState extends State<AddPayee> {
                 child: FutureBuilder<ConfioUser?>(
                     future: authenticationService.currentConfioUser,
                     builder: (context, snapshot) {
-                      print(snapshot);
                       if (snapshot.hasData) {
                         return AddPeopleContainer(
                           people: snapshot.data!.payers,
@@ -199,7 +241,6 @@ class _AddPayeeState extends State<AddPayee> {
                 child: FutureBuilder<ConfioUser?>(
                     future: authenticationService.currentConfioUser,
                     builder: (context, snapshot) {
-                      print(snapshot);
                       if (snapshot.hasData) {
                         return AddPeopleContainer(
                           people: snapshot.data!.payees,
@@ -270,7 +311,6 @@ class AddPeopleContainer extends StatefulWidget {
 class _AddPeopleContainerState extends State<AddPeopleContainer> {
   @override
   Widget build(BuildContext context) {
-    print(widget.people);
     return Padding(
       padding: EdgeInsets.only(bottom: 30.h),
       child: SizedBox(
@@ -280,41 +320,48 @@ class _AddPeopleContainerState extends State<AddPeopleContainer> {
             shrinkWrap: true,
             itemCount: widget.people.length,
             itemBuilder: (context, index) {
-              return Row(
-                children: [
-                  Container(
-                    width: 44.w,
-                    height: 44.h,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image:
-                            NetworkImage("https://via.placeholder.com/44x44"),
-                        fit: BoxFit.cover,
+              return GestureDetector(
+                onTap: () {
+                  if (widget.addedPersonChangeNotifier.person ==
+                      widget.people[index]) {
+                    setState(() {
+                      widget.addedPersonChangeNotifier.changePerson(null);
+                    });
+                  } else {
+                    setState(() {
+                      widget.addedPersonChangeNotifier
+                          .changePerson(widget.people[index] ?? '');
+                    });
+                  }
+                },
+                child: Row(
+                  children: [
+                    Container(
+                      width: 44.w,
+                      height: 44.h,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image:
+                              NetworkImage("https://via.placeholder.com/44x44"),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 14.w,
-                  ),
-                  Text(
-                    widget.people[index]!,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 13.sp,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 0.08,
+                    SizedBox(
+                      width: 14.w,
                     ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        widget.addedPersonChangeNotifier
-                            .changePerson(widget.people[index] ?? '');
-                      });
-                    },
-                    child: ListenableBuilder(
+                    Text(
+                      widget.people[index]!,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13.sp,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.08,
+                      ),
+                    ),
+                    ListenableBuilder(
                       listenable: widget.addedPersonChangeNotifier,
                       builder: (context, child) {
                         return Container(
@@ -342,8 +389,8 @@ class _AddPeopleContainerState extends State<AddPeopleContainer> {
                                 : null);
                       },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             }),
       ),
@@ -407,7 +454,7 @@ class AddedPersonChangeNotifier with ChangeNotifier {
   String? _person;
   String? get person => _person;
 
-  void changePerson(String person) {
+  void changePerson(String? person) {
     _person = person;
     notifyListeners();
   }

@@ -231,11 +231,25 @@ class FirebaseService {
       DocumentSnapshot doc =
           await _firestore.collection("users").doc(uid).get();
 
-      print("yay");
-
       return doc;
     } on FirebaseException {
-      print("could not get user");
+      return null;
+    }
+  }
+
+  Future<DocumentSnapshot?> getUserByEmail(String email) async {
+    try {
+      DocumentSnapshot? doc = await _firestore
+          .collection("users")
+          .where(
+            "email",
+            isEqualTo: email,
+            isNotEqualTo: authenticationService.currentUser!.email,
+          )
+          .get()
+          .then((value) => value.docs.isEmpty ? null : value.docs.first);
+      return doc;
+    } on FirebaseException {
       return null;
     }
   }
