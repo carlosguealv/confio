@@ -1,7 +1,10 @@
+import 'package:confio/models/confio_user.dart';
 import 'package:confio/models/overall_payment.dart';
 import 'package:confio/screens/home_screen/widget/tuscobros.dart';
 import 'package:confio/services/authentication_service.dart';
 import 'package:confio/services/firebase_service.dart';
+import 'package:confio/services/storage_service.dart';
+import 'package:confio/utils/size_config.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -39,23 +42,12 @@ class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
         title: Row(
           children: [
             Container(
-              height: 22.73,
-              width: 22.73,
+              height: sx! * 0.2,
+              width: sy! * 0.2,
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("assets/images/logo.png"),
                       fit: BoxFit.scaleDown)),
-            ),
-            const SizedBox(
-              width: 8,
-            ),
-            Text(
-              "Confio",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.sp,
-              ),
             ),
           ],
         ),
@@ -147,16 +139,43 @@ class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
                 children: [
                   Row(
                     children: [
-                      Container(
-                        height: 36,
-                        width: 36,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            image: const DecorationImage(
-                                image: NetworkImage(
-                                    "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80"),
-                                fit: BoxFit.scaleDown)),
-                      ),
+                      FutureBuilder(
+                          future: firebaseService.getUserByUid(otherId),
+                          builder: (context, snapshot) {
+                            if (snapshot.data == null) {
+                              return Container(
+                                height: 36,
+                                width: 36,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    image: const DecorationImage(
+                                        image: AssetImage(
+                                          "assets/images/blankuser.png",
+                                        ),
+                                        fit: BoxFit.scaleDown)),
+                              );
+                            }
+                            return FutureBuilder(
+                                future: storageService.getProfilePic(
+                                    ConfioUser.fromDocument(snapshot.data!)),
+                                builder: (context, snapshot1) {
+                                  return Container(
+                                    height: 36,
+                                    width: 36,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10.r),
+                                        image: DecorationImage(
+                                            image: snapshot1.hasData
+                                                ? MemoryImage(snapshot1.data!)
+                                                    as ImageProvider
+                                                : const AssetImage(
+                                                    "assets/images/blankuser.png",
+                                                  ),
+                                            fit: BoxFit.scaleDown)),
+                                  );
+                                });
+                          }),
                       SizedBox(
                         width: 19.w,
                       ),
@@ -181,371 +200,17 @@ class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
                       )
                     ],
                   ),
-                  Container(
-                    width: 36,
-                    height: 36,
-                    decoration: ShapeDecoration(
-                      image: const DecorationImage(
-                          image: AssetImage("assets/images/calender.png")),
-                      color: const Color(0xAA181819),
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: 1.w,
-                          color: const Color(0xff19191A),
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  )
                 ],
               ),
               SizedBox(
                 height: 42.h,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Your Earnings',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.sp,
-                      fontFamily: 'InterSemiBold',
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.16,
-                    ),
-                  ),
-                  const Text(
-                    'Semana',
-                    style: TextStyle(
-                      color: Color(0xFF7892FF),
-                      fontSize: 14,
-                      fontFamily: 'InterMedium',
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 0.14,
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 38.h,
-              ),
-              SizedBox(
-                width: 389,
-                height: 255,
-                child: Stack(
-                  children: [
-                    Positioned(
-                      left: 0,
-                      top: 195,
-                      child: Text(
-                        '\$0',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.2800000011920929),
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.14,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 0,
-                      top: 117,
-                      child: Text(
-                        '\$1000',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.2800000011920929),
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.14,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 0,
-                      top: 156,
-                      child: Text(
-                        '\$500',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.2800000011920929),
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.14,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 0,
-                      top: 78,
-                      child: Text(
-                        '\$5000',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.2800000011920929),
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.14,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 0,
-                      top: 39,
-                      child: Text(
-                        '\$10000',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.2800000011920929),
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.14,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 0,
-                      top: 0,
-                      child: Text(
-                        '\$15000',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.2800000011920929),
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.14,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 73,
-                      top: 117,
-                      child: SizedBox(
-                        width: 28,
-                        height: 122,
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              left: 2,
-                              top: 112,
-                              child: Text(
-                                'Jan',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white
-                                      .withOpacity(0.6499999761581421),
-                                  fontSize: 14,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: 0.14,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 0,
-                              top: 0,
-                              child: Container(
-                                width: 28,
-                                height: 88,
-                                decoration: ShapeDecoration(
-                                  color: const Color(0xFFD999FF),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(7)),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 129,
-                      top: 78,
-                      child: SizedBox(
-                        width: 28,
-                        height: 161,
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              left: 1,
-                              top: 151,
-                              child: Text(
-                                'Feb',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white
-                                      .withOpacity(0.6499999761581421),
-                                  fontSize: 14,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: 0.14,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 0,
-                              top: 0,
-                              child: Container(
-                                width: 28,
-                                height: 127,
-                                decoration: ShapeDecoration(
-                                  color: const Color(0xFF72E39F),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(7)),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 245,
-                      top: 39,
-                      child: SizedBox(
-                        width: 28,
-                        height: 200,
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              left: 2,
-                              top: 190,
-                              child: Text(
-                                'Apr',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white
-                                      .withOpacity(0.6499999761581421),
-                                  fontSize: 14,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: 0.14,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 0,
-                              top: 0,
-                              child: Container(
-                                width: 28,
-                                height: 166,
-                                decoration: ShapeDecoration(
-                                  color: const Color(0xFF6DD999),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(7)),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 187,
-                      top: 133,
-                      child: SizedBox(
-                        width: 28,
-                        height: 106,
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              left: 1,
-                              top: 96,
-                              child: Text(
-                                'Mar',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white
-                                      .withOpacity(0.6499999761581421),
-                                  fontSize: 14,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: 0.14,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 0,
-                              top: 0,
-                              child: Container(
-                                width: 28,
-                                height: 72,
-                                decoration: ShapeDecoration(
-                                  color: const Color(0xFFB9F1EE),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(7)),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 301,
-                      top: 133,
-                      child: SizedBox(
-                        width: 29,
-                        height: 106,
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              left: 0,
-                              top: 96,
-                              child: Text(
-                                'May',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white
-                                      .withOpacity(0.6499999761581421),
-                                  fontSize: 14,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: 0.14,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 1,
-                              top: 0,
-                              child: Container(
-                                width: 28,
-                                height: 72,
-                                decoration: ShapeDecoration(
-                                  color: const Color(0xFFC28AE7),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(7)),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 44.h,
-              ),
               Container(
                 width: 388,
                 height: 47.44,
-                decoration: ShapeDecoration(
-                  image: const DecorationImage(
-                      image: AssetImage("assets/images/dollar.png"),
-                      fit: BoxFit.scaleDown),
+                decoration: BoxDecoration(
                   color: const Color(0xff0A0A0A),
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      width: 0.61,
-                      color: Colors.white.withOpacity(0.07999999821186066),
-                    ),
-                    borderRadius: BorderRadius.circular(12.16),
-                  ),
+                  borderRadius: BorderRadius.circular(5.r),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -555,6 +220,9 @@ class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
                         width: 27.97,
                         height: 27.97,
                         decoration: ShapeDecoration(
+                          image: const DecorationImage(
+                            image: AssetImage("assets/images/dollar.png"),
+                          ),
                           color: Colors.white.withOpacity(0.05000000074505806),
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
@@ -573,7 +241,7 @@ class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: 'Has recibido ',
+                              text: 'Este pago es de ',
                               style: TextStyle(
                                 color: Colors.white
                                     .withOpacity(0.44999998807907104),
@@ -584,9 +252,10 @@ class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
                                 letterSpacing: 0.24,
                               ),
                             ),
-                            const TextSpan(
-                              text: 'S/ 35,000.00 ',
-                              style: TextStyle(
+                            TextSpan(
+                              text:
+                                  '${widget.overallPayment.currency} ${widget.overallPayment.amount * widget.overallPayment.due.length}',
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 13,
                                 fontFamily: 'Inter',
@@ -596,44 +265,10 @@ class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
                               ),
                             ),
                             TextSpan(
-                              text: 'de ',
+                              text: ' en total',
                               style: TextStyle(
                                 color: Colors.white
                                     .withOpacity(0.44999998807907104),
-                                fontSize: 13,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w400,
-                                height: 1.50,
-                                letterSpacing: 0.24,
-                              ),
-                            ),
-                            const TextSpan(
-                              text: 'Payer 1 ',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w400,
-                                height: 1.50,
-                                letterSpacing: 0.24,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'en ',
-                              style: TextStyle(
-                                color: Colors.white
-                                    .withOpacity(0.44999998807907104),
-                                fontSize: 13,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w400,
-                                height: 1.50,
-                                letterSpacing: 0.24,
-                              ),
-                            ),
-                            const TextSpan(
-                              text: '1 año',
-                              style: TextStyle(
-                                color: Colors.white,
                                 fontSize: 13,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w400,
@@ -676,13 +311,13 @@ class _HomeScreenDepth2State extends State<HomeScreenDepth2> {
                 width: 388.w,
                 child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 5,
+                    itemCount: widget.overallPayment.due.length,
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.only(bottom: 20.h),
-                        child: const TusCobrosWidget(),
+                        child: TusCobrosWidget(payment: widget.overallPayment.due[index], amount: widget.overallPayment.amount, currency: widget.overallPayment.currency,),
                       );
                     }),
               )
