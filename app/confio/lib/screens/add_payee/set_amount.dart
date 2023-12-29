@@ -1,10 +1,19 @@
+import 'dart:math';
+
 import 'package:confio/screens/add_payee/set_preference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SetAmountScreen extends StatefulWidget {
-  const SetAmountScreen({super.key});
+  final String payerId;
+  final String payeeId;
+  final String selectedEmail;
+  const SetAmountScreen(
+      {super.key,
+      required this.payerId,
+      required this.payeeId,
+      required this.selectedEmail});
 
   @override
   State<SetAmountScreen> createState() => _SetAmountScreenState();
@@ -20,7 +29,7 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
 
   void backspace() {
     setState(() {
-      amount = amount.substring(0, amount.length - 1);
+      amount = amount.substring(0, min(amount.length - 1, 1));
     });
   }
 
@@ -64,17 +73,7 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Robert N Fox\n',
-                            style: TextStyle(
-                              color:
-                                  Colors.white.withOpacity(0.8399999737739563),
-                              fontSize: 17,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          TextSpan(
-                            text: '@rebrto_92.fire',
+                            text: widget.selectedEmail,
                             style: TextStyle(
                               color:
                                   Colors.white.withOpacity(0.6000000238418579),
@@ -379,7 +378,7 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
                                       onTap: () => backspace(),
                                       child: SizedBox(
                                         child: SvgPicture.asset(
-                                            "lib/assets/images/backspace.svg"),
+                                            "assets/images/backspace.svg"),
                                       ),
                                     )
                                   ],
@@ -392,10 +391,18 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
                           ),
                           InkWell(
                             onTap: () {
+                              if (amount == "" ||
+                                  int.tryParse(amount) == null ||
+                                  int.tryParse(amount) == 0) {
+                                return;
+                              }
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
                                 return SetPreferenceScreen(
                                   amount: amount,
+                                  payerId: widget.payerId,
+                                  payeeId: widget.payeeId,
+                                  selectedEmail: widget.selectedEmail,
                                 );
                               }));
                             },

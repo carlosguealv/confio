@@ -6,8 +6,10 @@ import 'package:confio/services/authentication_service.dart';
 import 'package:confio/services/firebase_service.dart';
 import 'package:confio/services/storage_service.dart';
 import 'package:confio/utils/size_config.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -78,18 +80,61 @@ class _HomeLayoutState extends State<HomeLayout> {
                           Row(
                             children: [
                               Image.asset(
-                                "lib/assets/images/logo.png",
+                                "assets/images/logo.png",
                               ),
                               const Spacer(),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title:
+                                            const Text('Cambiar preferencias'),
+                                        content: const Text(
+                                            '¿Seguro que quieres cambiar las preferencias de las notificaciones?'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('Cancelar'),
+                                          ),
+                                          FutureBuilder(
+                                              future: (authenticationService
+                                                  .firebaseMessaging
+                                                  .requestPermission()),
+                                              builder: (context, snapshot) {
+                                                return TextButton(
+                                                  onPressed: () {
+                                                    if (snapshot.data!
+                                                            .authorizationStatus !=
+                                                        AuthorizationStatus
+                                                            .authorized) {
+                                                      authenticationService
+                                                          .createAndUploadToken();
+                                                    }
+                                                    authenticationService
+                                                        .firebaseMessaging
+                                                        .deleteToken();
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text(
+                                                      'Cambiar preferencias'),
+                                                );
+                                              }),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
                                 child: Container(
                                   height: 25.h,
                                   width: 25.w,
                                   decoration: const BoxDecoration(
                                       image: DecorationImage(
                                           image: AssetImage(
-                                              "lib/assets/images/notification.png"),
+                                              "assets/images/notification.png"),
                                           fit: BoxFit.scaleDown)),
                                 ),
                               ),
@@ -97,14 +142,16 @@ class _HomeLayoutState extends State<HomeLayout> {
                                 width: 12,
                               ),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Get.toNamed("/settings");
+                                },
                                 child: Container(
                                   height: 25.h,
                                   width: 23.48.w,
                                   decoration: const BoxDecoration(
                                       image: DecorationImage(
                                           image: AssetImage(
-                                              "lib/assets/images/Setting.png"),
+                                              "assets/images/Setting.png"),
                                           fit: BoxFit.scaleDown)),
                                 ),
                               ),
@@ -204,8 +251,21 @@ class _HomeLayoutState extends State<HomeLayout> {
                           CalendarWidget(
                             mode: mode,
                             paymentsList: [
-                              ...((state as PaymentsLoaded).first7DaysPayments),
-                              ...((state).restOfPayments)
+                              ...((state as PaymentsLoaded)
+                                  .first7DaysPayments
+                                  .where((element) => mode == Modes.cobrar
+                                      ? element.to ==
+                                          authenticationService.currentUser!.uid
+                                      : element.from ==
+                                          authenticationService
+                                              .currentUser!.uid)),
+                              ...((state).restOfPayments.where((element) =>
+                                  mode == Modes.cobrar
+                                      ? element.to ==
+                                          authenticationService.currentUser!.uid
+                                      : element.from ==
+                                          authenticationService
+                                              .currentUser!.uid))
                             ],
                           ),
                           const SizedBox(
@@ -240,131 +300,143 @@ class _HomeLayoutState extends State<HomeLayout> {
                                                 .currentUser!.uid)
                                     .length,
                                 itemBuilder: (buildContext, index) {
-                                  Payment payment =
-                                      state.first7DaysPayments[index];
+                                  Payment payment = state.first7DaysPayments
+                                      .where((element) => mode == Modes.cobrar
+                                          ? element.to ==
+                                              authenticationService
+                                                  .currentUser!.uid
+                                          : element.from ==
+                                              authenticationService
+                                                  .currentUser!.uid).toList()[index];
                                   return Center(
-                                    child: Container(
-                                      margin: const EdgeInsets.only(right: 10),
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white12,
-                                        borderRadius: BorderRadius.circular(9),
-                                        border: Border.all(
-                                            color: Colors.white12, width: 1),
-                                        gradient: LinearGradient(
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                          colors: [
-                                            cardColors[index % 3],
-                                            Colors.grey
-                                          ],
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Get.toNamed("/home/depth2",
+                                            arguments: payment.overallPayment);
+                                      },
+                                      child: Container(
+                                        margin: const EdgeInsets.only(right: 10),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white12,
+                                          borderRadius: BorderRadius.circular(9),
+                                          border: Border.all(
+                                              color: Colors.white12, width: 1),
+                                          gradient: LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [
+                                              cardColors[index % 3],
+                                              Colors.grey
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            child: Stack(
-                                              children: [
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                    color:
-                                                        cardColors[index % 3],
-                                                  ),
-                                                  width: 100,
-                                                  height: 30,
-                                                ),
-                                                SizedBox(
-                                                  width: 100,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 10),
-                                                    child: Container(
-                                                      height: 39,
-                                                      width: 39,
-                                                      decoration: BoxDecoration(
-                                                          image: const DecorationImage(
-                                                              image: AssetImage(
-                                                                  "lib/assets/images/demo_pfp.png")),
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          color: Colors.grey,
-                                                          border: Border.all(
-                                                              color: Colors
-                                                                  .black87,
-                                                              width: 2)),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 10),
+                                              child: Stack(
+                                                children: [
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      color:
+                                                          cardColors[index % 3],
                                                     ),
+                                                    width: 100,
+                                                    height: 30,
                                                   ),
-                                                )
-                                              ],
+                                                  SizedBox(
+                                                    width: 100,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 10),
+                                                      child: Container(
+                                                        height: 39,
+                                                        width: 39,
+                                                        decoration: BoxDecoration(
+                                                            image: const DecorationImage(
+                                                                image: AssetImage(
+                                                                    "assets/images/demo_pfp.png")),
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            color: Colors.grey,
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .black87,
+                                                                width: 2)),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            height: 6,
-                                          ),
-                                          FutureBuilder(
-                                            future:
-                                                firebaseService.getUserByUid(
-                                              mode == Modes.cobrar
-                                                  ? payment.from
-                                                  : payment.to,
+                                            const SizedBox(
+                                              height: 6,
                                             ),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return Text(
-                                                  "Loading...",
-                                                  style: GoogleFonts.inter(
-                                                      color: Colors.white
-                                                          .withOpacity(0.3),
-                                                      fontSize: 12),
-                                                );
-                                              }
-                                              return Expanded(
-                                                child: SizedBox(
-                                                  width: 100,
-                                                  child: Text(
-                                                    mode == Modes.cobrar
-                                                        ? "${snapshot.data!['email']}"
-                                                        : "${snapshot.data!['email']}",
+                                            FutureBuilder(
+                                              future:
+                                                  firebaseService.getUserByUid(
+                                                mode == Modes.cobrar
+                                                    ? payment.from
+                                                    : payment.to,
+                                              ),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return Text(
+                                                    "Loading...",
                                                     style: GoogleFonts.inter(
                                                         color: Colors.white
                                                             .withOpacity(0.3),
                                                         fontSize: 12),
-                                                    overflow: TextOverflow.clip,
+                                                  );
+                                                }
+                                                return Expanded(
+                                                  child: SizedBox(
+                                                    width: 100,
+                                                    child: Text(
+                                                      mode == Modes.cobrar
+                                                          ? "${snapshot.data!['email']}"
+                                                          : "${snapshot.data!['email']}",
+                                                      style: GoogleFonts.inter(
+                                                          color: Colors.white
+                                                              .withOpacity(0.3),
+                                                          fontSize: 12),
+                                                      overflow: TextOverflow.clip,
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          Text(
-                                            "${payment.amount}",
-                                            style: GoogleFonts.ibmPlexMono(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 12,
+                                                );
+                                              },
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          const SizedBox(
-                                              width: 120,
-                                              child: Divider(
-                                                color: Colors.white12,
-                                                height: 20,
-                                                thickness: 0.9,
-                                              )),
-                                        ],
+                                            const SizedBox(
+                                              height: 8,
+                                            ),
+                                            Text(
+                                              "${payment.amount}",
+                                              style: GoogleFonts.ibmPlexMono(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            const SizedBox(
+                                                width: 120,
+                                                child: Divider(
+                                                  color: Colors.white12,
+                                                  height: 20,
+                                                  thickness: 0.9,
+                                                )),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   );
@@ -408,26 +480,36 @@ class _HomeLayoutState extends State<HomeLayout> {
                                         height: 51,
                                         width: 51,
                                         child: FutureBuilder(
-                                          future: firebaseService.getUserByUid(
-                                              mode == Modes.pagar
-                                                  ? state
-                                                      .restOfPayments[index].to
-                                                  : state.restOfPayments[index]
-                                                      .from),
-                                          builder: (context, snapshot) {
-                                            return FutureBuilder(
-                                              future: storageService
-                                                  .getProfilePic(
-                                                      ConfioUser.fromDocument(snapshot
-                                                                  .data!)),
-                                              builder: (context, snapshot1) {
-                                                return CircleAvatar(
-                                                  backgroundImage: snapshot1.data != null ? MemoryImage(snapshot1.data!) as ImageProvider : AssetImage("lib/assets/images/blankuser.png"),
-                                                );
-                                              }
-                                            );
-                                          }
-                                        )),
+                                            future: firebaseService
+                                                .getUserByUid(mode ==
+                                                        Modes.pagar
+                                                    ? state
+                                                        .restOfPayments[index]
+                                                        .to
+                                                    : state
+                                                        .restOfPayments[index]
+                                                        .from),
+                                            builder: (context, snapshot) {
+                                              return FutureBuilder(
+                                                  future: storageService
+                                                      .getProfilePic(ConfioUser
+                                                          .fromDocument(
+                                                              snapshot.data!)),
+                                                  builder:
+                                                      (context, snapshot1) {
+                                                    return CircleAvatar(
+                                                      backgroundImage: snapshot1
+                                                                  .data !=
+                                                              null
+                                                          ? MemoryImage(
+                                                                  snapshot1
+                                                                      .data!)
+                                                              as ImageProvider
+                                                          : AssetImage(
+                                                              "assets/images/blankuser.png"),
+                                                    );
+                                                  });
+                                            })),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -451,7 +533,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                                   ConnectionState.done) {
                                                 return const Text("");
                                               }
-                                              return Container(
+                                              return SizedBox(
                                                 width: sy! * 0.3,
                                                 height: sx! * 0.05,
                                                 child: Text(
@@ -519,7 +601,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                         decoration: const BoxDecoration(
                                             image: DecorationImage(
                                                 image: AssetImage(
-                                                    "lib/assets/images/grabIcon.png"),
+                                                    "assets/images/grabIcon.png"),
                                                 fit: BoxFit.scaleDown)),
                                       ),
                                     ),
@@ -548,8 +630,7 @@ class _HomeLayoutState extends State<HomeLayout> {
 
 class CalendarWidget extends StatefulWidget {
   const CalendarWidget(
-      {Key? key, required this.mode, this.paymentsList = const []})
-      : super(key: key);
+      {super.key, required this.mode, this.paymentsList = const []});
   final Modes? mode;
   final List<Payment> paymentsList;
 
@@ -567,7 +648,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       decoration: BoxDecoration(
           image: const DecorationImage(
             repeat: ImageRepeat.repeatY,
-            image: AssetImage("lib/assets/images/calendar_overlay.png"),
+            image: AssetImage("assets/images/calendar_overlay.png"),
           ),
           color: const Color(0xff2d2d2d),
           gradient: const LinearGradient(
@@ -594,7 +675,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              "Tienes # pagos por ${widget.mode == Modes.cobrar ? "cobrar" : "pagar"} en los próximos 7 días por S/ 64,000.00",
+              "Tienes ${widget.paymentsList.length == 1 ? "1 pago" : "${widget.paymentsList.length} pagos"} en los próximos 7 días",
               style: GoogleFonts.inter(color: Colors.white.withOpacity(0.4)),
             ),
           ),

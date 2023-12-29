@@ -1,14 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confio/models/payment.dart';
+import 'package:confio/screens/components/gap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TusCobrosWidget extends StatefulWidget {
-  const TusCobrosWidget({super.key});
+  final Timestamp payment;
+  final double amount;
+  final String currency;
+  const TusCobrosWidget({super.key, required this.payment, required this.amount, required this.currency});
 
   @override
   State<TusCobrosWidget> createState() => _TusCobrosWidgetState();
 }
 
 class _TusCobrosWidgetState extends State<TusCobrosWidget> {
+  String _generateString(Timestamp timestamp) {
+    DateTime date = timestamp.toDate();
+    String s = date.day.toString() +
+        '/' +
+        date.month.toString() +
+        '/' +
+        date.year.toString();
+
+    return s;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,9 +44,13 @@ class _TusCobrosWidgetState extends State<TusCobrosWidget> {
             Row(
               children: [
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: 30,
+                  height: 30,
                   decoration: ShapeDecoration(
+                    image: const DecorationImage(
+                      image: AssetImage(
+                          'assets/images/bill.png'),
+                    ),
                     color: Colors.white.withOpacity(0.029999999329447746),
                     shape: RoundedRectangleBorder(
                       side: BorderSide(
@@ -46,8 +67,11 @@ class _TusCobrosWidgetState extends State<TusCobrosWidget> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 14.h,
+                    ),
                     Text(
-                      'Julio 2023',
+                      '${_generateString(widget.payment)}',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14.sp,
@@ -55,42 +79,13 @@ class _TusCobrosWidgetState extends State<TusCobrosWidget> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(
-                      height: 14.h,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          width: 4,
-                          height: 4,
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFF616161),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(17),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 7.w,
-                        ),
-                        Text(
-                          'Pagado en Julio 28',
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.3400000035762787),
-                            fontSize: 12.sp,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    )
                   ],
                 ),
               ],
             ),
-            const Text(
-              '+ S/ 8,000.00',
-              style: TextStyle(
+            Text(
+              '${widget.currency} ${widget.amount}',
+              style: const TextStyle(
                 color: Color(0xFF6DD999),
                 fontSize: 14,
                 fontFamily: 'Roboto Mono',

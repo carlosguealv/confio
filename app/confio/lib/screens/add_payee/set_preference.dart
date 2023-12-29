@@ -1,14 +1,32 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confio/screens/add_payee/add_payment.dart';
+import 'package:confio/services/firebase_service.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+const TextStyle kTextStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 12,
+  fontFamily: 'Inter',
+  fontWeight: FontWeight.w500,
+);
+
 class SetPreferenceScreen extends StatefulWidget {
   final String amount;
-  const SetPreferenceScreen({super.key, required this.amount});
+  final String payerId;
+  final String payeeId;
+  final String selectedEmail;
+
+  const SetPreferenceScreen(
+      {super.key,
+      required this.amount,
+      required this.payerId,
+      required this.payeeId,
+      required this.selectedEmail});
 
   @override
   State<SetPreferenceScreen> createState() => _SetPreferenceScreenState();
@@ -17,6 +35,11 @@ class SetPreferenceScreen extends StatefulWidget {
 class _SetPreferenceScreenState extends State<SetPreferenceScreen> {
 //*document will be stored to this variable
   File? file;
+  int selectedFrequency = 0;
+  List<String> frequencySelectionOptions = ["Weekly", "Monthly", "Yearly"];
+
+  DateTime? startingDate;
+  DateTime? endingDate;
 
   @override
   Widget build(BuildContext context) {
@@ -58,17 +81,7 @@ class _SetPreferenceScreenState extends State<SetPreferenceScreen> {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Robert N Fox\n',
-                            style: TextStyle(
-                              color:
-                                  Colors.white.withOpacity(0.8399999737739563),
-                              fontSize: 17,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          TextSpan(
-                            text: '@rebrto_92.fire',
+                            text: widget.selectedEmail,
                             style: TextStyle(
                               color:
                                   Colors.white.withOpacity(0.6000000238418579),
@@ -113,7 +126,9 @@ class _SetPreferenceScreenState extends State<SetPreferenceScreen> {
                           ),
                         ),
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
                           child: Text(
                             'Editar monto',
                             textAlign: TextAlign.center,
@@ -179,15 +194,10 @@ class _SetPreferenceScreenState extends State<SetPreferenceScreen> {
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
-                                        Text(
+                                        const Text(
                                           'Renta',
                                           textAlign: TextAlign.right,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12.sp,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                          style: kTextStyle,
                                         ),
                                       ],
                                     ),
@@ -246,6 +256,138 @@ class _SetPreferenceScreenState extends State<SetPreferenceScreen> {
                                   border: Border.all(
                                       width: 1, color: const Color(0xff181818)),
                                   color: const Color(0xff0f0f0f)),
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                      child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedFrequency++;
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 20.w,
+                                        ),
+                                        const Text(
+                                          'Frecuencia',
+                                          style: kTextStyle,
+                                        ),
+                                        const Spacer(),
+                                        Text(
+                                          frequencySelectionOptions[
+                                              selectedFrequency % 3],
+                                          style: kTextStyle,
+                                        ),
+                                        SizedBox(
+                                          width: 20.w,
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 20.w,
+                                        ),
+                                        const Text(
+                                          'Starting Date',
+                                          style: kTextStyle,
+                                        ),
+                                        const Spacer(),
+                                        TextButton(
+                                          onPressed: () async {
+                                            final DateTime? pickedDate =
+                                                await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime(2000),
+                                              lastDate: DateTime(2100),
+                                            );
+                                            if (pickedDate != null) {
+                                              // Update the state with the selected date
+                                              setState(() {
+                                                if (endingDate != null &&
+                                                    (pickedDate.isAfter(
+                                                            endingDate!) ||
+                                                        pickedDate
+                                                            .isAtSameMomentAs(
+                                                                endingDate!))) {
+                                                  endingDate = null;
+                                                } else if (!pickedDate
+                                                    .isBefore(DateTime.now())) {
+                                                  startingDate = pickedDate;
+                                                } else {
+                                                  startingDate = null;
+                                                }
+                                              });
+                                            }
+                                          },
+                                          child: Text(
+                                            startingDate == null
+                                                ? 'Select Date'
+                                                : ('${startingDate!.day}/${startingDate!.month}/${startingDate!.year}'),
+                                            style: kTextStyle,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 20.w,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 20.w,
+                                        ),
+                                        const Text(
+                                          'Ending Date',
+                                          style: kTextStyle,
+                                        ),
+                                        const Spacer(),
+                                        TextButton(
+                                          onPressed: () async {
+                                            final DateTime? pickedDate =
+                                                await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime(2000),
+                                              lastDate: DateTime(2100),
+                                            );
+                                            if (pickedDate != null) {
+                                              // Update the state with the selected date
+                                              setState(() {
+                                                if (startingDate != null &&
+                                                    (pickedDate.isBefore(
+                                                            startingDate!) ||
+                                                        pickedDate
+                                                            .isAtSameMomentAs(
+                                                                startingDate!))) {
+                                                  startingDate = null;
+                                                }
+                                                endingDate = pickedDate;
+                                              });
+                                            }
+                                          },
+                                          child: Text(
+                                            endingDate == null
+                                                ? 'Select Date'
+                                                : ('${endingDate!.day}/${endingDate!.month}/${endingDate!.year}'),
+                                            style: kTextStyle,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 20.w,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             SizedBox(
                               height: 19.h,
@@ -292,7 +434,7 @@ class _SetPreferenceScreenState extends State<SetPreferenceScreen> {
                                         height: 18.h,
                                         width: 18.w,
                                         child: SvgPicture.asset(
-                                            "lib/assets/images/uploadIcon.svg",
+                                            "assets/images/uploadIcon.svg",
                                             fit: BoxFit.scaleDown),
                                       )
                                     ],
@@ -306,9 +448,37 @@ class _SetPreferenceScreenState extends State<SetPreferenceScreen> {
 
                             InkWell(
                               onTap: () {
+                                if (startingDate == null ||
+                                    endingDate == null) {
+                                  return;
+                                }
                                 Navigator.push(context, MaterialPageRoute(
                                   builder: (context) {
-                                    return AddPayment(amount: widget.amount);
+                                    Recurrences recurrence;
+                                    switch (selectedFrequency) {
+                                      case 0:
+                                        recurrence = Recurrences.weekly;
+                                        break;
+                                      case 1:
+                                        recurrence = Recurrences.monthly;
+                                        break;
+                                      case 2:
+                                        recurrence = Recurrences.yearly;
+                                        break;
+                                      default:
+                                        recurrence = Recurrences.weekly;
+                                        break;
+                                    }
+                                    return AddPayment(
+                                      amount: widget.amount,
+                                      payeeId: widget.payeeId,
+                                      payerId: widget.payerId,
+                                      selectedEmail: widget.selectedEmail,
+                                      startDate:
+                                          Timestamp.fromDate(startingDate!),
+                                      endDate: Timestamp.fromDate(endingDate!),
+                                      recurrence: recurrence,
+                                    );
                                   },
                                 ));
                               },

@@ -4,6 +4,7 @@ import 'package:confio/screens/components/gap.dart';
 import 'package:confio/services/firebase_service.dart';
 import 'package:confio/services/storage_service.dart';
 import 'package:confio/utils/size_config.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -68,9 +69,9 @@ class PaymentRecordButton extends StatelessWidget {
                 shape: OvalBorder(),
               ),
               child: label == "Pagadores"
-                  ? Image.asset("lib/assets/images/Group.png",
+                  ? Image.asset("assets/images/Group.png",
                       width: 15, height: 15)
-                  : Image.asset("lib/assets/images/Vector.png",
+                  : Image.asset("assets/images/Vector.png",
                       width: 15, height: 15),
             ),
             const SizedBox(height: 5),
@@ -158,7 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               top: sx! * 0.025,
               left: sy! * 0.05,
               child: Image.asset(
-                "lib/assets/images/logo.png",
+                "assets/images/logo.png",
               ),
             ),
             Positioned(
@@ -168,10 +169,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      print('Notification icon tapped!');
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Cambiar preferencias'),
+                            content: const Text(
+                                '¿Seguro que quieres cambiar las preferencias de las notificaciones?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Cancelar'),
+                              ),
+                              FutureBuilder(
+                                  future: (authenticationService
+                                      .firebaseMessaging
+                                      .requestPermission()),
+                                  builder: (context, snapshot) {
+                                    return TextButton(
+                                      onPressed: () {
+                                        if (snapshot
+                                                .data!.authorizationStatus !=
+                                            AuthorizationStatus.authorized) {
+                                          authenticationService
+                                              .createAndUploadToken();
+                                        }
+                                        authenticationService.firebaseMessaging
+                                            .deleteToken();
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Cambiar preferencias'),
+                                    );
+                                  }),
+                            ],
+                          );
+                        },
+                      );
                     },
                     child: Image.asset(
-                      "lib/assets/images/notification.png",
+                      "assets/images/notification.png",
                       width: 25.w,
                       height: 25.h,
                     ),
@@ -182,7 +220,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Get.toNamed('/settings');
                     },
                     child: Image.asset(
-                      "lib/assets/images/Setting.png",
+                      "assets/images/Setting.png",
                       width: 25.w,
                       height: 25.h,
                     ),
@@ -199,7 +237,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   backgroundColor: Colors.white,
                   backgroundImage: _image != null
                       ? MemoryImage(_image!) as ImageProvider<Object>
-                      : const AssetImage("lib/assets/images/blankuser.png"),
+                      : const AssetImage("assets/images/blankuser.png"),
                 ),
               ),
             ),
@@ -239,8 +277,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Text(
                         "Ver registros de pagos",
                         style: TextStyle(
-                          color:
-                              Colors.white.withOpacity(0.7), // Less bright white
+                          color: Colors.white
+                              .withOpacity(0.7), // Less bright white
                           fontSize: 16,
                         ),
                       ),
@@ -252,31 +290,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const Gap(
                             width: 0.225,
                           ),
-                          PaymentRecordButton(
-                            label: 'Pagadores',
-                            count: '10',
-                            color: const Color.fromARGB(170, 66, 66, 66),
-                            onTap: () {
-                              setState(() {
-                                mode = RecordMode.payer;
-                              });
-                            },
-                            outlined: mode == RecordMode.payer,
-                          ),
+                          FutureBuilder(
+                              future: authenticationService.currentConfioUser,
+                              builder: (context, snapshot) {
+                                return PaymentRecordButton(
+                                  label: 'Pagadores',
+                                  count:
+                                      snapshot.data!.payers.length.toString(),
+                                  color: const Color.fromARGB(170, 66, 66, 66),
+                                  onTap: () {
+                                    setState(() {
+                                      mode = RecordMode.payer;
+                                    });
+                                  },
+                                  outlined: mode == RecordMode.payer,
+                                );
+                              }),
                           const Gap(
                             width: 0.05,
                           ),
-                          PaymentRecordButton(
-                            label: 'Cobradores',
-                            count: '17',
-                            color: const Color.fromARGB(170, 66, 66, 66),
-                            onTap: () {
-                              setState(() {
-                                mode = RecordMode.payee;
-                              });
-                            },
-                            outlined: mode == RecordMode.payee,
-                          ),
+                          FutureBuilder(
+                              future: authenticationService.currentConfioUser,
+                              builder: (context, snapshot) {
+                                return PaymentRecordButton(
+                                  label: 'Cobradores',
+                                  count:
+                                      snapshot.data!.payees.length.toString(),
+                                  color: const Color.fromARGB(170, 66, 66, 66),
+                                  onTap: () {
+                                    setState(() {
+                                      mode = RecordMode.payee;
+                                    });
+                                  },
+                                  outlined: mode == RecordMode.payee,
+                                );
+                              }),
                         ],
                       ),
                       const Gap(
@@ -304,7 +352,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         color: Colors.white
                                             .withOpacity(0.07999999821186066),
                                       ),
-                                      borderRadius: BorderRadius.circular(12.16),
+                                      borderRadius:
+                                          BorderRadius.circular(12.16),
                                     ),
                                   ),
                                 ),
@@ -380,15 +429,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           width: 27.97,
                                           height: 27.97,
                                           decoration: ShapeDecoration(
-                                            color: Colors.white
-                                                .withOpacity(0.05000000074505806),
+                                            color: Colors.white.withOpacity(
+                                                0.05000000074505806),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(8.32),
                                             ),
                                           ),
                                           child: Image.asset(
-                                            "lib/assets/images/invite.png",
+                                            "assets/images/invite.png",
                                             width: 27.97,
                                             height: 27.97,
                                           ),
@@ -430,83 +479,111 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ? snapshot.data!.payers.length
                                 : snapshot.data!.payees.length,
                             itemBuilder: (context, index) {
-                              return Container(
-                                width: 388,
-                                height: 77,
-                                decoration: ShapeDecoration(
-                                  color: const Color(0x66202227),
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                      width: 1,
-                                      color: Colors.white
-                                          .withOpacity(0.03999999910593033),
+                              return Column(
+                                children: [
+                                  Container(
+                                    width: 388,
+                                    height: 77,
+                                    decoration: ShapeDecoration(
+                                      color: const Color(0x66202227),
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                          width: 1,
+                                          color: Colors.white
+                                              .withOpacity(0.03999999910593033),
+                                        ),
+                                        borderRadius: BorderRadius.circular(17),
+                                      ),
                                     ),
-                                    borderRadius: BorderRadius.circular(17),
-                                  ),
-                                ),
-                                child: Row(children: [
-                                  FutureBuilder(
-                                    future: firebaseService.getUserByUid(
-                                        mode == RecordMode.payer
-                                            ? snapshot.data!.payers[index]!
-                                            : snapshot.data!.payees[index]!),
-                                    builder: (context, snapshot1) {
-                                      return FutureBuilder(
-                                          future: storageService.getProfilePic(
-                                              ConfioUser.fromDocument(
-                                                  snapshot1.data!)),
-                                          builder: (context, snapshot2) {
-                                            return Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    const Gap(
-                                                      width: 0.05,
-                                                    ),
-                                                    CircleAvatar(
-                                                      radius: 20,
-                                                      backgroundColor: Colors.white,
-                                                      backgroundImage: snapshot2
-                                                                  .data !=
-                                                              null
-                                                          ? MemoryImage(
-                                                                  snapshot2.data!)
-                                                              as ImageProvider<
-                                                                  Object>
-                                                          : const AssetImage(
-                                                              "lib/assets/images/blankuser.png"),
-                                                    ),
-                                                    const Gap(
-                                                      width: 0.05,
-                                                    ),
-                                                    Text(
+                                    child: Row(children: [
+                                      FutureBuilder(
+                                        future: firebaseService.getUserByUid(
+                                            mode == RecordMode.payer
+                                                ? snapshot.data!.payers[index]!
+                                                : snapshot
+                                                    .data!.payees[index]!),
+                                        builder: (context, snapshot1) {
+                                          return FutureBuilder(
+                                              future:
+                                                  storageService.getProfilePic(
                                                       ConfioUser.fromDocument(
-                                                              snapshot1.data!)
-                                                          .email!,
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 16,
-                                                        fontFamily: 'Roboto Mono',
-                                                        fontWeight: FontWeight.w700,
-                                                        height: 0.12,
-                                                        letterSpacing: 0.90,
+                                                          snapshot1.data!)),
+                                              builder: (context, snapshot2) {
+                                                return SingleChildScrollView(
+                                                  child: Column(
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          const Gap(
+                                                            width: 0.05,
+                                                          ),
+                                                          CircleAvatar(
+                                                            radius: 20,
+                                                            backgroundColor:
+                                                                Colors.white,
+                                                            backgroundImage: snapshot2
+                                                                        .data !=
+                                                                    null
+                                                                ? MemoryImage(
+                                                                        snapshot2
+                                                                            .data!)
+                                                                    as ImageProvider<
+                                                                        Object>
+                                                                : const AssetImage(
+                                                                    "assets/images/blankuser.png"),
+                                                          ),
+                                                          const Gap(
+                                                            width: 0.05,
+                                                          ),
+                                                          Container(
+                                                            width: sy! * 0.7,
+                                                            child: Text(
+                                                              ConfioUser.fromDocument(
+                                                                      snapshot1
+                                                                          .data!)
+                                                                  .email!,
+                                                              style:
+                                                                  const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 16,
+                                                                fontFamily:
+                                                                    'Roboto Mono',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                height: 1,
+                                                                letterSpacing:
+                                                                    0.90,
+                                                              ),
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .clip,
+                                                              softWrap: true,
+                                                              maxLines: 1,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const Gap(
-                                                  height: 0.05,
-                                                ),
-                                              ],
-                                            );
-                                          });
-                                    },
+                                                    ],
+                                                  ),
+                                                );
+                                              });
+                                        },
+                                      ),
+                                    ]),
                                   ),
-                                ]),
+                                  const Gap(
+                                    height: 0.025,
+                                  ),
+                                ],
                               );
                             },
                           );
                         },
+                      ),
+                      const Gap(
+                        height: 0.1,
                       ),
                     ],
                   ),

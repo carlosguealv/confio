@@ -1,9 +1,27 @@
 import 'package:confio/screens/components/gap.dart';
+import 'package:confio/services/authentication_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
+
+  _mailto() async {
+    final Uri params = Uri(
+      scheme: 'mailto',
+      path: 'confio.latam@gmail.com',
+      query: 'subject=Ayuda', //add subject and body here
+    );
+
+    if (await canLaunchUrl(params)) {
+      await launchUrl(params);
+    } else {
+      throw 'Could not launch $params';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +40,7 @@ class SettingsScreen extends StatelessWidget {
                     width: 0.05,
                   ),
                   Image.asset(
-                    "lib/assets/images/logo.png",
+                    "assets/images/logo.png",
                   ),
                 ],
               ),
@@ -35,7 +53,7 @@ class SettingsScreen extends StatelessWidget {
                     width: 0.05,
                   ),
                   Image.asset(
-                    "lib/assets/images/Setting.png",
+                    "assets/images/Setting.png",
                     width: 25.w,
                     height: 25.h,
                   ),
@@ -61,7 +79,7 @@ class SettingsScreen extends StatelessWidget {
               // Account info button
               GestureDetector(
                 onTap: () {
-                  print("Account info button tapped");
+                  Get.toNamed('/account-info');
                 },
                 child: Row(
                   children: [
@@ -77,7 +95,7 @@ class SettingsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(7)),
                       ),
                       child: Image.asset(
-                        "lib/assets/images/2-User.png",
+                        "assets/images/2-User.png",
                         width: 20,
                         height: 20,
                       ),
@@ -96,10 +114,10 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     const Gap(
-                      width: 0.50335,
+                      width: 0.1,
                     ),
                     Image.asset(
-                      "lib/assets/images/arrow_button.png",
+                      "assets/images/arrow_button.png",
                       width: 10,
                       height: 10,
                     ),
@@ -112,7 +130,7 @@ class SettingsScreen extends StatelessWidget {
               // Ask for help button
               GestureDetector(
                 onTap: () {
-                  print("Ask for help tapped");
+                  _mailto();
                 },
                 child: Row(
                   children: [
@@ -128,7 +146,7 @@ class SettingsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(7)),
                       ),
                       child: Image.asset(
-                        "lib/assets/images/Danger-Circle.png",
+                        "assets/images/Danger-Circle.png",
                         width: 20,
                         height: 20,
                       ),
@@ -147,61 +165,10 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     const Gap(
-                      width: 0.58,
+                      width: 0.1,
                     ),
                     Image.asset(
-                      "lib/assets/images/arrow_button.png",
-                      width: 10,
-                      height: 10,
-                    ),
-                  ],
-                ),
-              ),
-              const Gap(
-                height: 0.025,
-              ),
-              // Data & Privacy button
-              GestureDetector(
-                onTap: () {
-                  print("Data & Privacy button tapped");
-                },
-                child: Row(
-                  children: [
-                    const Gap(
-                      width: 0.05,
-                    ),
-                    Container(
-                      width: 35,
-                      height: 35,
-                      decoration: ShapeDecoration(
-                        color: Colors.white.withOpacity(0.09000000357627869),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(7)),
-                      ),
-                      child: Image.asset(
-                        "lib/assets/images/Lock.png",
-                        width: 20,
-                        height: 20,
-                      ),
-                    ),
-                    const Gap(
-                      width: 0.05,
-                    ),
-                    Text(
-                      'Datos y Privacidad',
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.7699999809265137),
-                        fontSize: 14,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w400,
-                        height: 0.22,
-                      ),
-                    ),
-                    const Gap(
-                      width: 0.467,
-                    ),
-                    Image.asset(
-                      "lib/assets/images/arrow_button.png",
+                      "assets/images/arrow_button.png",
                       width: 10,
                       height: 10,
                     ),
@@ -214,7 +181,42 @@ class SettingsScreen extends StatelessWidget {
               // Notification preferences button
               GestureDetector(
                 onTap: () {
-                  print("Notification preferences button tapped");
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Cambiar preferencias'),
+                        content: const Text(
+                            '¿Seguro que quieres cambiar las preferencias de las notificaciones?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Cancelar'),
+                          ),
+                          FutureBuilder(
+                              future: (authenticationService.firebaseMessaging
+                                  .requestPermission()),
+                              builder: (context, snapshot) {
+                                return TextButton(
+                                  onPressed: () {
+                                    if (snapshot.data!.authorizationStatus !=
+                                        AuthorizationStatus.authorized) {
+                                      authenticationService
+                                          .createAndUploadToken();
+                                    }
+                                    authenticationService.firebaseMessaging
+                                        .deleteToken();
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Cambiar preferencias'),
+                                );
+                              }),
+                        ],
+                      );
+                    },
+                  );
                 },
                 child: Row(
                   children: [
@@ -230,7 +232,7 @@ class SettingsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(7)),
                       ),
                       child: Image.asset(
-                        "lib/assets/images/Notification.png",
+                        "assets/images/notification.png",
                         width: 20,
                         height: 20,
                       ),
@@ -249,10 +251,10 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     const Gap(
-                      width: 0.305,
+                      width: 0.1,
                     ),
                     Image.asset(
-                      "lib/assets/images/arrow_button.png",
+                      "assets/images/arrow_button.png",
                       width: 10,
                       height: 10,
                     ),
@@ -280,7 +282,31 @@ class SettingsScreen extends StatelessWidget {
               // Log out button
               GestureDetector(
                 onTap: () {
-                  print("Log out button tapped");
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("Cerrar Sesión"),
+                          content: const Text(
+                              "¿Estás seguro de que quieres cerrar sesión?"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              child: const Text("Cancelar"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Get.back();
+                                authenticationService.signOutUser();
+                                Get.offAllNamed('/auth-options');
+                              },
+                              child: const Text("Cerrar Sesión"),
+                            ),
+                          ],
+                        );
+                      });
                 },
                 child: Row(
                   children: [
@@ -296,7 +322,7 @@ class SettingsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(7)),
                       ),
                       child: Image.asset(
-                        "lib/assets/images/2-User.png",
+                        "assets/images/2-User.png",
                         width: 20,
                         height: 20,
                       ),
@@ -315,10 +341,10 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     const Gap(
-                      width: 0.55,
+                      width: 0.1,
                     ),
                     Image.asset(
-                      "lib/assets/images/arrow_button.png",
+                      "assets/images/arrow_button.png",
                       width: 10,
                       height: 10,
                     ),

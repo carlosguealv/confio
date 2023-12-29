@@ -27,10 +27,10 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
       height: 108,
       width: double.infinity.w,
       decoration: const BoxDecoration(
-          color: Colors.black,
+          color: Colors.transparent,
           image: DecorationImage(
               image: AssetImage(
-                "lib/assets/images/navbarheader.png",
+                "assets/images/navbarheader.png",
               ),
               fit: BoxFit.fitWidth)),
       child: Stack(
@@ -43,7 +43,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
                 decoration: const BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage(
-                          "lib/assets/images/navbarcurve.png",
+                          "assets/images/navbarcurve.png",
                         ),
                         fit: BoxFit.fill)),
               )),
@@ -61,13 +61,14 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
             child: navbarItemCircle(index: 1),
           ),
           Positioned(
-              top: 50,
-              right: 50,
-              child: navbarItem(
-                assetname: "perfil",
-                labelText: "Perfil",
-                index: 2,
-              )),
+            top: 50,
+            right: 50,
+            child: navbarItem(
+              assetname: "perfil",
+              labelText: "Perfil",
+              index: 2,
+            ),
+          ),
         ],
       ),
     );
@@ -111,7 +112,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
       child: Column(
         children: [
           SvgPicture.asset(
-            "lib/assets/images/$assetname.svg",
+            "assets/images/$assetname.svg",
             color: (widget.currentIndex == index)
                 ? const Color(0xff7893FF)
                 : const Color(0xff575757),
