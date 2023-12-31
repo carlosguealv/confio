@@ -246,6 +246,8 @@ class FirebaseService {
     try {
       final data = {
         "email": email,
+        "payees": [],
+        "payers": [],
       };
 
       await _firestore.collection("users").doc(uid).set(data);
