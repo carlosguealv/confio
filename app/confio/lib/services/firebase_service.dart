@@ -114,6 +114,12 @@ class FirebaseService {
         "to": uidTo,
       };
 
+      if (uidFrom == authenticationService.currentUser!.uid) {
+        addPayee(await getUserByUid(uidTo).then((value) => value!.get("email")));
+      } else {
+        addPayer(await getUserByUid(uidFrom).then((value) => value!.get("email")));
+      }
+
       await _firestore.collection("payments").add(data);
 
       return null;
@@ -256,6 +262,24 @@ class FirebaseService {
     } on FirebaseException catch (e) {
       return e.message;
     }
+  }
+
+  Future<bool> addPayee(String email) {
+    return _firestore
+        .collection("users")
+        .doc(authenticationService.currentUser!.uid)
+        .update({
+      "payees": FieldValue.arrayUnion([email]),
+    }).then((value) => true);
+  }
+
+  Future<bool> addPayer(String email) {
+    return _firestore
+        .collection("users")
+        .doc(authenticationService.currentUser!.uid)
+        .update({
+      "payers": FieldValue.arrayUnion([email]),
+    }).then((value) => true);
   }
 
   Future<DocumentSnapshot?> getUserByUid(String uid) async {
