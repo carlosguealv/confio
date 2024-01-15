@@ -497,18 +497,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                     child: Row(children: [
                                       FutureBuilder(
-                                        future: firebaseService.getUserByUid(
+                                        future: firebaseService.getUserByEmail(
                                             mode == RecordMode.payer
                                                 ? snapshot.data!.payers[index]!
                                                 : snapshot
                                                     .data!.payees[index]!),
                                         builder: (context, snapshot1) {
+                                          if (!snapshot1.hasData) {
+                                            return const SizedBox.shrink();
+                                          }
                                           return FutureBuilder(
                                               future:
                                                   storageService.getProfilePic(
                                                       ConfioUser.fromDocument(
                                                           snapshot1.data!)),
                                               builder: (context, snapshot2) {
+                                                if (!snapshot2.hasData) {
+                                                  return const SizedBox
+                                                      .shrink();
+                                                }
+                                                print(snapshot2.data!);
                                                 return SingleChildScrollView(
                                                   child: Column(
                                                     children: [
