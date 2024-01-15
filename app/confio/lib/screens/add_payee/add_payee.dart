@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confio/models/confio_user.dart';
 import 'package:confio/services/authentication_service.dart';
 import 'package:confio/services/firebase_service.dart';
+import 'package:confio/services/storage_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -393,17 +394,38 @@ class _AddPeopleContainerState extends State<AddPeopleContainer> {
                 },
                 child: Row(
                   children: [
-                    Container(
-                      width: 44.w,
-                      height: 44.h,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image:
-                              NetworkImage("https://via.placeholder.com/44x44"),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                    FutureBuilder(
+                      future:
+                          firebaseService.getUserByEmail(widget.people[index]!),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return FutureBuilder(
+                            future: storageService.getProfilePic(
+                                ConfioUser.fromDocument(
+                                    snapshot.data as DocumentSnapshot)),
+                            builder: (context, snapshot1) {
+                              if (snapshot1.hasData) {
+                                return CircleAvatar(
+                                  radius: 20.r,
+                                  backgroundImage: MemoryImage(snapshot1.data!),
+                                );
+                              } else {
+                                return CircleAvatar(
+                                  radius: 20.r,
+                                  backgroundImage: const AssetImage(
+                                      "assets/images/blankuser.png"),
+                                );
+                              }
+                            },
+                          );
+                        } else {
+                          return CircleAvatar(
+                            radius: 20.r,
+                            backgroundImage:
+                                const AssetImage("assets/images/blankuser.png"),
+                          );
+                        }
+                      },
                     ),
                     SizedBox(
                       width: 14.w,
