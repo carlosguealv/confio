@@ -68,11 +68,14 @@ class _SetPreferenceScreenState extends State<SetPreferenceScreen> {
                   children: [
                     //*Displays avatar
                     FutureBuilder(
-                      future: firebaseService.getUserByEmail(widget.selectedEmail),
+                      future:
+                          firebaseService.getUserByEmail(widget.selectedEmail),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return FutureBuilder(
-                            future: storageService.getProfilePic(ConfioUser.fromDocument(snapshot.data as DocumentSnapshot)),
+                            future: storageService.getProfilePic(
+                                ConfioUser.fromDocument(
+                                    snapshot.data as DocumentSnapshot)),
                             builder: (context, snapshot1) {
                               if (snapshot1.hasData) {
                                 return CircleAvatar(
@@ -82,7 +85,8 @@ class _SetPreferenceScreenState extends State<SetPreferenceScreen> {
                               } else {
                                 return CircleAvatar(
                                   radius: 50.r,
-                                  backgroundImage: const AssetImage("assets/images/blankuser.png"),
+                                  backgroundImage: const AssetImage(
+                                      "assets/images/blankuser.png"),
                                 );
                               }
                             },
@@ -338,8 +342,15 @@ class _SetPreferenceScreenState extends State<SetPreferenceScreen> {
                                                             .isAtSameMomentAs(
                                                                 endingDate!))) {
                                                   endingDate = null;
-                                                } else if (!pickedDate
-                                                    .isBefore(DateTime.now())) {
+                                                } else if (!(pickedDate
+                                                        .isBefore(
+                                                            DateTime.now()) ||
+                                                    pickedDate.difference(
+                                                          DateTime.now(),
+                                                        ) <
+                                                        const Duration(
+                                                          days: 1,
+                                                        ))) {
                                                   startingDate = pickedDate;
                                                 } else {
                                                   startingDate = null;
