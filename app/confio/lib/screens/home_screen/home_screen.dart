@@ -428,7 +428,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                               height: 8,
                                             ),
                                             Text(
-                                              "${payment.amount}",
+                                              "S/ ${payment.amount}",
                                               style: GoogleFonts.ibmPlexMono(
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 12,
@@ -595,7 +595,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                     ),
                                     const Spacer(),
                                     Text(
-                                      "${state.restOfPayments[index].amount} ${state.restOfPayments[index].currency}",
+                                      "S/ ${state.restOfPayments[index].amount}",
                                       style: GoogleFonts.robotoMono(
                                           fontWeight: FontWeight.w500),
                                     ),

@@ -4,17 +4,17 @@ import 'package:confio/screens/components/gap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class TusCobrosWidget extends StatefulWidget {
+class TusPagosWidget extends StatefulWidget {
   final Timestamp payment;
   final double amount;
-  final String currency;
-  const TusCobrosWidget({super.key, required this.payment, required this.amount, required this.currency});
+  const TusPagosWidget(
+      {super.key, required this.payment, required this.amount});
 
   @override
-  State<TusCobrosWidget> createState() => _TusCobrosWidgetState();
+  State<TusPagosWidget> createState() => _TusPagosWidgetState();
 }
 
-class _TusCobrosWidgetState extends State<TusCobrosWidget> {
+class _TusPagosWidgetState extends State<TusPagosWidget> {
   String _generateString(Timestamp timestamp) {
     DateTime date = timestamp.toDate();
     String s = date.day.toString() +
@@ -48,8 +48,7 @@ class _TusCobrosWidgetState extends State<TusCobrosWidget> {
                   height: 30,
                   decoration: ShapeDecoration(
                     image: const DecorationImage(
-                      image: AssetImage(
-                          'assets/images/bill.png'),
+                      image: AssetImage('assets/images/bill.png'),
                     ),
                     color: Colors.white.withOpacity(0.029999999329447746),
                     shape: RoundedRectangleBorder(
@@ -84,9 +83,9 @@ class _TusCobrosWidgetState extends State<TusCobrosWidget> {
               ],
             ),
             Text(
-              '${widget.currency} ${widget.amount}',
+              'S/ ${widget.amount}',
               style: const TextStyle(
-                color: Color(0xFF6DD999),
+                color: Colors.red,
                 fontSize: 14,
                 fontFamily: 'Roboto Mono',
                 fontWeight: FontWeight.w500,
