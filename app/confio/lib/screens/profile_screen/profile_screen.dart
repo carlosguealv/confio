@@ -68,7 +68,7 @@ class PaymentRecordButton extends StatelessWidget {
                 color: Color(0xFFB9F1EE),
                 shape: OvalBorder(),
               ),
-              child: label == "Pagadores"
+              child: label == "Tus pagadores"
                   ? Image.asset("assets/images/Group.png",
                       width: 15, height: 15)
                   : Image.asset("assets/images/Vector.png",
@@ -294,7 +294,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               future: authenticationService.currentConfioUser,
                               builder: (context, snapshot) {
                                 return PaymentRecordButton(
-                                  label: 'Pagadores',
+                                  label: 'Tus pagadores',
                                   count:
                                       snapshot.data!.payers.length.toString(),
                                   color: const Color.fromARGB(170, 66, 66, 66),
@@ -313,7 +313,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               future: authenticationService.currentConfioUser,
                               builder: (context, snapshot) {
                                 return PaymentRecordButton(
-                                  label: 'Cobradores',
+                                  label: 'Tus acreedores',
                                   count:
                                       snapshot.data!.payees.length.toString(),
                                   color: const Color.fromARGB(170, 66, 66, 66),
@@ -497,18 +497,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                     child: Row(children: [
                                       FutureBuilder(
-                                        future: firebaseService.getUserByUid(
+                                        future: firebaseService.getUserByEmail(
                                             mode == RecordMode.payer
                                                 ? snapshot.data!.payers[index]!
                                                 : snapshot
                                                     .data!.payees[index]!),
                                         builder: (context, snapshot1) {
+                                          if (!snapshot1.hasData) {
+                                            return const SizedBox.shrink();
+                                          }
                                           return FutureBuilder(
                                               future:
                                                   storageService.getProfilePic(
                                                       ConfioUser.fromDocument(
                                                           snapshot1.data!)),
                                               builder: (context, snapshot2) {
+                                                if (!snapshot2.hasData) {
+                                                  return const SizedBox
+                                                      .shrink();
+                                                }
+                                                print(snapshot2.data!);
                                                 return SingleChildScrollView(
                                                   child: Column(
                                                     children: [

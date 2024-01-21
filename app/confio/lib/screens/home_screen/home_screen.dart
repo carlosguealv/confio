@@ -307,7 +307,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                                                   .currentUser!.uid
                                           : element.from ==
                                               authenticationService
-                                                  .currentUser!.uid).toList()[index];
+                                                  .currentUser!.uid)
+                                      .toList()[index];
                                   return Center(
                                     child: GestureDetector(
                                       onTap: () {
@@ -315,12 +316,14 @@ class _HomeLayoutState extends State<HomeLayout> {
                                             arguments: payment.overallPayment);
                                       },
                                       child: Container(
-                                        margin: const EdgeInsets.only(right: 10),
+                                        margin:
+                                            const EdgeInsets.only(right: 10),
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10),
                                         decoration: BoxDecoration(
                                           color: Colors.white12,
-                                          borderRadius: BorderRadius.circular(9),
+                                          borderRadius:
+                                              BorderRadius.circular(9),
                                           border: Border.all(
                                               color: Colors.white12, width: 1),
                                           gradient: LinearGradient(
@@ -336,8 +339,9 @@ class _HomeLayoutState extends State<HomeLayout> {
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 10),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10),
                                               child: Stack(
                                                 children: [
                                                   Container(
@@ -360,17 +364,21 @@ class _HomeLayoutState extends State<HomeLayout> {
                                                       child: Container(
                                                         height: 39,
                                                         width: 39,
-                                                        decoration: BoxDecoration(
-                                                            image: const DecorationImage(
-                                                                image: AssetImage(
-                                                                    "assets/images/demo_pfp.png")),
-                                                            shape:
-                                                                BoxShape.circle,
-                                                            color: Colors.grey,
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .black87,
-                                                                width: 2)),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                image:
+                                                                    const DecorationImage(
+                                                                  image: AssetImage(
+                                                                      "assets/images/demo_pfp.png"),
+                                                                ),
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color:
+                                                                    Colors.grey,
+                                                                border: Border.all(
+                                                                    color: Colors
+                                                                        .black87,
+                                                                    width: 2)),
                                                       ),
                                                     ),
                                                   )
@@ -409,7 +417,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                                                           color: Colors.white
                                                               .withOpacity(0.3),
                                                           fontSize: 12),
-                                                      overflow: TextOverflow.clip,
+                                                      overflow:
+                                                          TextOverflow.clip,
                                                     ),
                                                   ),
                                                 );
@@ -419,7 +428,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                               height: 8,
                                             ),
                                             Text(
-                                              "${payment.amount}",
+                                              "S/ ${payment.amount}",
                                               style: GoogleFonts.ibmPlexMono(
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 12,
@@ -586,7 +595,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                     ),
                                     const Spacer(),
                                     Text(
-                                      "${state.restOfPayments[index].amount} ${state.restOfPayments[index].currency}",
+                                      "S/ ${state.restOfPayments[index].amount}",
                                       style: GoogleFonts.robotoMono(
                                           fontWeight: FontWeight.w500),
                                     ),

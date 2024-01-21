@@ -72,7 +72,7 @@ class _AuthOptionScreenState extends State<AuthOptionScreen> {
                     height: 8.h,
                   ),
                   const Text(
-                    'Manage your money with self pools, and effortlessly handle shared paymen',
+                    'Cobra y paga sin estrés ni complicaciones',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color(0xFF919191),
@@ -99,7 +99,7 @@ class _AuthOptionScreenState extends State<AuthOptionScreen> {
                               Get.toNamed('/signup');
                             },
                             child: Text(
-                              'REGISTER',
+                              'REGISTRARME',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: const Color(0xFF6079E0),
@@ -116,7 +116,7 @@ class _AuthOptionScreenState extends State<AuthOptionScreen> {
                               Get.toNamed('/login');
                             },
                             child: Text(
-                              'SIGN IN',
+                              'INICIAR SESIÓN',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: const Color(0xFF6079E0),

@@ -1,6 +1,10 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confio/models/confio_user.dart';
 import 'package:confio/screens/add_payee/set_preference.dart';
+import 'package:confio/services/firebase_service.dart';
+import 'package:confio/services/storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -54,17 +58,39 @@ class _SetAmountScreenState extends State<SetAmountScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    //*Displays avartar
-                    Container(
-                      height: 69.h,
-                      width: 69.w,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border:
-                              Border.all(width: 2.27.w, color: Colors.white),
-                          image: const DecorationImage(
-                              image: NetworkImage(
-                                  "https://images.unsplash.com/photo-1682688759350-050208b1211c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"))),
+                    // Displays avatar
+                    FutureBuilder(
+                      future:
+                          firebaseService.getUserByEmail(widget.selectedEmail),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return FutureBuilder(
+                            future: storageService.getProfilePic(
+                                ConfioUser.fromDocument(
+                                    snapshot.data as DocumentSnapshot)),
+                            builder: (context, snapshot1) {
+                              if (snapshot1.hasData) {
+                                return CircleAvatar(
+                                  radius: 50.r,
+                                  backgroundImage: MemoryImage(snapshot1.data!),
+                                );
+                              } else {
+                                return CircleAvatar(
+                                  radius: 50.r,
+                                  backgroundImage: const AssetImage(
+                                      "assets/images/blankuser.png"),
+                                );
+                              }
+                            },
+                          );
+                        } else {
+                          return CircleAvatar(
+                            radius: 50.r,
+                            backgroundImage:
+                                const AssetImage("assets/images/blankuser.png"),
+                          );
+                        }
+                      },
                     ),
                     SizedBox(
                       height: 24.h,
