@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:confio/models/payment.dart';
-import 'package:confio/screens/components/gap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,11 +15,7 @@ class TusPagosWidget extends StatefulWidget {
 class _TusPagosWidgetState extends State<TusPagosWidget> {
   String _generateString(Timestamp timestamp) {
     DateTime date = timestamp.toDate();
-    String s = date.day.toString() +
-        '/' +
-        date.month.toString() +
-        '/' +
-        date.year.toString();
+    String s = '${date.day}/${date.month}/${date.year}';
 
     return s;
   }
@@ -70,7 +64,7 @@ class _TusPagosWidgetState extends State<TusPagosWidget> {
                       height: 14.h,
                     ),
                     Text(
-                      '${_generateString(widget.payment)}',
+                      _generateString(widget.payment),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14.sp,

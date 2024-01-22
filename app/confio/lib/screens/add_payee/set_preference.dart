@@ -1,10 +1,8 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confio/models/confio_user.dart';
 import 'package:confio/screens/add_payee/add_payment.dart';
-import 'package:confio/services/authentication_service.dart';
 import 'package:confio/services/firebase_service.dart';
 import 'package:confio/services/storage_service.dart';
 import 'package:file_picker/file_picker.dart';

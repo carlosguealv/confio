@@ -69,7 +69,7 @@ class Routes {
 
   static Future<String> getInitialRoute() async {
     try {
-      bool isLoggedIn = await authenticationService.isUserLoggedIn();
+      bool isLoggedIn = authenticationService.isUserLoggedIn();
       return isLoggedIn ? '/home' : '/';
     } catch (e) {
       return '/'; // Fallback route in case of error

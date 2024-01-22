@@ -268,29 +268,441 @@ class _HomeLayoutState extends State<HomeLayout> {
                                               .currentUser!.uid))
                             ],
                           ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Text(
-                            "Vence Pronto",
-                            style: GoogleFonts.inter(
-                                letterSpacing: 2.9,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white.withOpacity(0.45)),
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          SizedBox(
-                            height: 160,
-                            child: ListView.builder(
+                          ...(() {
+                            final venceProntoPayments = [
+                              ...((state).first7DaysPayments.where((element) =>
+                                  mode == Modes.cobrar
+                                      ? element.to ==
+                                          authenticationService.currentUser!.uid
+                                      : element.from ==
+                                          authenticationService
+                                              .currentUser!.uid))
+                            ];
+                            if (venceProntoPayments.isEmpty) {
+                              return [];
+                            }
+                            return [
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Text(
+                                "Vence Pronto",
+                                style: GoogleFonts.inter(
+                                    letterSpacing: 2.9,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white.withOpacity(0.45)),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              SizedBox(
+                                height: 160,
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    // make itemCount be the number of payments in the Next 7 days with "to"
+                                    // uid equal to the current user's uid if mode is cobrar, and "from" uid equal
+                                    // to the current user's uid if mode is pagar
+                                    itemCount: state.first7DaysPayments
+                                        .where((element) => mode == Modes.cobrar
+                                            ? element.to ==
+                                                authenticationService
+                                                    .currentUser!.uid
+                                            : element.from ==
+                                                authenticationService
+                                                    .currentUser!.uid)
+                                        .length,
+                                    itemBuilder: (buildContext, index) {
+                                      Payment payment = state.first7DaysPayments
+                                          .where((element) =>
+                                              mode == Modes.cobrar
+                                                  ? element.to ==
+                                                      authenticationService
+                                                          .currentUser!.uid
+                                                  : element.from ==
+                                                      authenticationService
+                                                          .currentUser!.uid)
+                                          .toList()[index];
+                                      return Center(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Get.toNamed("/home/depth2",
+                                                arguments:
+                                                    payment.overallPayment);
+                                          },
+                                          child: Container(
+                                            margin: const EdgeInsets.only(
+                                                right: 10),
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white12,
+                                              borderRadius:
+                                                  BorderRadius.circular(9),
+                                              border: Border.all(
+                                                  color: Colors.white12,
+                                                  width: 1),
+                                              gradient: LinearGradient(
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                                colors: [
+                                                  cardColors[index % 3],
+                                                  Colors.grey
+                                                ],
+                                              ),
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 10),
+                                                  child: Stack(
+                                                    children: [
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          color: cardColors[
+                                                              index % 3],
+                                                        ),
+                                                        width: 100,
+                                                        height: 30,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 100,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  top: 10),
+                                                          child: Container(
+                                                            height: 39,
+                                                            width: 39,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                                    image:
+                                                                        const DecorationImage(
+                                                                      image: AssetImage(
+                                                                          "assets/images/demo_pfp.png"),
+                                                                    ),
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    border: Border.all(
+                                                                        color: Colors
+                                                                            .black87,
+                                                                        width:
+                                                                            2)),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 6,
+                                                ),
+                                                FutureBuilder(
+                                                  future: firebaseService
+                                                      .getUserByUid(
+                                                    mode == Modes.cobrar
+                                                        ? payment.from
+                                                        : payment.to,
+                                                  ),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState
+                                                            .waiting) {
+                                                      return Text(
+                                                        "Loading...",
+                                                        style: GoogleFonts.inter(
+                                                            color: Colors.white
+                                                                .withOpacity(
+                                                                    0.3),
+                                                            fontSize: 12),
+                                                      );
+                                                    }
+                                                    return Expanded(
+                                                      child: SizedBox(
+                                                        width: 100,
+                                                        child: Text(
+                                                          mode == Modes.cobrar
+                                                              ? "${snapshot.data!['email']}"
+                                                              : "${snapshot.data!['email']}",
+                                                          style: GoogleFonts.inter(
+                                                              color: Colors
+                                                                  .white
+                                                                  .withOpacity(
+                                                                      0.3),
+                                                              fontSize: 12),
+                                                          overflow:
+                                                              TextOverflow.clip,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Text(
+                                                  "S/ ${payment.amount}",
+                                                  style:
+                                                      GoogleFonts.ibmPlexMono(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                const SizedBox(
+                                                    width: 120,
+                                                    child: Divider(
+                                                      color: Colors.white12,
+                                                      height: 20,
+                                                      thickness: 0.9,
+                                                    )),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                              )
+                            ];
+                          })(),
+                          ...() {
+                            final masAdelantePayments = [
+                              ...((state).first7DaysPayments.where((element) =>
+                                  mode == Modes.cobrar
+                                      ? element.to ==
+                                          authenticationService.currentUser!.uid
+                                      : element.from ==
+                                          authenticationService
+                                              .currentUser!.uid))
+                            ];
+                            if (masAdelantePayments.isEmpty) {
+                              return [];
+                            }
+                            return [
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Text(
+                                "Vence Pronto",
+                                style: GoogleFonts.inter(
+                                    letterSpacing: 2.9,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white.withOpacity(0.45)),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              SizedBox(
+                                height: 160,
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    // make itemCount be the number of payments in the Next 7 days with "to"
+                                    // uid equal to the current user's uid if mode is cobrar, and "from" uid equal
+                                    // to the current user's uid if mode is pagar
+                                    itemCount: state.first7DaysPayments
+                                        .where((element) => mode == Modes.cobrar
+                                            ? element.to ==
+                                                authenticationService
+                                                    .currentUser!.uid
+                                            : element.from ==
+                                                authenticationService
+                                                    .currentUser!.uid)
+                                        .length,
+                                    itemBuilder: (buildContext, index) {
+                                      Payment payment = state.first7DaysPayments
+                                          .where((element) =>
+                                              mode == Modes.cobrar
+                                                  ? element.to ==
+                                                      authenticationService
+                                                          .currentUser!.uid
+                                                  : element.from ==
+                                                      authenticationService
+                                                          .currentUser!.uid)
+                                          .toList()[index];
+                                      return Center(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Get.toNamed("/home/depth2",
+                                                arguments:
+                                                    payment.overallPayment);
+                                          },
+                                          child: Container(
+                                            margin: const EdgeInsets.only(
+                                                right: 10),
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white12,
+                                              borderRadius:
+                                                  BorderRadius.circular(9),
+                                              border: Border.all(
+                                                  color: Colors.white12,
+                                                  width: 1),
+                                              gradient: LinearGradient(
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                                colors: [
+                                                  cardColors[index % 3],
+                                                  Colors.grey
+                                                ],
+                                              ),
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 10),
+                                                  child: Stack(
+                                                    children: [
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          color: cardColors[
+                                                              index % 3],
+                                                        ),
+                                                        width: 100,
+                                                        height: 30,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 100,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  top: 10),
+                                                          child: Container(
+                                                            height: 39,
+                                                            width: 39,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                                    image:
+                                                                        const DecorationImage(
+                                                                      image: AssetImage(
+                                                                          "assets/images/demo_pfp.png"),
+                                                                    ),
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    border: Border.all(
+                                                                        color: Colors
+                                                                            .black87,
+                                                                        width:
+                                                                            2)),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 6,
+                                                ),
+                                                FutureBuilder(
+                                                  future: firebaseService
+                                                      .getUserByUid(
+                                                    mode == Modes.cobrar
+                                                        ? payment.from
+                                                        : payment.to,
+                                                  ),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState
+                                                            .waiting) {
+                                                      return Text(
+                                                        "Loading...",
+                                                        style: GoogleFonts.inter(
+                                                            color: Colors.white
+                                                                .withOpacity(
+                                                                    0.3),
+                                                            fontSize: 12),
+                                                      );
+                                                    }
+                                                    return Expanded(
+                                                      child: SizedBox(
+                                                        width: 100,
+                                                        child: Text(
+                                                          mode == Modes.cobrar
+                                                              ? "${snapshot.data!['email']}"
+                                                              : "${snapshot.data!['email']}",
+                                                          style: GoogleFonts.inter(
+                                                              color: Colors
+                                                                  .white
+                                                                  .withOpacity(
+                                                                      0.3),
+                                                              fontSize: 12),
+                                                          overflow:
+                                                              TextOverflow.clip,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Text(
+                                                  "${payment.amount}",
+                                                  style:
+                                                      GoogleFonts.ibmPlexMono(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                const SizedBox(
+                                                    width: 120,
+                                                    child: Divider(
+                                                      color: Colors.white12,
+                                                      height: 20,
+                                                      thickness: 0.9,
+                                                    )),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Text(
+                                "Más Adelante",
+                                style: GoogleFonts.inter(
+                                    letterSpacing: 2.9,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white.withOpacity(0.45)),
+                              ),
+                              ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                // make itemCount be the number of payments in the Next 7 days with "to"
-                                // uid equal to the current user's uid if mode is cobrar, and "from" uid equal
-                                // to the current user's uid if mode is pagar
-                                itemCount: state.first7DaysPayments
+                                itemCount: state.restOfPayments
                                     .where((element) => mode == Modes.cobrar
                                         ? element.to ==
                                             authenticationService
@@ -299,326 +711,168 @@ class _HomeLayoutState extends State<HomeLayout> {
                                             authenticationService
                                                 .currentUser!.uid)
                                     .length,
-                                itemBuilder: (buildContext, index) {
-                                  Payment payment = state.first7DaysPayments
-                                      .where((element) => mode == Modes.cobrar
-                                          ? element.to ==
-                                              authenticationService
-                                                  .currentUser!.uid
-                                          : element.from ==
-                                              authenticationService
-                                                  .currentUser!.uid)
-                                      .toList()[index];
-                                  return Center(
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Get.toNamed("/home/depth2",
-                                            arguments: payment.overallPayment);
-                                      },
-                                      child: Container(
-                                        margin:
-                                            const EdgeInsets.only(right: 10),
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white12,
-                                          borderRadius:
-                                              BorderRadius.circular(9),
-                                          border: Border.all(
-                                              color: Colors.white12, width: 1),
-                                          gradient: LinearGradient(
-                                            begin: Alignment.topCenter,
-                                            end: Alignment.bottomCenter,
-                                            colors: [
-                                              cardColors[index % 3],
-                                              Colors.grey
-                                            ],
-                                          ),
-                                        ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 10),
-                                              child: Stack(
-                                                children: [
-                                                  Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                      color:
-                                                          cardColors[index % 3],
-                                                    ),
-                                                    width: 100,
-                                                    height: 30,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 100,
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 10),
-                                                      child: Container(
-                                                        height: 39,
-                                                        width: 39,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                image:
-                                                                    const DecorationImage(
-                                                                  image: AssetImage(
-                                                                      "assets/images/demo_pfp.png"),
-                                                                ),
-                                                                shape: BoxShape
-                                                                    .circle,
-                                                                color:
-                                                                    Colors.grey,
-                                                                border: Border.all(
-                                                                    color: Colors
-                                                                        .black87,
-                                                                    width: 2)),
-                                                      ),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 6,
-                                            ),
-                                            FutureBuilder(
-                                              future:
-                                                  firebaseService.getUserByUid(
-                                                mode == Modes.cobrar
-                                                    ? payment.from
-                                                    : payment.to,
-                                              ),
-                                              builder: (context, snapshot) {
-                                                if (snapshot.connectionState ==
-                                                    ConnectionState.waiting) {
-                                                  return Text(
-                                                    "Loading...",
-                                                    style: GoogleFonts.inter(
-                                                        color: Colors.white
-                                                            .withOpacity(0.3),
-                                                        fontSize: 12),
-                                                  );
-                                                }
-                                                return Expanded(
-                                                  child: SizedBox(
-                                                    width: 100,
-                                                    child: Text(
-                                                      mode == Modes.cobrar
-                                                          ? "${snapshot.data!['email']}"
-                                                          : "${snapshot.data!['email']}",
-                                                      style: GoogleFonts.inter(
-                                                          color: Colors.white
-                                                              .withOpacity(0.3),
-                                                          fontSize: 12),
-                                                      overflow:
-                                                          TextOverflow.clip,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            Text(
-                                              "S/ ${payment.amount}",
-                                              style: GoogleFonts.ibmPlexMono(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            const SizedBox(
-                                                width: 120,
-                                                child: Divider(
-                                                  color: Colors.white12,
-                                                  height: 20,
-                                                  thickness: 0.9,
-                                                )),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Text(
-                            "Más Adelante",
-                            style: GoogleFonts.inter(
-                                letterSpacing: 2.9,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white.withOpacity(0.45)),
-                          ),
-                          ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: state.restOfPayments
-                                .where((element) => mode == Modes.cobrar
-                                    ? element.to ==
-                                        authenticationService.currentUser!.uid
-                                    : element.from ==
-                                        authenticationService.currentUser!.uid)
-                                .length,
-                            itemBuilder: (buildContent, index) {
-                              return Container(
-                                margin: const EdgeInsets.only(top: 22),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 14, vertical: 22),
-                                decoration: BoxDecoration(
-                                    color: const Color(0xff0D0E10),
-                                    borderRadius: BorderRadius.circular(15),
-                                    border: Border.all(
-                                        color: Colors.white.withOpacity(0.04),
-                                        width: 1)),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                        height: 51,
-                                        width: 51,
-                                        child: FutureBuilder(
-                                            future: firebaseService
-                                                .getUserByUid(mode ==
-                                                        Modes.pagar
-                                                    ? state
-                                                        .restOfPayments[index]
-                                                        .to
-                                                    : state
-                                                        .restOfPayments[index]
-                                                        .from),
-                                            builder: (context, snapshot) {
-                                              return FutureBuilder(
-                                                  future: storageService
-                                                      .getProfilePic(ConfioUser
-                                                          .fromDocument(
-                                                              snapshot.data!)),
-                                                  builder:
-                                                      (context, snapshot1) {
-                                                    return CircleAvatar(
-                                                      backgroundImage: snapshot1
-                                                                  .data !=
-                                                              null
-                                                          ? MemoryImage(
-                                                                  snapshot1
-                                                                      .data!)
-                                                              as ImageProvider
-                                                          : AssetImage(
-                                                              "assets/images/blankuser.png"),
-                                                    );
-                                                  });
-                                            })),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
+                                itemBuilder: (buildContent, index) {
+                                  return Container(
+                                    margin: const EdgeInsets.only(top: 22),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 14, vertical: 22),
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xff0D0E10),
+                                        borderRadius: BorderRadius.circular(15),
+                                        border: Border.all(
+                                            color:
+                                                Colors.white.withOpacity(0.04),
+                                            width: 1)),
+                                    child: Row(
                                       children: [
-                                        FutureBuilder(
-                                            future: firebaseService
-                                                .getUserByUid(mode ==
-                                                        Modes.cobrar
-                                                    ? state
-                                                        .restOfPayments[index]
-                                                        .from
-                                                    : state
-                                                        .restOfPayments[index]
-                                                        .to)
-                                                .then((value) =>
-                                                    value!['email'] as String),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState !=
-                                                  ConnectionState.done) {
-                                                return const Text("");
-                                              }
-                                              return SizedBox(
-                                                width: sy! * 0.3,
-                                                height: sx! * 0.05,
-                                                child: Text(
-                                                  snapshot.data!,
-                                                  softWrap: true,
-                                                  maxLines: 1,
-                                                  overflow: TextOverflow.clip,
-                                                  style: GoogleFonts.inter(
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              );
-                                            }),
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                              height: 3,
-                                              width: 34,
-                                              child: LinearProgressIndicator(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                value: (DateTime.now()
-                                                            .difference(state
+                                        SizedBox(
+                                            height: 51,
+                                            width: 51,
+                                            child: FutureBuilder(
+                                                future: firebaseService
+                                                    .getUserByUid(
+                                                        mode == Modes.pagar
+                                                            ? state
                                                                 .restOfPayments[
                                                                     index]
-                                                                .due
-                                                                .toDate())
-                                                            .inDays)
-                                                        .abs() /
-                                                    30,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 8,
-                                            ),
-                                            SizedBox(
-                                              width: 100,
-                                              child: Text(
-                                                "Quedan ${(DateTime.now().difference(state.restOfPayments[index].due.toDate()).inDays).abs()} días",
-                                                style: GoogleFonts.inter(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 12,
-                                                    color: Colors.white
-                                                        .withOpacity(0.35)),
-                                              ),
-                                            ),
+                                                                .to
+                                                            : state
+                                                                .restOfPayments[
+                                                                    index]
+                                                                .from),
+                                                builder: (context, snapshot) {
+                                                  return FutureBuilder(
+                                                      future: storageService
+                                                          .getProfilePic(ConfioUser
+                                                              .fromDocument(
+                                                                  snapshot
+                                                                      .data!)),
+                                                      builder:
+                                                          (context, snapshot1) {
+                                                        return CircleAvatar(
+                                                          backgroundImage: snapshot1
+                                                                      .data !=
+                                                                  null
+                                                              ? MemoryImage(
+                                                                      snapshot1
+                                                                          .data!)
+                                                                  as ImageProvider
+                                                              : const AssetImage(
+                                                                  "assets/images/blankuser.png"),
+                                                        );
+                                                      });
+                                                })),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            FutureBuilder(
+                                                future: firebaseService
+                                                    .getUserByUid(
+                                                        mode == Modes.cobrar
+                                                            ? state
+                                                                .restOfPayments[
+                                                                    index]
+                                                                .from
+                                                            : state
+                                                                .restOfPayments[
+                                                                    index]
+                                                                .to)
+                                                    .then((value) =>
+                                                        value!['email']
+                                                            as String),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState !=
+                                                      ConnectionState.done) {
+                                                    return const Text("");
+                                                  }
+                                                  return SizedBox(
+                                                    width: sy! * 0.3,
+                                                    height: sx! * 0.05,
+                                                    child: Text(
+                                                      snapshot.data!,
+                                                      softWrap: true,
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.clip,
+                                                      style: GoogleFonts.inter(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }),
+                                            Row(
+                                              children: [
+                                                SizedBox(
+                                                  height: 3,
+                                                  width: 34,
+                                                  child:
+                                                      LinearProgressIndicator(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    value: (DateTime.now()
+                                                                .difference(state
+                                                                    .restOfPayments[
+                                                                        index]
+                                                                    .due
+                                                                    .toDate())
+                                                                .inDays)
+                                                            .abs() /
+                                                        30,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 8,
+                                                ),
+                                                SizedBox(
+                                                  width: 100,
+                                                  child: Text(
+                                                    "Quedan ${(DateTime.now().difference(state.restOfPayments[index].due.toDate()).inDays).abs()} días",
+                                                    style: GoogleFonts.inter(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 12,
+                                                        color: Colors.white
+                                                            .withOpacity(0.35)),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
                                           ],
-                                        )
+                                        ),
+                                        const Spacer(),
+                                        Text(
+                                          "S/ ${state.restOfPayments[index].amount}",
+                                          style: GoogleFonts.robotoMono(
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        InkWell(
+                                          onTap: () {},
+                                          child: Container(
+                                            height: 25.h,
+                                            width: 25.w,
+                                            decoration: const BoxDecoration(
+                                                image: DecorationImage(
+                                                    image: AssetImage(
+                                                        "assets/images/grabIcon.png"),
+                                                    fit: BoxFit.scaleDown)),
+                                          ),
+                                        ),
                                       ],
                                     ),
-                                    const Spacer(),
-                                    Text(
-                                      "S/ ${state.restOfPayments[index].amount}",
-                                      style: GoogleFonts.robotoMono(
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    InkWell(
-                                      onTap: () {},
-                                      child: Container(
-                                        height: 25.h,
-                                        width: 25.w,
-                                        decoration: const BoxDecoration(
-                                            image: DecorationImage(
-                                                image: AssetImage(
-                                                    "assets/images/grabIcon.png"),
-                                                fit: BoxFit.scaleDown)),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          )
+                                  );
+                                },
+                              )
+                            ];
+                          }(),
                         ],
                       ),
                     ),

@@ -198,28 +198,41 @@ class _AddPayeeState extends State<AddPayee> {
                 height: 36.h,
               ),
               searchResult ?? Container(),
-              Text(
-                'Your payers',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.44999998807907104),
-                  fontSize: 14,
-                  fontFamily: 'RobotoMono',
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.90,
-                ),
-              ),
-              SizedBox(
-                height: 30.h,
-              ),
               SizedBox(
                 width: double.infinity.w,
                 child: FutureBuilder<ConfioUser?>(
                     future: authenticationService.currentConfioUser,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return AddPeopleContainer(
-                          people: snapshot.data!.payers,
-                          addedPersonChangeNotifier: _addedPersonChangeNotifier,
+                        if (snapshot.data!.payers.isEmpty) {
+                          return Container();
+                        }
+                        return Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  'Your payers',
+                                  style: TextStyle(
+                                    color: Colors.white
+                                        .withOpacity(0.44999998807907104),
+                                    fontSize: 14,
+                                    fontFamily: 'RobotoMono',
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0.90,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 30.h,
+                            ),
+                            AddPeopleContainer(
+                              people: snapshot.data!.payers,
+                              addedPersonChangeNotifier:
+                                  _addedPersonChangeNotifier,
+                            ),
+                          ],
                         );
                       }
                       return const Center(
@@ -227,25 +240,15 @@ class _AddPayeeState extends State<AddPayee> {
                       );
                     }),
               ),
-              Text(
-                'Your payees',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.44999998807907104),
-                  fontSize: 14,
-                  fontFamily: 'RobotoMono',
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.90,
-                ),
-              ),
-              SizedBox(
-                height: 30.h,
-              ),
               SizedBox(
                 width: double.infinity.w,
                 child: FutureBuilder<ConfioUser?>(
                     future: authenticationService.currentConfioUser,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
+                        if (snapshot.data!.payees.isEmpty) {
+                          return Container();
+                        }
                         return AddPeopleContainer(
                           people: snapshot.data!.payees,
                           addedPersonChangeNotifier: _addedPersonChangeNotifier,

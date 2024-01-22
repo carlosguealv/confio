@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confio/models/confio_user.dart';
 import 'package:confio/screens/components/gap.dart';
 import 'package:confio/services/firebase_service.dart';
@@ -10,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
-import 'dart:io';
 import 'package:confio/services/authentication_service.dart';
 import 'package:confio/screens/home_screen/navbar.dart';
 
@@ -516,7 +513,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   return const SizedBox
                                                       .shrink();
                                                 }
-                                                print(snapshot2.data!);
                                                 return SingleChildScrollView(
                                                   child: Column(
                                                     children: [
